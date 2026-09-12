@@ -17,8 +17,6 @@ venv/
 
 # ML artifacts
 *.pkl
-!apps/ml-service/models/
-!apps/ml-service/models/*.pkl
 
 # OS
 .DS_Store
