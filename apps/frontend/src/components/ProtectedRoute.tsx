@@ -7,7 +7,7 @@ export default function ProtectedRoute({ children }: { children: ReactNode }) {
     <>
       <Show when="signed-in">{children}</Show>
       <Show when="signed-out">
-        <Navigate to="/" replace />
+        <Navigate to="/login" replace />
       </Show>
     </>
   )

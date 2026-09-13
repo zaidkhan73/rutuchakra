@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom'
 import { useAuth, Show } from '@clerk/react'
 import { UserButton } from '@clerk/react'
 
+import Landing from './pages/Landing'
 import Login from './pages/Login'
 import ProtectedRoute from './components/ProtectedRoute'
 import { syncUser } from './lib/syncUser'
@@ -12,14 +13,7 @@ function UserSync() {
 
   useEffect(() => {
     if (!isSignedIn) return
-
-    syncUser(getToken)
-      .then((data) => {
-        console.log('User synced:', data)
-      })
-      .catch((err) => {
-        console.error('User sync failed:', err)
-      })
+    syncUser(getToken).catch((err) => console.error('User sync failed:', err))
   }, [isSignedIn])
 
   return null
@@ -42,8 +36,8 @@ function App() {
       </Show>
 
       <Routes>
-        
-
+        <Route path="/" element={<Landing />} />
+        <Route path="/login" element={<Login />} />
         <Route
           path="/dashboard"
           element={
@@ -52,8 +46,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
-        <Route path="/" element={<Login />} />
       </Routes>
     </>
   )

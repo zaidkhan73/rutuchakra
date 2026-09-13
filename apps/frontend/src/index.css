@@ -1,5 +1,7 @@
 @import "tailwindcss";
-@plugin "daisyui";
+@plugin "daisyui" {
+  themes: rutuchakra --default;
+}
 @plugin "daisyui/theme" {
   name: "rutuchakra";
   default: true;
@@ -45,6 +47,16 @@
   --border: 1px;
   --depth: 0;
   --noise: 0;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+body {
+  font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
