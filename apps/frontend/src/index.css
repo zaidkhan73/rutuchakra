@@ -1,1 +1,58 @@
 @import "tailwindcss";
+@plugin "daisyui";
+@plugin "daisyui/theme" {
+  name: "rutuchakra";
+  default: true;
+  prefersdark: false;
+  color-scheme: "light";
+
+  --color-base-100: oklch(98% 0.006 320);
+  --color-base-200: oklch(95% 0.012 320);
+  --color-base-300: oklch(90% 0.02 320);
+  --color-base-content: oklch(28% 0.03 330);
+
+  --color-primary: oklch(58% 0.19 344);
+  --color-primary-content: oklch(100% 0 0);
+
+  --color-secondary: oklch(56% 0.16 292);
+  --color-secondary-content: oklch(97% 0.01 292);
+
+  --color-accent: oklch(80% 0.09 210);
+  --color-accent-content: oklch(30% 0.06 220);
+
+  --color-neutral: oklch(32% 0.03 330);
+  --color-neutral-content: oklch(92% 0.015 330);
+
+  --color-info: oklch(82% 0.09 220);
+  --color-info-content: oklch(30% 0.05 220);
+
+  --color-success: oklch(78% 0.12 165);
+  --color-success-content: oklch(28% 0.06 165);
+
+  --color-warning: oklch(80% 0.13 80);
+  --color-warning-content: oklch(30% 0.06 80);
+
+  --color-error: oklch(62% 0.2 25);
+  --color-error-content: oklch(97% 0.01 25);
+
+  --radius-selector: 0.5rem;
+  --radius-field: 1rem;
+  --radius-box: 1rem;
+
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+body {
+  font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
