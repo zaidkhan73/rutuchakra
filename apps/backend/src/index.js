@@ -5,6 +5,7 @@ import { PrismaClient } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { attachClerkAuth } from "./middleware/auth.js";
 import authRoutes from "./routes/auth.routes.js";
+import predictionsRoutes from "./routes/predictions.routes.js";
 
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({ adapter });
@@ -29,6 +30,7 @@ app.get("/health", async (req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
+app.use("/api/predictions", predictionsRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

@@ -7,6 +7,7 @@ import Landing from './pages/Landing'
 import Login from './pages/Login'
 import ProtectedRoute from './components/ProtectedRoute'
 import { syncUser } from './lib/syncUser'
+import PCOSForm from './pages/PCOSForm'
 
 function UserSync() {
   const { isSignedIn, getToken } = useAuth()
@@ -43,6 +44,14 @@ function App() {
           element={
             <ProtectedRoute>
               <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/predict"
+          element={
+            <ProtectedRoute>
+              <PCOSForm />
             </ProtectedRoute>
           }
         />
