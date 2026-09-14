@@ -8,6 +8,8 @@ import Login from './pages/Login'
 import ProtectedRoute from './components/ProtectedRoute'
 import { syncUser } from './lib/syncUser'
 import PCOSForm from './pages/PCOSForm'
+import History from './pages/History'
+import HistoricalResult from './pages/HistoricalResult'
 
 function UserSync() {
   const { isSignedIn, getToken } = useAuth()
@@ -55,6 +57,8 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route path="/history" element={<ProtectedRoute><History /></ProtectedRoute>} />
+        <Route path="/history/:id" element={<ProtectedRoute><HistoricalResult /></ProtectedRoute>} />
       </Routes>
     </>
   )

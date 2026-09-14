@@ -28,6 +28,7 @@ model Prediction {
   formInputJson  Json
   probability    Float
   topFactorsJson Json
+  aiAdviceText   String
   modelVersion   String
   createdAt      DateTime @default(now())
 }

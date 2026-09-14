@@ -80,12 +80,49 @@ export interface PredictionResult {
   ai_advice: string
 }
 
+export interface HistoryEntry {
+  id: string
+  probability: number
+  risk_level: 'Low' | 'Moderate' | 'High'
+  advice: string
+  createdAt: string
+}
+
+export async function fetchPredictionHistory(
+  getToken: () => Promise<string | null>
+): Promise<HistoryEntry[]> {
+  const token = await getToken()
+  const res = await fetch(`${import.meta.env.VITE_API_URL}/api/predictions`, {
+    headers: { Authorization: `Bearer ${token}` },
+  })
+  if (!res.ok) throw new Error('Failed to load prediction history.')
+  const body = await res.json()
+  return body.data as HistoryEntry[]
+}
+
+export interface HistoricalPrediction extends PredictionResult {
+  createdAt: string
+}
+
+export async function fetchPredictionById(
+  id: string,
+  getToken: () => Promise<string | null>
+): Promise<HistoricalPrediction> {
+  const token = await getToken()
+  const res = await fetch(`${import.meta.env.VITE_API_URL}/api/predictions/${id}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  })
+  if (!res.ok) throw new Error('Failed to load this prediction.')
+  const body = await res.json()
+  return body.data as HistoricalPrediction
+}
+
 export async function fetchPrediction(
   formData: PCOSFormData,
   getToken: () => Promise<string | null>
 ): Promise<PredictionResult> {
   const token = await getToken()
-  console.log(token)
+
   const payload = {
     age: Number(formData.age),
     weight: Number(formData.weight),
