@@ -10,6 +10,7 @@ import { syncUser } from './lib/syncUser'
 import PCOSForm from './pages/PCOSForm'
 import History from './pages/History'
 import HistoricalResult from './pages/HistoricalResult'
+import CycleTracker from './pages/CycleTracker'
 
 function UserSync() {
   const { isSignedIn, getToken } = useAuth()
@@ -59,6 +60,7 @@ function App() {
         />
         <Route path="/history" element={<ProtectedRoute><History /></ProtectedRoute>} />
         <Route path="/history/:id" element={<ProtectedRoute><HistoricalResult /></ProtectedRoute>} />
+        <Route path="/cycle" element={<ProtectedRoute><CycleTracker /></ProtectedRoute>} />
       </Routes>
     </>
   )

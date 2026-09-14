@@ -19,6 +19,7 @@ model User {
   preferredLanguage String       @default("en")
   createdAt         DateTime     @default(now())
   predictions       Prediction[]
+  cycleLogs         CycleLog[]
 }
 
 model Prediction {
@@ -31,4 +32,13 @@ model Prediction {
   aiAdviceText   String
   modelVersion   String
   createdAt      DateTime @default(now())
+}
+
+model CycleLog {
+  id        String    @id @default(uuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id])
+  startDate DateTime
+  endDate   DateTime?
+  createdAt DateTime  @default(now())
 }
