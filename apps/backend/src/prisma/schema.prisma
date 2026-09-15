@@ -12,14 +12,16 @@ model HealthCheck {
 }
 
 model User {
-  id                String       @id @default(uuid())
-  clerkUserId       String       @unique
-  email             String       @unique
+  id                String        @id @default(uuid())
+  clerkUserId       String        @unique
+  email             String        @unique
   name              String?
-  preferredLanguage String       @default("en")
-  createdAt         DateTime     @default(now())
+  preferredLanguage String        @default("en")
+  createdAt         DateTime      @default(now())
   predictions       Prediction[]
   cycleLogs         CycleLog[]
+  habitLogs         HabitLog[]
+  customHabits      CustomHabit[]
 }
 
 model Prediction {
@@ -41,4 +43,26 @@ model CycleLog {
   startDate DateTime
   endDate   DateTime?
   createdAt DateTime  @default(now())
+}
+
+model HabitLog {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  date      DateTime
+  habitName String
+  value     Json
+  isCustom  Boolean  @default(false)
+}
+
+model CustomHabit {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  name      String
+  type      String   // "boolean" | "numeric"
+  unit      String?
+  target    Float?
+  icon      String?
+  createdAt DateTime @default(now())
 }

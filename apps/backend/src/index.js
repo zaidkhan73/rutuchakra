@@ -7,6 +7,7 @@ import { attachClerkAuth } from "./middleware/auth.js";
 import authRoutes from "./routes/auth.routes.js";
 import predictionsRoutes from "./routes/predictions.routes.js";
 import cyclesRoutes from "./routes/cycles.routes.js";
+import habitsRoutes from "./routes/habits.routes.js";
 
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({ adapter });
@@ -33,6 +34,7 @@ app.get("/health", async (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/predictions", predictionsRoutes);
 app.use("/api/cycles", cyclesRoutes);
+app.use("/api/habits", habitsRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
