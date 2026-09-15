@@ -22,6 +22,7 @@ model User {
   cycleLogs         CycleLog[]
   habitLogs         HabitLog[]
   customHabits      CustomHabit[]
+  chatMessages      ChatMessage[]
 }
 
 model Prediction {
@@ -60,9 +61,28 @@ model CustomHabit {
   userId    String
   user      User     @relation(fields: [userId], references: [id])
   name      String
-  type      String   // "boolean" | "numeric"
+  type      String
   unit      String?
   target    Float?
   icon      String?
   createdAt DateTime @default(now())
+}
+
+model KBChunk {
+  id        String                      @id @default(uuid())
+  title     String
+  content   String
+  embedding Unsupported("vector(768)")
+  createdAt DateTime                    @default(now())
+}
+
+model ChatMessage {
+  id           String   @id @default(uuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id])
+  role         String
+  content      String
+  language     String   @default("en")
+  groundedInKB Boolean  @default(false)
+  createdAt    DateTime @default(now())
 }

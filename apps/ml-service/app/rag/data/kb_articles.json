@@ -1,0 +1,86 @@
+[
+  {
+    "id": "kb-001",
+    "title": "What is PCOS/PCOD?",
+    "text": "Polycystic Ovary Syndrome (PCOS), also called Polycystic Ovarian Disorder (PCOD) in much of South Asia, is a common hormonal condition affecting people with ovaries, usually during their reproductive years. It involves an imbalance in reproductive hormones, which can affect ovulation, metabolism, and physical appearance. Not everyone with PCOS has visible cysts on their ovaries despite the name; diagnosis is based on a combination of symptoms, hormone levels, and sometimes ultrasound findings, not on cysts alone. A large pooled analysis across world regions estimates prevalence at roughly 11-13% of adult women using standard diagnostic criteria, with some evidence of higher rates in South East Asian and Eastern Mediterranean populations. PCOS is a spectrum condition: two people with the same diagnosis can have very different symptoms and severity.",
+    "sources": ["International Evidence-based Guideline for PMOS/PCOS (2023/2026 update)"]
+  },
+  {
+    "id": "kb-002",
+    "title": "Common symptoms of PCOS/PCOD",
+    "text": "Symptoms vary widely between individuals, but commonly include: irregular, infrequent, or absent menstrual periods; excess hair growth on the face, chest, or back (hirsutism); acne or oily skin that persists beyond the teenage years; thinning hair or hair loss on the scalp; weight gain, particularly around the abdomen, or difficulty losing weight; and dark, thickened patches of skin, often around the neck, armpits, or groin (acanthosis nigricans). Many people also experience fatigue, mood changes, and difficulty concentrating, though these are less specific and can have many causes. Not everyone will have all of these symptoms, and symptom severity is not necessarily linked to how significant the underlying hormonal imbalance is.",
+    "sources": ["original synthesis"]
+  },
+  {
+    "id": "kb-003",
+    "title": "Causes and risk factors",
+    "text": "The exact cause of PCOS is not fully understood, but it is believed to involve a combination of genetic and environmental factors. Insulin resistance -- where the body's cells don't respond as well to insulin -- is present in a large proportion of people with PCOS, and it can worsen hormonal imbalances by increasing androgen (male hormone) production. A family history of PCOS or type 2 diabetes appears to increase risk. Other contributing factors include chronic low-grade inflammation and disruptions in how the ovaries respond to hormonal signals from the brain. It's important to understand that PCOS is not caused by anything a person did wrong -- it is not the result of poor diet or lack of willpower, even though lifestyle changes can help manage symptoms.",
+    "sources": ["original synthesis"]
+  },
+  {
+    "id": "kb-004",
+    "title": "How PCOS/PCOD is diagnosed",
+    "text": "There is no single test that confirms PCOS. Most clinicians use a set of criteria (commonly the Rotterdam criteria) requiring at least two of the following three features: irregular or absent ovulation (usually reflected in irregular periods), clinical or blood-test evidence of elevated androgens (such as excess hair growth or acne), and polycystic-appearing ovaries on ultrasound. Diagnosis typically also involves ruling out other conditions with similar symptoms, such as thyroid disorders. Because diagnosis depends on a combination of history, physical exam, blood tests, and imaging, it usually requires an in-person evaluation by a gynaecologist or endocrinologist -- a symptom checklist or online tool can only suggest a likelihood, not confirm a diagnosis.",
+    "sources": ["original synthesis"]
+  },
+  {
+    "id": "kb-005",
+    "title": "Diet and nutrition guidance for PCOS/PCOD",
+    "text": "A large evidence review found no proof that any single diet composition (low-carbohydrate, high-protein, DASH, or others) works better than another for PCOS-specific outcomes -- claims that one particular 'PCOS diet' is superior are not well supported. What the evidence does support is general healthy eating tailored to individual preferences, with attention to the quality of carbohydrates: choosing wholegrains, legumes, and fruit over refined and highly processed carbohydrates appears to help with blood sugar control and weight, in line with general population nutrition guidance. Overly restrictive diets that eliminate entire food groups are not recommended. In an Indian context, this can look like choosing whole wheat or millet-based rotis over maida (refined flour), pairing meals with dal or another protein source, watching portion sizes of white rice, and limiting fried snacks, sugary drinks, and packaged snacks -- without needing to follow a rigid or restrictive plan. Any significant dietary change, especially for weight management, is best discussed with a doctor or dietitian.",
+    "sources": ["International Evidence-based Guideline for PMOS/PCOS (2023/2026 update)", "user-provided diet content (rewritten, generalized)"]
+  },
+  {
+    "id": "kb-006",
+    "title": "Exercise and physical activity",
+    "text": "Regular physical activity is one of the most consistently recommended lifestyle changes for managing PCOS symptoms, particularly because it can improve insulin sensitivity independent of weight loss. General guidance suggests aiming for at least 150 minutes of moderate-intensity activity per week -- this could be brisk walking, cycling, swimming, or similar -- combined with some strength or resistance training a couple of times a week where possible. Even modest, consistent activity, like a daily 20-30 minute walk, has been associated with improvements in menstrual regularity and mood for some people. As with diet, the right amount and type of exercise depends on individual health status, and anyone with other medical conditions should check with a doctor before starting a new routine.",
+    "sources": ["original synthesis"]
+  },
+  {
+    "id": "kb-007",
+    "title": "Common myths vs facts about PCOS/PCOD",
+    "text": "Myth: 'You can't get pregnant if you have PCOS.' Fact: PCOS is a common cause of reduced fertility due to irregular ovulation, but many people with PCOS do conceive, sometimes with the help of ovulation-inducing medication or other fertility treatment. Myth: 'PCOS only affects overweight people.' Fact: While insulin resistance and weight gain are common, PCOS also affects people who are at a normal weight or underweight -- it is a hormonal condition, not purely a weight-related one. Myth: 'PCOS will go away on its own.' Fact: PCOS is generally a long-term condition, though symptoms can be managed and may change over a person's life, including around menopause. Myth: 'Supplements like inositol are a proven cure.' Fact: Some supplements, including inositol, have limited evidence of modest benefit for menstrual regularity, but current research is low-certainty and does not support them as a proven treatment -- they should be discussed with a healthcare provider, not self-prescribed as a cure.",
+    "sources": ["International Evidence-based Guideline for PMOS/PCOS (2023/2026 update)"]
+  },
+  {
+    "id": "kb-008",
+    "title": "Mental health and PCOS/PCOD",
+    "text": "PCOS has been associated with higher rates of anxiety and depression compared to the general population, likely due to a combination of hormonal effects, the visible symptoms (like acne or excess hair growth) affecting self-esteem and body image, and the stress of managing a chronic condition. Sleep disturbances and fatigue are also commonly reported. It's worth naming this openly: the emotional impact of PCOS is a real and valid part of the condition, not something separate from it. Seeking support -- whether from a mental health professional, a support group, or trusted people in one's life -- is a reasonable and often helpful part of managing PCOS, alongside any physical treatment.",
+    "sources": ["original synthesis"]
+  },
+  {
+    "id": "kb-009",
+    "title": "Fertility and pregnancy considerations",
+    "text": "PCOS is one of the most common causes of anovulatory infertility (infertility due to irregular or absent ovulation), but it is treatable in many cases. Medication such as letrozole or clomiphene citrate is commonly used to help induce ovulation, and research comparing clomiphene alone versus clomiphene combined with metformin has found mixed results -- some studies have not shown metformin to meaningfully improve conception rates when added to clomiphene, so treatment choice is usually individualized by a fertility specialist rather than one-size-fits-all. People with PCOS who do conceive may have a somewhat higher risk of certain pregnancy complications, such as gestational diabetes or high blood pressure during pregnancy, which is why prenatal care with a clear PCOS history matters. None of this means pregnancy is unlikely or unsafe for most people with PCOS -- it means working with a doctor, ideally before trying to conceive, tends to lead to better-informed care.",
+    "sources": ["Professional Med J 2014 clinical trial (clomiphene vs clomiphene+metformin)", "International Evidence-based Guideline for PMOS/PCOS (2023/2026 update)"]
+  },
+  {
+    "id": "kb-010",
+    "title": "When to see a doctor",
+    "text": "It's worth seeing a gynaecologist or general physician if periods are consistently irregular (cycles shorter than 21 days or longer than 35 days), absent for more than three months without pregnancy, accompanied by heavy bleeding, or if new symptoms like excess hair growth, persistent acne, or unexplained weight changes appear. Anyone actively trying to conceive without success after a year (or six months if over 35) should also seek medical evaluation. None of the tools or information here are a substitute for a clinical diagnosis -- they're meant to help someone recognize patterns worth discussing with a professional, and to go into that conversation a little more informed.",
+    "sources": ["original synthesis"]
+  },
+  {
+    "id": "kb-011",
+    "title": "Long-term health risks if PCOS/PCOD goes unmanaged",
+    "text": "PCOS is linked to a higher long-term risk of several other health conditions, independent of body weight. Large studies show roughly a two-to-four-times higher risk of impaired glucose tolerance and type 2 diabetes in people with PCOS compared to those without it, which is why guidelines recommend glucose screening at diagnosis and periodically afterward. There is also an association with higher cholesterol, blood pressure, and cardiovascular risk factors over time, as well as a higher risk of obstructive sleep apnea. Because ovulation is infrequent, the uterine lining can build up without regular shedding, which over many years is linked to a higher risk of endometrial hyperplasia and, less commonly, endometrial cancer -- managing cycle regularity, including with hormonal treatment where appropriate, helps reduce this risk. None of this is meant to be alarming: these are reasons for periodic check-ups and screening, not signs that a diagnosis inevitably leads to serious illness.",
+    "sources": ["International Evidence-based Guideline for PMOS/PCOS (2023/2026 update)"]
+  },
+  {
+    "id": "kb-012",
+    "title": "Medical treatment options overview",
+    "text": "Treatment is usually tailored to a person's main goals -- whether that's managing symptoms, regulating cycles, or trying to conceive. Combined oral contraceptive pills are commonly used to regulate periods and reduce androgen-related symptoms like acne and excess hair growth, for those not trying to conceive. Metformin, a medication that improves insulin sensitivity, is often used, particularly when insulin resistance is a significant factor, though it can cause mild gastrointestinal side effects. For those trying to conceive, ovulation-inducing medications such as letrozole or clomiphene citrate are typically tried first, with more advanced fertility treatments considered if needed. Supplements like inositol are sometimes used and appear to have limited harm, but current evidence for their benefit is low-certainty and inconsistent -- they're a personal choice to discuss with a doctor, not a substitute for evidence-based treatment. In some specific situations not responsive to other treatment, procedures like laparoscopic ovarian drilling may be considered. All of these options come with trade-offs that depend on individual health history, which is why treatment planning is done with a healthcare provider rather than through self-medication.",
+    "sources": ["PCOS_PCOD_Comprehensive_Guide (rewritten, corrected)", "International Evidence-based Guideline for PMOS/PCOS (2023/2026 update)"]
+  },
+  {
+    "id": "kb-013",
+    "title": "PCOS/PCOD in Indian women: what regional data shows",
+    "text": "A multicentre study of 309 women across the Vidarbha region of Maharashtra, India, gives a useful regional picture of how PCOS presents locally. The average age of participants was about 23 years, with an average age at first period (menarche) of about 13. Among women being evaluated for infertility, the large majority had primary infertility (had never conceived), and ovulatory dysfunction (irregular or absent ovulation) was seen in about three-quarters of participants. Irregular cycles were the most common menstrual pattern reported, followed by regular cycles, with smaller numbers reporting very infrequent or absent periods. The majority of participants were classified as overweight or obese by BMI, and common physical findings included acne and acanthosis nigricans (dark skin patches), consistent with the broader global pattern of PCOS linked to insulin resistance. This kind of regional data is useful because PCOS can present somewhat differently across populations, and having India-specific information helps ground expectations for what's 'typical' locally, rather than relying only on data from other countries.",
+    "sources": ["IJRCOG 2026 multicentre study, Vidarbha region, Maharashtra (CC-BY-NC licensed)"]
+  },
+  {
+    "id": "kb-014",
+    "title": "Everyday habits that can help",
+    "text": "Alongside medical care, small daily habits are commonly suggested as part of managing PCOS, though none of these replace medical treatment when it's needed. Regular meal timing -- eating every few hours rather than skipping meals and then eating a large meal -- may help avoid sharp swings in blood sugar for some people. Staying hydrated, getting consistent sleep (aiming for around 7 hours), and building in some form of daily movement, even a short walk, are commonly recommended alongside more structured exercise. Some people find certain Indian ingredients, like fenugreek (methi) or cinnamon, anecdotally helpful for blood sugar management, though robust clinical evidence for most of these specific ingredients is limited -- they're reasonable to include as part of a generally balanced diet, not as a treatment on their own. As with diet and exercise more broadly, consistency over time tends to matter more than any single change.",
+    "sources": ["user-provided diet content (rewritten, generalized, doctor/clinic references removed)"]
+  }
+]

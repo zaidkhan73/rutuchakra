@@ -17,3 +17,5 @@ scikit-learn==1.8.0
 joblib
 shap
 google-genai
+psycopg2-binary
+pgvector
