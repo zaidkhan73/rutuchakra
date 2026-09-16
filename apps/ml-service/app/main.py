@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.routes.predict import router as predict_router
+from app.routes.chat import router as chat_router
 
 app = FastAPI(title="RutuChakra ML Service")
 
@@ -13,6 +14,7 @@ app.add_middleware(
 )
 
 app.include_router(predict_router)
+app.include_router(chat_router)
 
 
 @app.get("/")
