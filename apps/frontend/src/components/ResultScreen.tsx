@@ -54,23 +54,15 @@ function ProbabilityRing({ probability, risk }: { probability: number; risk: key
 export default function ResultScreen({
   result,
   onRestart,
-  viewedAt,
 }: {
   result: PredictionResult
-  onRestart?: () => void
-  viewedAt?: string
+  onRestart: () => void
 }) {
   const styles = RISK_STYLES[result.risk_level]
   const adviceSections = parseAdvice(result.ai_advice)
 
   return (
     <div className="animate-fade-up">
-      {viewedAt && (
-        <p className="text-center text-xs text-base-content/50 mb-4">
-          Viewed from your assessment on{' '}
-          {new Date(viewedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}
-        </p>
-      )}
       <div className="text-center mb-6">
         <span className={`badge ${styles.badge} badge-lg mb-4`}>{result.risk_level} risk</span>
         <ProbabilityRing probability={result.probability} risk={result.risk_level} />
@@ -128,11 +120,9 @@ export default function ResultScreen({
         </span>
       </div>
 
-      {onRestart && (
-        <button type="button" onClick={onRestart} className="btn btn-outline w-full">
-          Take the assessment again
-        </button>
-      )}
+      <button type="button" onClick={onRestart} className="btn btn-outline w-full">
+        Take the assessment again
+      </button>
     </div>
   )
 }

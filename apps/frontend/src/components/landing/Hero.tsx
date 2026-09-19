@@ -1,6 +1,8 @@
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 function CycleMotif() {
+  const {t} = useTranslation('hero')
   return (
     <svg
       viewBox="0 0 400 400"

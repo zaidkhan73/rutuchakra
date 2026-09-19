@@ -73,6 +73,7 @@ export interface TopFactor {
 }
 
 export interface PredictionResult {
+  predictionId?: string
   probability: number
   risk_level: 'Low' | 'Moderate' | 'High'
   advice: string

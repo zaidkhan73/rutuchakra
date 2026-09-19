@@ -2,6 +2,7 @@ import { Router } from "express";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "@prisma/client";
 import { requireAuth } from "../middleware/auth.js";
+import { checkRateLimit, redactPII } from "../utils/chatGuardrails.js";
 
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({ adapter });
@@ -14,8 +15,6 @@ async function getInternalUser(clerkUserId) {
   return prisma.user.findUnique({ where: { clerkUserId } });
 }
 
-// Builds a short grounding summary from the user's most recent prediction,
-// so the chatbot can answer questions about "my result" without re-fetching it.
 async function buildUserContext(userId) {
   const latest = await prisma.prediction.findFirst({
     where: { userId },
@@ -34,6 +33,11 @@ router.post("/", requireAuth, async (req, res) => {
   try {
     const user = await getInternalUser(req.clerkUserId);
     if (!user) return res.status(404).json({ status: "error", message: "User not found." });
+
+    const withinLimit = await checkRateLimit(prisma, user.id);
+    if (!withinLimit) {
+      return res.status(429).json({ status: "error", message: "You're sending messages a bit fast — give it a moment." });
+    }
 
     const { message } = req.body;
     if (!message || !message.trim()) {
@@ -66,7 +70,7 @@ router.post("/", requireAuth, async (req, res) => {
     const result = await mlResponse.json();
 
     await prisma.chatMessage.create({
-      data: { userId: user.id, role: "user", content: message, groundedInKB: false },
+      data: { userId: user.id, role: "user", content: redactPII(message), groundedInKB: false },
     });
     await prisma.chatMessage.create({
       data: { userId: user.id, role: "assistant", content: result.answer, groundedInKB: result.groundedInKB },

@@ -1,0 +1,74 @@
+{
+  "nav": {
+    "howItWorks": "How it works",
+    "explainableAI": "Explainable AI",
+    "privacy": "Privacy",
+    "login": "Log in"
+  },
+  "hero": {
+    "title": "Know your PCOD risk before it becomes a question mark",
+    "subtitle": "Answer a few questions about your cycle and symptoms. Get a clear, explained result in minutes — not a diagnosis, but a well-informed starting point for your next conversation with a doctor.",
+    "checkRisk": "Check your risk",
+    "learnMore": "Learn how it works"
+  },
+  "awareness": {
+    "title": "What PCOD actually is",
+    "paragraph1": "PCOD (Polycystic Ovarian Disorder) is a hormonal condition that affects how the ovaries work. It's common — estimates suggest it touches roughly 1 in 5 women in India — and it shows up differently in everyone: irregular periods, weight changes, acne, or excess hair growth are all possible signs.",
+    "paragraph2": "There's no single test that confirms it on the spot. Doctors usually piece together symptoms, a physical exam, and sometimes bloodwork or an ultrasound. RutuChakra doesn't replace that process — it looks at patterns in your symptoms the same way a first conversation with a doctor might, and gives you a clearer picture of whether it's worth following up."
+  },
+  "howItWorks": {
+    "title": "How it works",
+    "steps": {
+      "share": { "label": "Share", "desc": "Tell us about your cycle, symptoms, and lifestyle." },
+      "analyze": { "label": "Analyze", "desc": "Our model compares your answers against thousands of cases." },
+      "score": { "label": "Score", "desc": "You get a probability, not a vague label." },
+      "explain": { "label": "Explain", "desc": "See exactly which factors moved your score, and by how much." },
+      "guide": { "label": "Guide", "desc": "Get plain-language next steps suited to your situation." }
+    }
+  },
+  "explainableAI": {
+    "title": "See the \"why,\" not just the number",
+    "paragraph": "Most risk tools give you a score and stop there. RutuChakra breaks down exactly which of your answers moved that score, and in which direction — so the result reads like an explanation, not a verdict.",
+    "illustrativeExample": "Illustrative example",
+    "factors": {
+      "irregularCycle": "Irregular menstrual cycle",
+      "weightGain": "Unexplained weight gain",
+      "regularExercise": "Regular exercise",
+      "acne": "Persistent acne"
+    }
+  },
+  "tracking": {
+    "thisMonth": "This month",
+    "dayStreak": "day streak",
+    "habits": {
+      "water": "Water intake",
+      "exercise": "Exercise",
+      "sleep": "Sleep 7h+"
+    },
+    "title": "Track more than one result",
+    "paragraph": "Log your cycle and daily habits between check-ins. Patterns over weeks tell you more than any single answer — and they carry forward into your next risk assessment."
+  },
+  "aiPreview": {
+    "title": "Ask questions in your own words",
+    "paragraph": "Confused about what a result means, or what to eat before a checkup? Ask the assistant directly — every answer is grounded in your own tracked data and reliable sources, not generic advice.",
+    "userMessage": "My cycle's been 40 days for the last two months — should I be worried?",
+    "assistantMessage": "Two 40-day cycles in a row does count as irregular, based on your logged history. It's one of the factors in your last result too — worth mentioning to a gynaecologist at your next visit.",
+    "grounded": "Grounded in your cycle log"
+  },
+  "trust": {
+    "private": { "label": "Private by default", "desc": "Your answers are yours. We never sell data or share it with advertisers." },
+    "notDiagnosis": { "label": "Not a diagnosis", "desc": "A result here is a starting point for a conversation with a doctor, not a medical conclusion." },
+    "transparent": { "label": "Transparent explanations", "desc": "Every result shows the factors behind it. No black-box scores." }
+  },
+  "footer": {
+    "howItWorks": "How it works",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "disclaimer": "Medical disclaimer",
+    "disclaimerText": "RutuChakra does not diagnose medical conditions. Results are informational and should be discussed with a qualified healthcare provider.",
+    "copyright": "RutuChakra"
+  },
+  "login": {
+    "tagline": "Understand your PCOD risk in minutes — private, explainable, and free."
+  }
+}

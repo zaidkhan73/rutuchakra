@@ -12,6 +12,7 @@ import History from './pages/History'
 import HistoricalResult from './pages/HistoricalResult'
 import CycleTracker from './pages/CycleTracker'
 import HabitTracker from './pages/HabitTracker'
+import AIAssistant from './pages/AIAssistant'
 
 function UserSync() {
   const { isSignedIn, getToken } = useAuth()
@@ -63,6 +64,7 @@ function App() {
         <Route path="/history/:id" element={<ProtectedRoute><HistoricalResult /></ProtectedRoute>} />
         <Route path="/cycle" element={<ProtectedRoute><CycleTracker /></ProtectedRoute>} />
         <Route path="/habits" element={<ProtectedRoute><HabitTracker /></ProtectedRoute>} />
+        <Route path="/assistant" element={<ProtectedRoute><AIAssistant /></ProtectedRoute>} />
       </Routes>
     </>
   )
