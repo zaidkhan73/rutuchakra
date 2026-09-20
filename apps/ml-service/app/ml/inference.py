@@ -155,7 +155,23 @@ def _top_factors(feature_row: dict, n: int = 4) -> list:
     ]
 
 
-def _build_prompt(data: dict, prob: float, risk_level: str) -> str:
+_LANGUAGE_NAMES = {
+    "en": "English",
+    "hi": "Hindi (Devanagari script)",
+    "mr": "Marathi (Devanagari script)",
+}
+
+# Must stay in sync with the ADVICE_HEADING_SETS map in
+# apps/frontend/src/components/ResultScreen.tsx — the frontend parses the
+# response by searching for these exact strings.
+_ADVICE_HEADINGS_BY_LANG = {
+    "en": ("Your Summary", "What You Can Do", "When to See a Doctor"),
+    "hi": ("आपका सारांश", "आप क्या कर सकती हैं", "डॉक्टर से कब मिलें"),
+    "mr": ("तुमचा सारांश", "तुम्ही काय करू शकता", "डॉक्टरांना कधी भेटावे"),
+}
+
+
+def _build_prompt(data: dict, prob: float, risk_level: str, language: str = "en") -> str:
     age = int(float(data["age"]))
     weight, height = float(data["weight"]), float(data["height"])
     bmi = weight / ((height / 100) ** 2)
@@ -179,6 +195,15 @@ def _build_prompt(data: dict, prob: float, risk_level: str) -> str:
         "acne": "pimples or acne that keep coming back",
     }
     sym_text = ", ".join(sym_labels[k] for k, v in sym.items() if v and k in sym_labels) or "no major symptoms"
+
+    lang_name = _LANGUAGE_NAMES.get(language, "English")
+    h1, h2, h3 = _ADVICE_HEADINGS_BY_LANG.get(language, _ADVICE_HEADINGS_BY_LANG["en"])
+    lang_line = (
+        f"Write your ENTIRE response in {lang_name}. Keep \"PCOD\"/\"PCOS\" and any "
+        f"clinical term with no simple equivalent in English; everything else must be "
+        f"in {lang_name}.\n\n"
+        if language != "en" else ""
+    )
 
     return f"""[INTERNAL CONTEXT — for your understanding only, do not include this in your response]
 You are analysing a PCOS self-assessment from an Indian woman.
@@ -206,15 +231,15 @@ Tone rules:
 - Low risk: reassuring, not dismissive. Moderate: honest but calm. High: clear and firm
   about seeing a doctor, but not alarming.
 
-Format — use EXACTLY these three headings, nothing else:
+{lang_line}Format — use EXACTLY these three headings, verbatim character-for-character, nothing else:
 
-Your Summary
+{h1}
 (2-3 sentences, plain language, no percentages.)
 
-What You Can Do
+{h2}
 (3-4 specific, actionable tips tied to her actual symptoms/lifestyle.)
 
-When to See a Doctor
+{h3}
 (1-2 sentences. Mention "gynaecologist" or "ladies doctor". Never say "don't worry" if risk is High.)
 
 Keep the total response under 280 words. No bullet symbols, no asterisks, no markdown."""
@@ -238,7 +263,8 @@ def predict_pcos(raw_data: dict) -> dict:
     pcos_prob = float(_model.predict_proba(features_df)[0][1])
     risk_level, advice = _classify_risk(pcos_prob)
     top_factors = _top_factors(feature_row)
-    ai_advice = _get_gemini_advice(_build_prompt(raw_data, pcos_prob, risk_level))
+    language = raw_data.get("language", "en")
+    ai_advice = _get_gemini_advice(_build_prompt(raw_data, pcos_prob, risk_level, language))
 
     return {
         "probability": round(pcos_prob, 4),

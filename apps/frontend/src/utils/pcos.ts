@@ -1,3 +1,5 @@
+import i18n from '../i18n'
+
 export interface BMIResult {
   value: number
   labelKey: string
@@ -138,6 +140,10 @@ export async function fetchPrediction(
     },
     fastFood: !!formData.fastFood,
     exercise: !!formData.exercise,
+    // Lets the ML service ask Gemini to write ai_advice in the viewer's
+    // language. Stored as part of formInputJson on the backend, so a
+    // historical record stays in whichever language it was generated in.
+    language: i18n.language,
   }
 
   const res = await fetch(`${import.meta.env.VITE_API_URL}/api/predictions`, {

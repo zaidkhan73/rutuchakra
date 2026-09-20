@@ -40,11 +40,7 @@
   "tracking": {
     "thisMonth": "This month",
     "dayStreak": "day streak",
-    "habits": {
-      "water": "Water intake",
-      "exercise": "Exercise",
-      "sleep": "Sleep 7h+"
-    },
+    "habits": { "water": "Water intake", "exercise": "Exercise", "sleep": "Sleep 7h+" },
     "title": "Track more than one result",
     "paragraph": "Log your cycle and daily habits between check-ins. Patterns over weeks tell you more than any single answer — and they carry forward into your next risk assessment."
   },
@@ -68,9 +64,8 @@
     "disclaimerText": "RutuChakra does not diagnose medical conditions. Results are informational and should be discussed with a qualified healthcare provider.",
     "copyright": "RutuChakra"
   },
-  "login": {
-    "tagline": "Understand your PCOD risk in minutes — private, explainable, and free."
-  },"form": {
+  "login": { "tagline": "Understand your PCOD risk in minutes — private, explainable, and free." },
+  "form": {
     "badge": "PCOD / PCOS Awareness Tool",
     "titlePrefix": "Know Your",
     "titleEmphasis": "Risk.",
@@ -130,5 +125,31 @@
     "amenorrhoea": "This may indicate amenorrhoea. Please consult a doctor.",
     "irregular": "Cycles outside 21–35 days are flagged as irregular — a key PCOS indicator.",
     "regular": "Your cycle length falls within the typical healthy range of 21–35 days."
+  },
+  "result": {
+    "probability": "probability",
+    "riskSuffix": "risk",
+    "whatInfluenced": "What influenced this result",
+    "personalisedGuidance": "Personalised guidance",
+    "disclaimer": "This is not a medical diagnosis. Please discuss this result with a qualified gynaecologist or endocrinologist.",
+    "retakeButton": "Take the assessment again"
+  },
+  "riskLevels": { "low": "Low", "moderate": "Moderate", "high": "High" },
+  "resultAdvice": {
+    "low": "Your responses suggest a low likelihood of PCOS at this time. Maintain a balanced diet, stay physically active, and keep track of any new symptoms.",
+    "moderate": "Some factors associated with PCOS are present. Start regular exercise, reduce processed food, maintain a consistent sleep schedule, and consider a gynaecologist check-up.",
+    "high": "Multiple strong indicators associated with PCOS were detected. Please consult a qualified gynaecologist or endocrinologist for a thorough clinical evaluation. Do not self-medicate."
+  },
+  "resultFactors": {
+    "Age": "Age", "Weight": "Weight", "Height": "Height", "BMI": "BMI",
+    "Unexplained weight gain": "Unexplained weight gain",
+    "Excess facial/body hair": "Excess facial/body hair",
+    "Skin darkening": "Skin darkening",
+    "Hair loss / thinning": "Hair loss / thinning",
+    "Persistent acne": "Persistent acne",
+    "Frequent fast food": "Frequent fast food",
+    "Lack of regular exercise": "Lack of regular exercise",
+    "Irregular menstrual cycle": "Irregular menstrual cycle",
+    "Age outside typical PCOS onset range": "Age outside typical PCOS onset range"
   }
 }

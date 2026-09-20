@@ -17,6 +17,7 @@ class PredictRequest(BaseModel):
     symptoms: Symptoms
     fastFood: bool
     exercise: bool
+    language: str = "en"
 
 
 class TopFactor(BaseModel):
