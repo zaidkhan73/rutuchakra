@@ -1,33 +1,31 @@
+import { useTranslation } from 'react-i18next'
+
 const EXAMPLE_FACTORS = [
-  { factor: 'Irregular menstrual cycle', impact: 'increases', weight: 0.72 },
-  { factor: 'Unexplained weight gain', impact: 'increases', weight: 0.58 },
-  { factor: 'Regular exercise', impact: 'decreases', weight: 0.41 },
-  { factor: 'Persistent acne', impact: 'increases', weight: 0.33 },
-]
+  { id: 'irregularCycle', impact: 'increases', weight: 0.72 },
+  { id: 'weightGain', impact: 'increases', weight: 0.58 },
+  { id: 'regularExercise', impact: 'decreases', weight: 0.41 },
+  { id: 'acne', impact: 'increases', weight: 0.33 },
+] as const
 
 export default function ExplainableAIPreview() {
+  const { t } = useTranslation()
+
   return (
     <section id="explainable-ai" className="px-4 sm:px-8 py-16 bg-base-200">
       <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-10 items-center">
         <div>
-          <h2 className="text-2xl sm:text-3xl font-bold text-base-content">
-            See the "why," not just the number
-          </h2>
-          <p className="mt-4 text-base-content/70">
-            Most risk tools give you a score and stop there. RutuChakra breaks
-            down exactly which of your answers moved that score, and in which
-            direction — so the result reads like an explanation, not a verdict.
-          </p>
+          <h2 className="text-2xl sm:text-3xl font-bold text-base-content">{t('explainableAI.title')}</h2>
+          <p className="mt-4 text-base-content/70">{t('explainableAI.paragraph')}</p>
         </div>
 
         <div className="card bg-base-100 shadow-md">
           <div className="card-body">
-            <span className="badge badge-info badge-sm self-start">Illustrative example</span>
+            <span className="badge badge-info badge-sm self-start">{t('explainableAI.illustrativeExample')}</span>
             <div className="mt-3 space-y-3">
               {EXAMPLE_FACTORS.map((f) => (
-                <div key={f.factor}>
+                <div key={f.id}>
                   <div className="flex justify-between text-sm mb-1">
-                    <span className="text-base-content/80">{f.factor}</span>
+                    <span className="text-base-content/80">{t(`explainableAI.factors.${f.id}`)}</span>
                     <span className={f.impact === 'increases' ? 'text-error' : 'text-success'}>
                       {f.impact === 'increases' ? '↑' : '↓'}
                     </span>

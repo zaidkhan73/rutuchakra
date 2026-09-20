@@ -16,6 +16,11 @@ i18n
       mr: { translation: mr },
     },
     fallbackLng: 'en',
+    supportedLngs: ['en', 'hi', 'mr'],
+    // Browsers report locales like "en-IN" or "en-US" — this collapses
+    // anything to its base language so it always matches one of our
+    // three resource bundles instead of silently falling back.
+    load: 'languageOnly',
     interpolation: { escapeValue: false },
     detection: {
       // Checks localStorage first so a manual language choice survives a

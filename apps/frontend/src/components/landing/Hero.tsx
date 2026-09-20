@@ -2,7 +2,6 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 function CycleMotif() {
-  const {t} = useTranslation('hero')
   return (
     <svg
       viewBox="0 0 400 400"
@@ -63,28 +62,27 @@ function CycleMotif() {
 
 export default function Hero() {
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   return (
     <section className="px-4 sm:px-8 py-16 md:py-24">
       <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
         <div className="text-center md:text-left order-2 md:order-1">
           <h1 className="text-4xl sm:text-5xl font-extrabold leading-tight text-base-content">
-            Know your PCOD risk before it becomes a question mark
+            {t('hero.title')}
           </h1>
           <p className="mt-5 text-lg text-base-content/70 max-w-md mx-auto md:mx-0">
-            Answer a few questions about your cycle and symptoms. Get a clear,
-            explained result in minutes — not a diagnosis, but a well-informed
-            starting point for your next conversation with a doctor.
+            {t('hero.subtitle')}
           </p>
           <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
-            <div className="aura bg-pink-400 p-0.5 ">
-                <button onClick={() => navigate('/login')} className="btn btn-primary btn-lg">
-              Check your risk
-            </button>
+            <div className="aura bg-pink-400 p-0.5">
+              <button onClick={() => navigate('/login')} className="btn btn-primary btn-lg">
+                {t('hero.checkRisk')}
+              </button>
             </div>
-            
+
             <a href="#how-it-works" className="btn btn-outline btn-lg">
-              Learn how it works
+              {t('hero.learnMore')}
             </a>
           </div>
         </div>

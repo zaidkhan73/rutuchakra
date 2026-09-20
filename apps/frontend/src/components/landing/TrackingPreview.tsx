@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next'
+
 const MOCK_DAYS = Array.from({ length: 28 }, (_, i) => ({
   day: i + 1,
   period: [1, 2, 3, 4, 5].includes(i + 1),
@@ -5,18 +7,20 @@ const MOCK_DAYS = Array.from({ length: 28 }, (_, i) => ({
 }))
 
 const HABITS = [
-  { label: 'Water intake', streak: 6 },
-  { label: 'Exercise', streak: 3 },
-  { label: 'Sleep 7h+', streak: 9 },
-]
+  { id: 'water', streak: 6 },
+  { id: 'exercise', streak: 3 },
+  { id: 'sleep', streak: 9 },
+] as const
 
 export default function TrackingPreview() {
+  const { t } = useTranslation()
+
   return (
     <section className="px-4 sm:px-8 py-16">
       <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-10 items-center">
         <div className="card bg-base-100 shadow-md order-2 md:order-1">
           <div className="card-body">
-            <h3 className="font-semibold text-sm text-base-content/70">This month</h3>
+            <h3 className="font-semibold text-sm text-base-content/70">{t('tracking.thisMonth')}</h3>
             <div className="grid grid-cols-7 gap-1.5 mt-2">
               {MOCK_DAYS.map((d) => (
                 <div
@@ -33,9 +37,11 @@ export default function TrackingPreview() {
 
             <div className="space-y-3">
               {HABITS.map((h) => (
-                <div key={h.label} className="flex items-center justify-between text-sm">
-                  <span className="text-base-content/80">{h.label}</span>
-                  <span className="badge badge-secondary badge-sm">{h.streak} day streak</span>
+                <div key={h.id} className="flex items-center justify-between text-sm">
+                  <span className="text-base-content/80">{t(`tracking.habits.${h.id}`)}</span>
+                  <span className="badge badge-secondary badge-sm">
+                    {h.streak} {t('tracking.dayStreak')}
+                  </span>
                 </div>
               ))}
             </div>
@@ -43,14 +49,8 @@ export default function TrackingPreview() {
         </div>
 
         <div className="order-1 md:order-2">
-          <h2 className="text-2xl sm:text-3xl font-bold text-base-content">
-            Track more than one result
-          </h2>
-          <p className="mt-4 text-base-content/70">
-            Log your cycle and daily habits between check-ins. Patterns over
-            weeks tell you more than any single answer — and they carry
-            forward into your next risk assessment.
-          </p>
+          <h2 className="text-2xl sm:text-3xl font-bold text-base-content">{t('tracking.title')}</h2>
+          <p className="mt-4 text-base-content/70">{t('tracking.paragraph')}</p>
         </div>
       </div>
     </section>
