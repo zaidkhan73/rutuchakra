@@ -1,10 +1,12 @@
 import type { ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 
 /* ── Section heading with step badge ── */
 export function SectionHead({ step, title, desc }: { step: number; title: string; desc: string }) {
+  const { t } = useTranslation()
   return (
     <div className="mb-6 animate-fade-down">
-      <span className="badge badge-primary badge-sm mb-3">Step {step} of 4</span>
+      <span className="badge badge-primary badge-sm mb-3">{t('form.stepOf', { step, total: 4 })}</span>
       <h2 className="text-xl sm:text-2xl font-bold text-base-content">{title}</h2>
       <p className="text-sm text-base-content/70 mt-1.5">{desc}</p>
     </div>
@@ -80,7 +82,7 @@ export function InfoBox({ children }: { children: ReactNode }) {
 export function NavButtons({
   onBack,
   onNext,
-  nextLabel = 'Continue',
+  nextLabel,
   loading,
 }: {
   onBack?: () => void
@@ -88,15 +90,16 @@ export function NavButtons({
   nextLabel?: string
   loading?: boolean
 }) {
+  const { t } = useTranslation()
   return (
     <div className="flex gap-3 mt-8">
       {onBack && (
         <button type="button" onClick={onBack} className="btn btn-outline flex-1" disabled={loading}>
-          Back
+          {t('form.back')}
         </button>
       )}
       <button type="button" onClick={onNext} className="btn btn-primary flex-1" disabled={loading}>
-        {loading ? <span className="loading loading-spinner loading-sm" /> : nextLabel}
+        {loading ? <span className="loading loading-spinner loading-sm" /> : (nextLabel ?? t('form.continue'))}
       </button>
     </div>
   )
@@ -129,11 +132,12 @@ export function SymptomCard({
 
 /* ── Cycle length slider ── */
 export function CycleSlider({ value, onChange }: { value: number; onChange: (v: number) => void }) {
+  const { t } = useTranslation()
   return (
     <div>
       <div className="flex items-baseline justify-center gap-1.5 mb-3">
         <span className="text-4xl font-extrabold text-primary tabular-nums">{value}</span>
-        <span className="text-sm text-base-content/60">days</span>
+        <span className="text-sm text-base-content/60">{t('form.section2.days')}</span>
       </div>
       <input
         type="range"
@@ -184,7 +188,8 @@ export function FloatingPetals() {
 
 /* ── Step progress indicator (1-4) ── */
 export function StepProgress({ current }: { current: number }) {
-  const labels = ['Body', 'Cycle', 'Symptoms', 'Lifestyle']
+  const { t } = useTranslation()
+  const labels = [t('form.steps.body'), t('form.steps.cycle'), t('form.steps.symptoms'), t('form.steps.lifestyle')]
   return (
     <ul className="steps steps-horizontal w-full max-w-[480px] mb-8">
       {labels.map((label, i) => (

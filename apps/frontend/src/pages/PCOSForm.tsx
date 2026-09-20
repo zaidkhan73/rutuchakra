@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useAuth } from '@clerk/react'
+import { useTranslation } from 'react-i18next'
 import { BackgroundMesh, FloatingPetals, StepProgress, FormCard } from '../components/FormPrimitives'
 import { Section1, Section2, Section3, Section4 } from '../components/FormSections'
 import ResultScreen from '../components/ResultScreen'
@@ -27,6 +28,7 @@ const INITIAL: PCOSFormData = {
 
 export default function PCOSForm() {
   const { getToken } = useAuth()
+  const { t } = useTranslation()
   const [step, setStep] = useState(1)
   const [animDir, setAnimDir] = useState<'r' | 'l'>('r')
   const [formData, setFormData] = useState<PCOSFormData>(INITIAL)
@@ -56,7 +58,7 @@ export default function PCOSForm() {
       setResult(prediction)
       goTo(5, 'r')
     } catch (err) {
-      setSubmitError(err instanceof Error ? err.message : 'Something went wrong. Please try again.')
+      setSubmitError(err instanceof Error ? err.message : t('form.section4.genericError'))
     } finally {
       setSubmitting(false)
     }
@@ -80,14 +82,13 @@ export default function PCOSForm() {
         {showProgress && (
           <header className="text-center mb-10 animate-fade-down w-full max-w-[580px]">
             <span className="badge badge-outline badge-sm mb-5 tracking-wide uppercase text-primary border-primary/40">
-              PCOD / PCOS Awareness Tool
+              {t('form.badge')}
             </span>
             <h1 className="text-3xl sm:text-4xl font-extrabold text-base-content leading-tight mb-3">
-              Know Your <em className="italic text-primary">Risk.</em>
+              {t('form.titlePrefix')} <em className="italic text-primary">{t('form.titleEmphasis')}</em>
             </h1>
             <p className="text-sm text-base-content/70 max-w-[440px] mx-auto leading-relaxed">
-              A gentle 4-step symptom check to raise awareness about PCOS &amp; PCOD.
-              No lab tests — just your lived experience.
+              {t('form.subtitle')}
             </p>
           </header>
         )}

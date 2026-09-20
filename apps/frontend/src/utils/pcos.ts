@@ -1,6 +1,6 @@
 export interface BMIResult {
   value: number
-  label: string
+  labelKey: string
   classes: string
 }
 
@@ -9,22 +9,22 @@ export function computeBMI(weight: number, height: number): BMIResult | null {
   const value = weight / (height / 100) ** 2
   if (Number.isNaN(value) || !Number.isFinite(value)) return null
 
-  let label: string
+  let labelKey: string
   let classes: string
   if (value < 18.5) {
-    label = 'Underweight'
+    labelKey = 'bmiLabels.underweight'
     classes = 'border-warning/40 bg-warning/10 text-warning'
   } else if (value < 25) {
-    label = 'Normal'
+    labelKey = 'bmiLabels.normal'
     classes = 'border-success/40 bg-success/10 text-success'
   } else if (value < 30) {
-    label = 'Overweight'
+    labelKey = 'bmiLabels.overweight'
     classes = 'border-warning/40 bg-warning/10 text-warning'
   } else {
-    label = 'Obese'
+    labelKey = 'bmiLabels.obese'
     classes = 'border-error/40 bg-error/10 text-error'
   }
-  return { value, label, classes }
+  return { value, labelKey, classes }
 }
 
 // Standard clinical definition: 21-35 days is a regular cycle.
@@ -33,10 +33,10 @@ export function isIrregular(days: number): boolean {
 }
 
 export function cycleLabel(days: number): string {
-  if (days <= 15) return 'Possible amenorrhoea'
-  if (days < 21) return 'Short cycle'
-  if (days <= 35) return 'Regular cycle'
-  return 'Long cycle'
+  if (days <= 15) return 'cycleLabels.amenorrhoea'
+  if (days < 21) return 'cycleLabels.short'
+  if (days <= 35) return 'cycleLabels.regular'
+  return 'cycleLabels.long'
 }
 
 export function cycleColor(days: number): string {

@@ -70,5 +70,65 @@
   },
   "login": {
     "tagline": "Understand your PCOD risk in minutes — private, explainable, and free."
+  },"form": {
+    "badge": "PCOD / PCOS Awareness Tool",
+    "titlePrefix": "Know Your",
+    "titleEmphasis": "Risk.",
+    "subtitle": "A gentle 4-step symptom check to raise awareness about PCOS & PCOD. No lab tests — just your lived experience.",
+    "steps": { "body": "Body", "cycle": "Cycle", "symptoms": "Symptoms", "lifestyle": "Lifestyle" },
+    "stepOf": "Step {{step}} of {{total}}",
+    "back": "Back",
+    "continue": "Continue",
+    "section1": {
+      "title": "Let's start with the basics",
+      "desc": "Enter your age, weight, and height. BMI is calculated automatically — no math needed.",
+      "ageLabel": "Age", "ageHint": "(years)", "agePlaceholder": "e.g. 24",
+      "ageError": "Please enter a valid age (10–60)",
+      "weightLabel": "Weight", "weightHint": "(kg)", "weightPlaceholder": "e.g. 58",
+      "weightError": "Enter weight between 25–200 kg",
+      "heightLabel": "Height", "heightHint": "(cm)", "heightPlaceholder": "e.g. 162",
+      "heightError": "Enter height between 100–220 cm",
+      "bmiLabel": "Your BMI", "bmiHint": "— auto-calculated",
+      "infoBox": "BMI = weight (kg) ÷ height² (m). It is one of several indicators — not a standalone measure of PCOS risk or overall health."
+    },
+    "section2": {
+      "title": "Your cycle pattern",
+      "desc": "Drag the slider to select your average menstrual cycle length. Regularity is determined automatically from the value you choose.",
+      "cycleLengthLabel": "Average cycle length",
+      "days": "days", "short": "Short", "regular": "Regular (21–35)", "long": "Long",
+      "infoBox": "Your regularity is decided automatically. A typical cycle is 21–35 days. Cycles shorter, longer, absent, or very unpredictable may signal a hormonal imbalance."
+    },
+    "section3": {
+      "title": "What have you been experiencing?",
+      "desc": "Select every symptom that applies. These are self-reportable — no tests needed. Tap to select or deselect.",
+      "infoBox": "Even one or two symptoms can be worth discussing with a doctor. PCOS presents differently in every person."
+    },
+    "section4": {
+      "title": "Your everyday routine",
+      "desc": "Diet and activity directly affect insulin resistance and hormone levels — both key factors in PCOS.",
+      "fastFoodQuestion": "Do you consume fast food frequently?",
+      "frequencyHint": "(3+ times / week)",
+      "exerciseQuestion": "Do you exercise regularly?",
+      "yes": "Yes", "no": "No",
+      "selectOptionError": "Please select an option",
+      "infoBox": "A sedentary lifestyle and diet high in processed food can worsen hormonal imbalance and elevate PCOS risk over time.",
+      "seeMyResult": "See my result",
+      "genericError": "Something went wrong. Please try again."
+    }
+  },
+  "symptoms": {
+    "weightGain": "Unexplained weight gain",
+    "facialHair": "Excess facial or body hair",
+    "skinDark": "Skin darkening on neck or folds",
+    "hairLoss": "Hair thinning or hair loss",
+    "acne": "Persistent acne or pimples",
+    "none": "None of the above"
+  },
+  "bmiLabels": { "underweight": "Underweight", "normal": "Normal", "overweight": "Overweight", "obese": "Obese" },
+  "cycleLabels": { "amenorrhoea": "Possible amenorrhoea", "short": "Short cycle", "regular": "Regular cycle", "long": "Long cycle" },
+  "cycleMessages": {
+    "amenorrhoea": "This may indicate amenorrhoea. Please consult a doctor.",
+    "irregular": "Cycles outside 21–35 days are flagged as irregular — a key PCOS indicator.",
+    "regular": "Your cycle length falls within the typical healthy range of 21–35 days."
   }
 }
