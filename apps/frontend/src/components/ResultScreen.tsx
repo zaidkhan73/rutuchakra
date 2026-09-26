@@ -1,5 +1,7 @@
 import { useTranslation } from "react-i18next";
 import type { PredictionResult } from "../utils/pcos";
+import { localeTag } from "../utils/date";
+
 
 const RISK_STYLES = {
   Low: { ring: "stroke-success", badge: "badge-success", text: "text-success" },
@@ -112,9 +114,17 @@ export default function ResultScreen({
   return (
     <div className="animate-fade-up">
       <div className="text-center mb-6">
-        {viewedAt && (
+                {viewedAt && (
           <p className="text-xs text-base-content/60 mb-4 text-center">
-            Viewed on: {new Date(viewedAt).toLocaleString()}
+            {t("result.viewedOn", {
+              date: new Date(viewedAt).toLocaleString(localeTag(), {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+              }),
+            })}
           </p>
         )}
         <span className={`badge ${styles.badge} badge-lg mb-4`}>

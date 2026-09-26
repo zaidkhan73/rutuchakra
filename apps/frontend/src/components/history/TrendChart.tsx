@@ -1,28 +1,43 @@
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts'
+import { useTranslation } from 'react-i18next'
+import { localeTag } from '../../utils/date'
 import type { HistoryEntry } from '../../utils/pcos'
 
 function formatDate(iso: string) {
-  return new Date(iso).toLocaleDateString('en-IN', { month: 'short', day: 'numeric' })
+  return new Date(iso).toLocaleDateString(localeTag(), { month: 'short', day: 'numeric' })
 }
 
-function CustomTooltip({ active, payload }: { active?: boolean; payload?: { payload: HistoryEntry }[] }) {
+function CustomTooltip({
+  active, payload, t,
+}: {
+  active?: boolean
+  payload?: { payload: HistoryEntry }[]
+  t: (key: string, opts?: Record<string, unknown>) => string
+}) {
   if (!active || !payload || !payload.length) return null
   const entry = payload[0].payload
+  const riskKey = entry.risk_level.toLowerCase() as 'low' | 'moderate' | 'high'
   return (
     <div className="bg-base-100 border border-base-300 rounded-lg shadow-md px-3 py-2 text-sm">
       <p className="font-semibold text-base-content">{Math.round(entry.probability * 100)}%</p>
-      <p className="text-xs text-base-content/60">{formatDate(entry.createdAt)} — {entry.risk_level} risk</p>
+      <p className="text-xs text-base-content/60">
+        {t('history.trend.tooltip', {
+          date: formatDate(entry.createdAt),
+          risk: `${t(`riskLevels.${riskKey}`)} ${t('result.riskSuffix')}`,
+        })}
+      </p>
     </div>
   )
 }
 
 export default function TrendChart({ entries }: { entries: HistoryEntry[] }) {
+  const { t } = useTranslation()
   const chartData = [...entries].reverse()
 
   return (
     <div className="card bg-base-100 shadow-md">
       <div className="card-body">
-        <h2 className="text-sm font-semibold text-base-content/70">Your risk over time</h2>
+        <h2 className="text-sm font-semibold text-base-content/70">{t('history.trend.title')}</h2>
         <div className="h-64 mt-2 -ml-4">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={chartData} margin={{ top: 10, right: 16, bottom: 0, left: 0 }}>
@@ -44,7 +59,7 @@ export default function TrendChart({ entries }: { entries: HistoryEntry[] }) {
                 tickLine={false}
                 width={40}
               />
-              <Tooltip content={<CustomTooltip />} />
+              <Tooltip content={<CustomTooltip t={t} />} />
               <Line
                 type="monotone"
                 dataKey="probability"

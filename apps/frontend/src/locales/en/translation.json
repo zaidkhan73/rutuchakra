@@ -132,7 +132,8 @@
     "whatInfluenced": "What influenced this result",
     "personalisedGuidance": "Personalised guidance",
     "disclaimer": "This is not a medical diagnosis. Please discuss this result with a qualified gynaecologist or endocrinologist.",
-    "retakeButton": "Take the assessment again"
+    "retakeButton": "Take the assessment again",
+    "viewedOn": "Viewed on: {{date}}"
   },
   "riskLevels": { "low": "Low", "moderate": "Moderate", "high": "High" },
   "resultAdvice": {
@@ -251,5 +252,23 @@
     "removeConfirmBody": "This deletes the habit and all of its logged history. This can't be undone.",
     "units": { "L": "L", "hrs": "hrs", "glasses": "glasses", "minutes": "minutes", "steps": "steps", "times": "times", "other": "Other" }
   }
+},
+"history": {
+  "title": "Your history",
+  "subtitle": "See if things are trending better or worse over time.",
+  "errors": { "loadFailed": "Failed to load history." },
+  "empty": {
+    "message": "You haven't completed a prediction yet.",
+    "cta": "Take your first assessment"
+  },
+  "trend": {
+    "title": "Your risk over time",
+    "tooltip": "{{date}} — {{risk}}"
+  },
+  "listItem": { "view": "View" }
+},
+"historicalResult": {
+  "backToHistory": "← Back to history",
+  "errors": { "loadFailed": "Failed to load this prediction." }
 }
 }

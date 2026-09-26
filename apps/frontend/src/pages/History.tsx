@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@clerk/react'
+import { useTranslation } from 'react-i18next'
 import TrendChart from '../components/history/TrendChart'
 import HistoryListItem from '../components/history/HistoryListItem'
 import { fetchPredictionHistory } from '../utils/pcos'
@@ -29,6 +30,7 @@ function LoadingSkeleton() {
 }
 
 export default function History() {
+  const { t } = useTranslation()
   const { getToken } = useAuth()
   const navigate = useNavigate()
   const [entries, setEntries] = useState<HistoryEntry[] | null>(null)
@@ -37,15 +39,15 @@ export default function History() {
   useEffect(() => {
     fetchPredictionHistory(getToken)
       .then(setEntries)
-      .catch((err) => setError(err instanceof Error ? err.message : 'Failed to load history.'))
+      .catch((err) => setError(err instanceof Error ? err.message : t('history.errors.loadFailed')))
   }, [])
 
   return (
     <div className="min-h-screen bg-base-100 px-4 py-10 flex flex-col items-center">
       <div className="w-full max-w-3xl mb-8">
-        <h1 className="text-2xl font-bold text-base-content">Your history</h1>
+        <h1 className="text-2xl font-bold text-base-content">{t('history.title')}</h1>
         <p className="text-sm text-base-content/70 mt-1">
-          See if things are trending better or worse over time.
+          {t('history.subtitle')}
         </p>
       </div>
 
@@ -60,9 +62,9 @@ export default function History() {
       {entries !== null && entries.length === 0 && (
         <div className="text-center max-w-sm mt-8">
           <EmptyMotif />
-          <p className="text-base-content/70 mt-4">You haven't completed a prediction yet.</p>
+          <p className="text-base-content/70 mt-4">{t('history.empty.message')}</p>
           <button type="button" onClick={() => navigate('/predict')} className="btn btn-primary mt-5">
-            Take your first assessment
+            {t('history.empty.cta')}
           </button>
         </div>
       )}

@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "@clerk/react";
+import { useTranslation } from "react-i18next";
 import ResultScreen from "../components/ResultScreen";
 import { fetchPredictionById } from "../utils/pcos";
 import type { HistoricalPrediction } from "../utils/pcos";
 
 export default function HistoricalResult() {
+  const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
   const { getToken } = useAuth();
   const navigate = useNavigate();
@@ -22,7 +24,7 @@ export default function HistoricalResult() {
         setError(
           err instanceof Error
             ? err.message
-            : "Failed to load this prediction.",
+            : t("historicalResult.errors.loadFailed"),
         ),
       );
   }, [id]);
@@ -35,7 +37,7 @@ export default function HistoricalResult() {
           onClick={() => navigate("/history")}
           className="btn btn-ghost btn-sm mb-6"
         >
-          ← Back to history
+          {t("historicalResult.backToHistory")}
         </button>
 
         {error && (
