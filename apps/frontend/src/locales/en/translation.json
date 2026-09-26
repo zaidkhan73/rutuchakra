@@ -294,5 +294,51 @@
   "coldStartPrompts": ["What is PCOD?", "What foods should I avoid?", "Is my cycle length normal?"],
   "factorPrompt": "Why is {{factor}} a factor for me?",
   "redirectPrompts": ["What does my cycle regularity mean?", "What foods can help with PCOD?"]
+},
+"appShell": {
+  "nav": {
+    "overview": "Overview",
+    "predict": "New Prediction",
+    "history": "History",
+    "cycle": "Cycle Tracker",
+    "habits": "Habit Tracker",
+    "assistant": "AI Assistant"
+  },
+  "languageAria": "Language"
+},
+"dashboard": {
+  "title": "Overview",
+  "subtitle": "Your health snapshot, at a glance.",
+  "latestPrediction": {
+    "cardTitle": "Latest prediction",
+    "checkedOn": "Checked on {{date}}",
+    "viewResult": "View result",
+    "emptyBody": "You haven't checked your PCOD risk yet.",
+    "emptyCta": "Start assessment"
+  },
+  "topFactors": {
+    "cardTitle": "What influenced this",
+    "seeAll": "See full result"
+  },
+  "cycleSummary": {
+    "cardTitle": "Cycle summary",
+    "lastLogged": "Last logged",
+    "emptyBody": "Log your first cycle to see insights here.",
+    "emptyCta": "Log a cycle"
+  },
+  "todaysHabits": {
+    "cardTitle": "Today's habits",
+    "emptyBody": "Add your first habit to start building streaks.",
+    "emptyCta": "Add a habit",
+    "seeAll": "Manage habits"
+  },
+  "quickActions": {
+    "cardTitle": "Quick actions",
+    "newPrediction": "New prediction",
+    "logCycle": "Log cycle",
+    "manageHabits": "Manage habits",
+    "askAssistant": "Ask assistant"
+  },
+  "loadFailed": "Couldn't load this — try again."
 }
 }

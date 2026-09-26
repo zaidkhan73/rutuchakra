@@ -1,11 +1,12 @@
 import { useEffect } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { useAuth, Show } from '@clerk/react'
-import { UserButton } from '@clerk/react'
 
 import Landing from './pages/Landing'
 import Login from './pages/Login'
+import Dashboard from './pages/Dashboard'
 import ProtectedRoute from './components/ProtectedRoute'
+import AppShell from './components/shell/AppShell'
 import { syncUser } from './lib/syncUser'
 import PCOSForm from './pages/PCOSForm'
 import History from './pages/History'
@@ -25,15 +26,6 @@ function UserSync() {
   return null
 }
 
-function Dashboard() {
-  return (
-    <div>
-      <h1>Dashboard</h1>
-      <UserButton />
-    </div>
-  )
-}
-
 function App() {
   return (
     <>
@@ -44,27 +36,22 @@ function App() {
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
+
         <Route
-          path="/dashboard"
           element={
             <ProtectedRoute>
-              <Dashboard />
+              <AppShell />
             </ProtectedRoute>
           }
-        />
-        <Route
-          path="/predict"
-          element={
-            <ProtectedRoute>
-              <PCOSForm />
-            </ProtectedRoute>
-          }
-        />
-        <Route path="/history" element={<ProtectedRoute><History /></ProtectedRoute>} />
-        <Route path="/history/:id" element={<ProtectedRoute><HistoricalResult /></ProtectedRoute>} />
-        <Route path="/cycle" element={<ProtectedRoute><CycleTracker /></ProtectedRoute>} />
-        <Route path="/habits" element={<ProtectedRoute><HabitTracker /></ProtectedRoute>} />
-        <Route path="/assistant" element={<ProtectedRoute><AIAssistant /></ProtectedRoute>} />
+        >
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/predict" element={<PCOSForm />} />
+          <Route path="/history" element={<History />} />
+          <Route path="/history/:id" element={<HistoricalResult />} />
+          <Route path="/cycle" element={<CycleTracker />} />
+          <Route path="/habits" element={<HabitTracker />} />
+          <Route path="/assistant" element={<AIAssistant />} />
+        </Route>
       </Routes>
     </>
   )

@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import LanguageSwitcher from '../shell/LanguageSwitcher'
 
 const NAV_LINK_IDS = ['howItWorks', 'explainableAI', 'privacy'] as const
 
@@ -9,11 +10,6 @@ const NAV_HREFS: Record<(typeof NAV_LINK_IDS)[number], string> = {
   privacy: '#privacy',
 }
 
-const LANGUAGES = [
-  { code: 'en', label: 'EN' },
-  { code: 'hi', label: 'हिं' },
-  { code: 'mr', label: 'मर' },
-] as const
 
 export default function Header() {
   const navigate = useNavigate()
@@ -40,18 +36,7 @@ export default function Header() {
       </nav>
 
       <div className="flex items-center gap-3">
-        <select
-          value={i18n.language}
-          onChange={(e) => i18n.changeLanguage(e.target.value)}
-          className="select select-sm select-ghost w-20"
-          aria-label="Language"
-        >
-          {LANGUAGES.map((lang) => (
-            <option key={lang.code} value={lang.code}>
-              {lang.label}
-            </option>
-          ))}
-        </select>
+        <LanguageSwitcher/>
 
         <button
           onClick={() => navigate('/login')}
