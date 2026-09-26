@@ -151,5 +151,54 @@
   "Lack of regular exercise": "नियमित व्यायाम की कमी",
   "Irregular menstrual cycle": "अनियमित मासिक चक्र",
   "Age outside typical PCOS onset range": "PCOS की सामान्य उम्र सीमा से बाहर"
+},
+"cycleTracker": {
+  "title": "साइकिल ट्रैकर",
+  "subtitle": "पीरियड लॉग या एडिट करने के लिए किसी भी तारीख पर टैप करें।",
+  "calendar": {
+    "weekdays": ["र", "सो", "मं", "बु", "गु", "शु", "श"]
+  },
+  "errors": {
+    "loadFailed": "साइकिल डेटा लोड नहीं हो पाया।",
+    "saveFailed": "सेव नहीं हो पाया।",
+    "deleteFailed": "डिलीट नहीं हो पाया।"
+  },
+  "insights": {
+    "summaryTitle": "आपका ट्रैकिंग सारांश",
+    "needMoreData": "पैटर्न देखने के लिए कुछ और साइकिल लॉग करें।",
+    "avgCycleLength": "औसत साइकिल लंबाई",
+    "days": "दिन",
+    "regularityTrend": "नियमितता का रुझान",
+    "mostRecentCycle": "सबसे हालिया साइकिल"
+  },
+  "trend": {
+    "regular": "नियमित",
+    "irregular": "अनियमित",
+    "mixed": "मिश्रित",
+    "notEnoughData": "अभी पर्याप्त डेटा नहीं है"
+  },
+  "chart": {
+    "title": "साइकिल लंबाई का रुझान",
+    "bandLegend": "छायांकित पट्टी = सामान्य नियमित सीमा (21–35 दिन)",
+    "needTwoCycles": "यह चार्ट देखने के लिए कम से कम दो साइकिल लॉग करें।",
+    "tooltipDays": "{{count}} दिन",
+    "tooltipCycleEnding": "{{label}} को खत्म हुई साइकिल — {{status}}"
+  },
+  "history": {
+    "title": "लॉग की गई साइकिलें",
+    "ongoing": "जारी",
+    "edit": "एडिट करें"
+  },
+  "editSheet": {
+    "logNew": "नई साइकिल लॉग करें",
+    "editEntry": "साइकिल एंट्री एडिट करें",
+    "startDate": "शुरुआत की तारीख",
+    "endDateOptional": "समाप्ति तारीख (वैकल्पिक)",
+    "cancel": "रद्द करें",
+    "save": "सेव करें",
+    "delete": "डिलीट करें",
+    "removeConfirmTitle": "इस एंट्री को हटाएं?",
+    "removeConfirmBody": "इससे {{date}} से शुरू हुई लॉग की गई साइकिल डिलीट हो जाएगी। इसे वापस नहीं लाया जा सकता।"
+  }
 }
 }

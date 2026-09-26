@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { toISODate } from '../../utils/date'
 import type { CycleLog } from '../../utils/cycles'
 
@@ -21,6 +22,7 @@ export default function EditCycleSheet({
   onDelete: (id: string) => void
   saving?: boolean
 }) {
+  const { t } = useTranslation()
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
   const [confirmingDelete, setConfirmingDelete] = useState(false)
@@ -43,31 +45,31 @@ export default function EditCycleSheet({
       <div className="modal-box">
         {confirmingDelete ? (
           <>
-            <h3 className="font-semibold text-base-content">Remove this entry?</h3>
+            <h3 className="font-semibold text-base-content">{t('cycleTracker.editSheet.removeConfirmTitle')}</h3>
             <p className="text-sm text-base-content/70 mt-2">
-              This will delete the logged cycle starting {startDate}. This can't be undone.
+              {t('cycleTracker.editSheet.removeConfirmBody', { date: startDate })}
             </p>
             <div className="modal-action">
               <button type="button" className="btn btn-outline" onClick={() => setConfirmingDelete(false)}>
-                Cancel
+                {t('cycleTracker.editSheet.cancel')}
               </button>
               <button
                 type="button"
                 className="btn btn-error"
                 onClick={() => existingLog && onDelete(existingLog.id)}
               >
-                Delete
+                {t('cycleTracker.editSheet.delete')}
               </button>
             </div>
           </>
         ) : (
           <>
             <h3 className="font-semibold text-base-content">
-              {existingLog ? 'Edit cycle entry' : 'Log a new cycle'}
+              {existingLog ? t('cycleTracker.editSheet.editEntry') : t('cycleTracker.editSheet.logNew')}
             </h3>
             <div className="flex flex-col gap-3 mt-4">
               <label className="form-control">
-                <span className="label-text text-sm mb-1">Start date</span>
+                <span className="label-text text-sm mb-1">{t('cycleTracker.editSheet.startDate')}</span>
                 <input
                   type="date"
                   value={startDate}
@@ -77,7 +79,7 @@ export default function EditCycleSheet({
                 />
               </label>
               <label className="form-control">
-                <span className="label-text text-sm mb-1">End date (optional)</span>
+                <span className="label-text text-sm mb-1">{t('cycleTracker.editSheet.endDateOptional')}</span>
                 <input
                   type="date"
                   value={endDate}
@@ -91,13 +93,13 @@ export default function EditCycleSheet({
               <div>
                 {existingLog && (
                   <button type="button" className="btn btn-ghost text-error" onClick={() => setConfirmingDelete(true)}>
-                    Delete
+                    {t('cycleTracker.editSheet.delete')}
                   </button>
                 )}
               </div>
               <div className="flex gap-2">
                 <button type="button" className="btn btn-outline" onClick={onClose}>
-                  Cancel
+                  {t('cycleTracker.editSheet.cancel')}
                 </button>
                 <button
                   type="button"
@@ -105,7 +107,7 @@ export default function EditCycleSheet({
                   disabled={!startDate || saving}
                   onClick={() => onSave(startDate, endDate || null)}
                 >
-                  {saving ? <span className="loading loading-spinner loading-sm" /> : 'Save'}
+                  {saving ? <span className="loading loading-spinner loading-sm" /> : t('cycleTracker.editSheet.save')}
                 </button>
               </div>
             </div>

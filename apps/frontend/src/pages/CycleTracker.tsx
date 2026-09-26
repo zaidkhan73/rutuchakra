@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from 'react'
 import { useAuth } from '@clerk/react'
+import { useTranslation } from 'react-i18next'
 import Calendar from '../components/cycle/Calender'
 import InsightsPanel from '../components/cycle/InsightsPanel'
 import EditCycleSheet from '../components/cycle/EditCycleSheet'
@@ -11,6 +12,7 @@ import {
 import type { CycleData, CycleLog } from '../utils/cycles'
 
 export default function CycleTracker() {
+  const { t } = useTranslation()
   const { getToken } = useAuth()
   const [data, setData] = useState<CycleData | null>(null)
   const [error, setError] = useState('')
@@ -23,7 +25,7 @@ export default function CycleTracker() {
   const load = useCallback(() => {
     fetchCycleLogs(getToken)
       .then(setData)
-      .catch((err) => setError(err instanceof Error ? err.message : 'Failed to load cycle data.'))
+      .catch((err) => setError(err instanceof Error ? err.message : t('cycleTracker.errors.loadFailed')))
   }, [])
 
   useEffect(() => { load() }, [load])
@@ -51,7 +53,7 @@ export default function CycleTracker() {
       setModalOpen(false)
       load()
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to save.')
+      setError(err instanceof Error ? err.message : t('cycleTracker.errors.saveFailed'))
     } finally {
       setSaving(false)
     }
@@ -64,7 +66,7 @@ export default function CycleTracker() {
       setModalOpen(false)
       load()
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to delete.')
+      setError(err instanceof Error ? err.message : t('cycleTracker.errors.deleteFailed'))
     } finally {
       setSaving(false)
     }
@@ -74,9 +76,9 @@ export default function CycleTracker() {
     <div className="min-h-screen bg-base-100 px-4 py-10">
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-base-content">Cycle tracker</h1>
+          <h1 className="text-2xl font-bold text-base-content">{t('cycleTracker.title')}</h1>
           <p className="text-sm text-base-content/70 mt-1">
-            Tap any date to log or edit a period.
+            {t('cycleTracker.subtitle')}
           </p>
         </div>
 

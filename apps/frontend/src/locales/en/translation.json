@@ -151,5 +151,54 @@
     "Lack of regular exercise": "Lack of regular exercise",
     "Irregular menstrual cycle": "Irregular menstrual cycle",
     "Age outside typical PCOS onset range": "Age outside typical PCOS onset range"
+  },
+  "cycleTracker": {
+  "title": "Cycle tracker",
+  "subtitle": "Tap any date to log or edit a period.",
+  "calendar": {
+    "weekdays": ["S", "M", "T", "W", "T", "F", "S"]
+  },
+  "errors": {
+    "loadFailed": "Failed to load cycle data.",
+    "saveFailed": "Failed to save.",
+    "deleteFailed": "Failed to delete."
+  },
+  "insights": {
+    "summaryTitle": "Your tracking summary",
+    "needMoreData": "Log a couple more cycles to start seeing patterns here.",
+    "avgCycleLength": "Average cycle length",
+    "days": "days",
+    "regularityTrend": "Regularity trend",
+    "mostRecentCycle": "Most recent cycle"
+  },
+  "trend": {
+    "regular": "Regular",
+    "irregular": "Irregular",
+    "mixed": "Mixed",
+    "notEnoughData": "Not enough data yet"
+  },
+  "chart": {
+    "title": "Cycle length trend",
+    "bandLegend": "Shaded band = typical regular range (21–35 days)",
+    "needTwoCycles": "Log at least two cycles to see this chart.",
+    "tooltipDays": "{{count}} days",
+    "tooltipCycleEnding": "cycle ending {{label}} — {{status}}"
+  },
+  "history": {
+    "title": "Logged cycles",
+    "ongoing": "Ongoing",
+    "edit": "Edit"
+  },
+  "editSheet": {
+    "logNew": "Log a new cycle",
+    "editEntry": "Edit cycle entry",
+    "startDate": "Start date",
+    "endDateOptional": "End date (optional)",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "removeConfirmTitle": "Remove this entry?",
+    "removeConfirmBody": "This will delete the logged cycle starting {{date}}. This can't be undone."
   }
+}
 }

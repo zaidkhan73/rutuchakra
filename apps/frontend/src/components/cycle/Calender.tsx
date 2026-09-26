@@ -1,10 +1,9 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   getMonthGrid, isInCurrentMonth, isToday, isDateInRange, monthLabel, toISODate,
 } from '../../utils/date'
 import type { CycleLog } from '../../utils/cycles'
-
-const WEEKDAYS = ['S', 'M', 'T', 'W', 'T', 'F', 'S']
 
 function findLogForDate(date: Date, logs: CycleLog[]): CycleLog | null {
   for (const log of logs) {
@@ -22,6 +21,8 @@ export default function Calendar({
   logs: CycleLog[]
   onSelectDate: (date: Date, existingLog: CycleLog | null) => void
 }) {
+  const { t } = useTranslation()
+  const weekdays = t('cycleTracker.calendar.weekdays', { returnObjects: true }) as string[]
   const today = new Date()
   const [year, setYear] = useState(today.getFullYear())
   const [month, setMonth] = useState(today.getMonth())
@@ -58,7 +59,7 @@ export default function Calendar({
         </div>
 
         <div className="grid grid-cols-7 gap-1 text-center text-xs text-base-content/50 mb-1">
-          {WEEKDAYS.map((d, i) => <div key={i}>{d}</div>)}
+          {weekdays.map((d, i) => <div key={i}>{d}</div>)}
         </div>
 
         <div className="grid grid-cols-7 gap-1">

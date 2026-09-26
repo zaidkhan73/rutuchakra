@@ -1,3 +1,5 @@
+import i18n from '../i18n'
+
 export function toISODate(d: Date): string {
   const year = d.getFullYear()
   const month = String(d.getMonth() + 1).padStart(2, '0')
@@ -11,6 +13,18 @@ export function isSameDay(a: Date, b: Date): boolean {
 
 export function isToday(d: Date): boolean {
   return isSameDay(d, new Date())
+}
+
+// Maps the active i18n language to a BCP-47 tag for date formatting.
+// Kept in one place so every toLocaleDateString call across the app
+// (calendar, insights, charts, history) stays in sync automatically
+// whenever the user switches language.
+export function localeTag(): string {
+  switch (i18n.language) {
+    case 'hi': return 'hi-IN'
+    case 'mr': return 'mr-IN'
+    default: return 'en-IN'
+  }
 }
 
 // Returns a 6x7 grid of Date objects covering the full month plus leading/trailing
@@ -37,5 +51,5 @@ export function isDateInRange(d: Date, start: Date, end: Date): boolean {
 }
 
 export function monthLabel(year: number, month: number): string {
-  return new Date(year, month, 1).toLocaleDateString('en-IN', { month: 'long', year: 'numeric' })
+  return new Date(year, month, 1).toLocaleDateString(localeTag(), { month: 'long', year: 'numeric' })
 }

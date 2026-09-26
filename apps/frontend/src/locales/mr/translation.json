@@ -151,5 +151,54 @@
   "Lack of regular exercise": "नियमित व्यायामाचा अभाव",
   "Irregular menstrual cycle": "अनियमित मासिक पाळी",
   "Age outside typical PCOS onset range": "PCOS च्या नेहमीच्या वयोमर्यादेबाहेर"
+},
+"cycleTracker": {
+  "title": "सायकल ट्रॅकर",
+  "subtitle": "पाळी नोंदवण्यासाठी किंवा संपादित करण्यासाठी कोणत्याही तारखेवर टॅप करा.",
+  "calendar": {
+    "weekdays": ["र", "सो", "मं", "बु", "गु", "शु", "श"]
+  },
+  "errors": {
+    "loadFailed": "सायकल डेटा लोड होऊ शकला नाही.",
+    "saveFailed": "सेव्ह होऊ शकले नाही.",
+    "deleteFailed": "डिलीट होऊ शकले नाही."
+  },
+  "insights": {
+    "summaryTitle": "तुमचा ट्रॅकिंग सारांश",
+    "needMoreData": "पॅटर्न दिसण्यासाठी आणखी काही सायकल नोंदवा.",
+    "avgCycleLength": "सरासरी सायकल लांबी",
+    "days": "दिवस",
+    "regularityTrend": "नियमिततेचा कल",
+    "mostRecentCycle": "सर्वात अलीकडील सायकल"
+  },
+  "trend": {
+    "regular": "नियमित",
+    "irregular": "अनियमित",
+    "mixed": "संमिश्र",
+    "notEnoughData": "अजून पुरेसा डेटा नाही"
+  },
+  "chart": {
+    "title": "सायकल लांबीचा कल",
+    "bandLegend": "छायांकित पट्टी = सर्वसाधारण नियमित श्रेणी (21–35 दिवस)",
+    "needTwoCycles": "हा चार्ट पाहण्यासाठी किमान दोन सायकल नोंदवा.",
+    "tooltipDays": "{{count}} दिवस",
+    "tooltipCycleEnding": "{{label}} रोजी संपलेली सायकल — {{status}}"
+  },
+  "history": {
+    "title": "नोंदवलेल्या सायकल",
+    "ongoing": "सुरू आहे",
+    "edit": "संपादित करा"
+  },
+  "editSheet": {
+    "logNew": "नवीन सायकल नोंदवा",
+    "editEntry": "सायकल नोंद संपादित करा",
+    "startDate": "सुरुवातीची तारीख",
+    "endDateOptional": "शेवटची तारीख (ऐच्छिक)",
+    "cancel": "रद्द करा",
+    "save": "सेव्ह करा",
+    "delete": "डिलीट करा",
+    "removeConfirmTitle": "ही नोंद काढायची का?",
+    "removeConfirmBody": "यामुळे {{date}} पासून सुरू झालेली नोंदवलेली सायकल डिलीट होईल. हे पूर्ववत करता येणार नाही."
+  }
 }
 }

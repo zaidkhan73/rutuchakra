@@ -1,6 +1,8 @@
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, ReferenceArea, Cell,
 } from 'recharts'
+import { useTranslation } from 'react-i18next'
+import { localeTag } from '../../utils/date'
 import type { CycleLog } from '../../utils/cycles'
 
 interface LengthPoint {
@@ -16,8 +18,8 @@ function computeLengths(logs: CycleLog[]): LengthPoint[] {
     const prev = new Date(sorted[i - 1].startDate)
     const curr = new Date(sorted[i].startDate)
     const days = Math.round((curr.getTime() - prev.getTime()) / (1000 * 60 * 60 * 24))
-    const prevLabel = prev.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })
-    const currLabel = curr.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })
+    const prevLabel = prev.toLocaleDateString(localeTag(), { day: 'numeric', month: 'short' })
+    const currLabel = curr.toLocaleDateString(localeTag(), { day: 'numeric', month: 'short' })
     points.push({
       label: `${prevLabel} – ${currLabel}`,
       days,
@@ -27,29 +29,39 @@ function computeLengths(logs: CycleLog[]): LengthPoint[] {
   return points
 }
 
-function CustomTooltip({ active, payload }: { active?: boolean; payload?: { payload: LengthPoint }[] }) {
+function CustomTooltip({
+  active, payload, t,
+}: {
+  active?: boolean
+  payload?: { payload: LengthPoint }[]
+  t: (key: string, opts?: Record<string, unknown>) => string
+}) {
   if (!active || !payload || !payload.length) return null
   const p = payload[0].payload
   return (
     <div className="bg-base-100 border border-base-300 rounded-lg shadow-md px-3 py-2 text-sm">
-      <p className="font-semibold text-base-content">{p.days} days</p>
+      <p className="font-semibold text-base-content">{t('cycleTracker.chart.tooltipDays', { count: p.days })}</p>
       <p className="text-xs text-base-content/60">
-        cycle ending {p.label} — {p.regular ? 'regular' : 'irregular'}
+        {t('cycleTracker.chart.tooltipCycleEnding', {
+          label: p.label,
+          status: p.regular ? t('cycleTracker.trend.regular') : t('cycleTracker.trend.irregular'),
+        })}
       </p>
     </div>
   )
 }
 
 export default function CycleLengthChart({ logs }: { logs: CycleLog[] }) {
+  const { t } = useTranslation()
   const data = computeLengths(logs)
 
   if (logs.length < 2) {
     return (
       <div className="card bg-base-100 shadow-md">
         <div className="card-body">
-          <h2 className="text-sm font-semibold text-base-content/70">Cycle length trend</h2>
+          <h2 className="text-sm font-semibold text-base-content/70">{t('cycleTracker.chart.title')}</h2>
           <p className="text-sm text-base-content/60 mt-2">
-            Log at least two cycles to see this chart.
+            {t('cycleTracker.chart.needTwoCycles')}
           </p>
         </div>
       </div>
@@ -61,8 +73,8 @@ export default function CycleLengthChart({ logs }: { logs: CycleLog[] }) {
   return (
     <div className="card bg-base-100 shadow-md">
       <div className="card-body">
-        <h2 className="text-sm font-semibold text-base-content/70">Cycle length trend</h2>
-        <p className="text-xs text-base-content/50 mb-2">Shaded band = typical regular range (21–35 days)</p>
+        <h2 className="text-sm font-semibold text-base-content/70">{t('cycleTracker.chart.title')}</h2>
+        <p className="text-xs text-base-content/50 mb-2">{t('cycleTracker.chart.bandLegend')}</p>
         <div className="h-56 mt-1 -ml-4">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={data} margin={{ top: 10, right: 16, bottom: 0, left: 0 }}>
@@ -82,7 +94,7 @@ export default function CycleLengthChart({ logs }: { logs: CycleLog[] }) {
                 tickLine={false}
                 width={32}
               />
-              <Tooltip content={<CustomTooltip />} />
+              <Tooltip content={<CustomTooltip t={t} />} />
               <Bar dataKey="days" radius={[4, 4, 0, 0]}>
                 {data.map((point, i) => (
                   <Cell key={i} fill={point.regular ? 'var(--color-success)' : 'var(--color-warning)'} />
