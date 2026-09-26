@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { BUILTIN_HABIT_NAMES } from '../../utils/habits'
 import type { HabitToday } from '../../utils/habits'
 
 const DEBOUNCE_MS = 700
@@ -14,6 +16,11 @@ export default function HabitCard({
   onEdit?: () => void
   saving?: boolean
 }) {
+  const { t } = useTranslation()
+  const isBuiltin = BUILTIN_HABIT_NAMES.has(habit.name)
+  const displayLabel = isBuiltin ? t(`habitTracker.builtins.${habit.name}.label`) : habit.label
+  const displayUnit = isBuiltin ? t(`habitTracker.builtins.${habit.name}.unit`, { defaultValue: habit.unit ?? '' }) : (habit.unit ?? '')
+
   const [pulse, setPulse] = useState(false)
   const [localValue, setLocalValue] = useState<number>(
     typeof habit.valueToday === 'number' ? habit.valueToday : 0
@@ -85,7 +92,7 @@ export default function HabitCard({
             type="button"
             onClick={onEdit}
             className="absolute top-1.5 right-1.5 btn btn-ghost btn-xs px-1.5 text-base-content/40 hover:text-base-content"
-            aria-label="Edit habit"
+            aria-label={t('habitTracker.card.editAria')}
           >
             ✎
           </button>
@@ -94,7 +101,7 @@ export default function HabitCard({
           <span className="text-2xl">{habit.icon ?? '⭐'}</span>
           {habit.isCustom && <span className="badge badge-ghost badge-xs">custom</span>}
         </div>
-        <p className="text-sm font-medium text-base-content">{habit.label}</p>
+        <p className="text-sm font-medium text-base-content">{displayLabel}</p>
 
         {habit.type === 'boolean' ? (
           <button
@@ -103,7 +110,7 @@ export default function HabitCard({
             disabled={saving}
             className={`btn btn-sm mt-1 ${isDone ? 'btn-success' : 'btn-outline'}`}
           >
-            {isDone ? 'Done ✓' : 'Mark done'}
+            {isDone ? t('habitTracker.card.done') : t('habitTracker.card.markDone')}
           </button>
         ) : (
           <div className="flex items-center gap-2 mt-1">
@@ -127,13 +134,13 @@ export default function HabitCard({
           </div>
         )}
         {habit.type === 'numeric' && habit.target && (
-          <p className="text-xs text-base-content/50">Goal: {habit.target} {habit.unit}</p>
+          <p className="text-xs text-base-content/50">{t('habitTracker.card.goal', { target: habit.target, unit: displayUnit })}</p>
         )}
 
         {habit.streak > 0 && (
-          <span className="badge badge-secondary badge-sm mt-1">🔥 {habit.streak} day streak</span>
+          <span className="badge badge-secondary badge-sm mt-1">🔥 {t('habitTracker.card.streak', { count: habit.streak })}</span>
         )}
       </div>
     </div>
   )
-}       
+}

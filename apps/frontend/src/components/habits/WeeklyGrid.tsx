@@ -1,17 +1,21 @@
+import { useTranslation } from 'react-i18next'
+import { localeTag } from '../../utils/date'
+import { BUILTIN_HABIT_NAMES } from '../../utils/habits'
 import type { WeeklyData } from '../../utils/habits'
 
 function shortDay(iso: string) {
-  return new Date(iso).toLocaleDateString('en-IN', { weekday: 'narrow' })
+  return new Date(iso).toLocaleDateString(localeTag(), { weekday: 'narrow' })
 }
 
 export default function WeeklyGrid({ data, isNewUser }: { data: WeeklyData; isNewUser: boolean }) {
+  const { t } = useTranslation()
   return (
     <div className="card bg-base-100 shadow-md">
       <div className="card-body">
-        <h2 className="text-sm font-semibold text-base-content/70">This week</h2>
+        <h2 className="text-sm font-semibold text-base-content/70">{t('habitTracker.weekly.title')}</h2>
         {isNewUser && (
           <p className="text-xs text-base-content/50 mb-2">
-            Building your history — patterns will show up more clearly after a week or two.
+            {t('habitTracker.weekly.newUserNote')}
           </p>
         )}
 
@@ -19,7 +23,7 @@ export default function WeeklyGrid({ data, isNewUser }: { data: WeeklyData; isNe
           <table className="w-full text-center">
             <thead>
               <tr>
-                <th className="text-left text-xs font-normal text-base-content/50 pb-2">Habit</th>
+                <th className="text-left text-xs font-normal text-base-content/50 pb-2">{t('habitTracker.weekly.habitColumn')}</th>
                 {data.days.map((d) => (
                   <th key={d} className="text-xs font-normal text-base-content/50 pb-2 w-8">{shortDay(d)}</th>
                 ))}
@@ -28,7 +32,9 @@ export default function WeeklyGrid({ data, isNewUser }: { data: WeeklyData; isNe
             <tbody>
               {data.grid.map((row) => (
                 <tr key={row.name}>
-                  <td className="text-left text-sm text-base-content py-1.5 pr-2 whitespace-nowrap">{row.label}</td>
+                  <td className="text-left text-sm text-base-content py-1.5 pr-2 whitespace-nowrap">
+                    {BUILTIN_HABIT_NAMES.has(row.name) ? t(`habitTracker.builtins.${row.name}.label`) : row.label}
+                  </td>
                   {row.days.map((day) => (
                     <td key={day.date} className="py-1.5">
                       <span

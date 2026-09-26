@@ -200,5 +200,56 @@
     "removeConfirmTitle": "इस एंट्री को हटाएं?",
     "removeConfirmBody": "इससे {{date}} से शुरू हुई लॉग की गई साइकिल डिलीट हो जाएगी। इसे वापस नहीं लाया जा सकता।"
   }
+},
+"habitTracker": {
+  "title": "आज की आदतें",
+  "subtitle": "छोटी जीत, रोज़ ट्रैक की गईं।",
+  "addHabit": "+ आदत जोड़ें",
+  "errors": {
+    "loadFailed": "आदतें लोड नहीं हो पाईं।",
+    "logFailed": "सेव नहीं हो पाया।",
+    "saveHabitFailed": "आदत सेव नहीं हो पाई।",
+    "deleteHabitFailed": "आदत डिलीट नहीं हो पाई।"
+  },
+  "emptyToday": "आज अभी तक कुछ लॉग नहीं हुआ — जब आप तैयार हों।",
+  "emptyWeekPrompt": "अपनी साप्ताहिक तस्वीर बनाना शुरू करने के लिए ऊपर कोई आदत चेक करें।",
+  "builtins": {
+    "water": { "label": "पानी की मात्रा", "unit": "लीटर" },
+    "exercise": { "label": "व्यायाम" },
+    "sleep": { "label": "नींद", "unit": "घंटे" },
+    "junkFood": { "label": "जंक फूड से बचाव" },
+    "stressRelief": { "label": "तनाव मुक्ति" }
+  },
+  "card": {
+    "markDone": "पूरा किया",
+    "done": "पूरा हुआ ✓",
+    "goal": "लक्ष्य: {{target}} {{unit}}",
+    "streak": "{{count}} दिन की लगातार आदत",
+    "editAria": "आदत एडिट करें"
+  },
+  "weekly": {
+    "title": "इस हफ्ते",
+    "habitColumn": "आदत",
+    "newUserNote": "आपका इतिहास बन रहा है — एक-दो हफ्तों बाद पैटर्न ज़्यादा साफ़ दिखेंगे।"
+  },
+  "modal": {
+    "addTitle": "कस्टम आदत जोड़ें",
+    "editTitle": "आदत एडिट करें",
+    "nameLabel": "आदत का नाम",
+    "namePlaceholder": "जैसे मेडिटेशन",
+    "typeLabel": "प्रकार",
+    "typeBoolean": "हां / नहीं चेक-ऑफ",
+    "typeNumeric": "मात्रा आधारित",
+    "unitLabel": "यूनिट",
+    "unitOtherPlaceholder": "जैसे कप",
+    "targetLabel": "दैनिक लक्ष्य",
+    "targetPlaceholder": "जैसे 8",
+    "cancel": "रद्द करें",
+    "save": "सेव करें",
+    "delete": "डिलीट करें",
+    "removeConfirmTitle": "\"{{name}}\" हटाएं?",
+    "removeConfirmBody": "इससे यह आदत और इसका पूरा लॉग किया गया इतिहास डिलीट हो जाएगा। इसे वापस नहीं लाया जा सकता।",
+    "units": { "L": "लीटर", "hrs": "घंटे", "glasses": "गिलास", "minutes": "मिनट", "steps": "कदम", "times": "बार", "other": "अन्य" }
+  }
 }
 }

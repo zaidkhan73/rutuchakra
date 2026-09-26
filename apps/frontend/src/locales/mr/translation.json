@@ -200,5 +200,56 @@
     "removeConfirmTitle": "ही नोंद काढायची का?",
     "removeConfirmBody": "यामुळे {{date}} पासून सुरू झालेली नोंदवलेली सायकल डिलीट होईल. हे पूर्ववत करता येणार नाही."
   }
+},
+"habitTracker": {
+  "title": "आजच्या सवयी",
+  "subtitle": "छोटे विजय, रोज नोंदवलेले.",
+  "addHabit": "+ सवय जोडा",
+  "errors": {
+    "loadFailed": "सवयी लोड होऊ शकल्या नाहीत.",
+    "logFailed": "सेव्ह होऊ शकले नाही.",
+    "saveHabitFailed": "सवय सेव्ह होऊ शकली नाही.",
+    "deleteHabitFailed": "सवय डिलीट होऊ शकली नाही."
+  },
+  "emptyToday": "आज अजून काहीही नोंदवलेले नाही — तुम्ही तयार असाल तेव्हा.",
+  "emptyWeekPrompt": "तुमचे साप्ताहिक चित्र तयार करण्यासाठी वरील एखादी सवय चेक करा.",
+  "builtins": {
+    "water": { "label": "पाण्याचे प्रमाण", "unit": "लिटर" },
+    "exercise": { "label": "व्यायाम" },
+    "sleep": { "label": "झोप", "unit": "तास" },
+    "junkFood": { "label": "जंक फूड टाळले" },
+    "stressRelief": { "label": "ताण मुक्ती" }
+  },
+  "card": {
+    "markDone": "पूर्ण झाले असे नोंदवा",
+    "done": "पूर्ण झाले ✓",
+    "goal": "उद्दिष्ट: {{target}} {{unit}}",
+    "streak": "{{count}} दिवसांची सलग सवय",
+    "editAria": "सवय संपादित करा"
+  },
+  "weekly": {
+    "title": "या आठवड्यात",
+    "habitColumn": "सवय",
+    "newUserNote": "तुमचा इतिहास तयार होत आहे — एक-दोन आठवड्यांनंतर पॅटर्न अधिक स्पष्ट दिसतील."
+  },
+  "modal": {
+    "addTitle": "कस्टम सवय जोडा",
+    "editTitle": "सवय संपादित करा",
+    "nameLabel": "सवयीचे नाव",
+    "namePlaceholder": "उदा. मेडिटेशन",
+    "typeLabel": "प्रकार",
+    "typeBoolean": "होय / नाही चेक-ऑफ",
+    "typeNumeric": "प्रमाणावर आधारित",
+    "unitLabel": "एकक",
+    "unitOtherPlaceholder": "उदा. कप",
+    "targetLabel": "दैनंदिन उद्दिष्ट",
+    "targetPlaceholder": "उदा. 8",
+    "cancel": "रद्द करा",
+    "save": "सेव्ह करा",
+    "delete": "डिलीट करा",
+    "removeConfirmTitle": "\"{{name}}\" काढायचे का?",
+    "removeConfirmBody": "यामुळे ही सवय आणि तिचा संपूर्ण नोंदवलेला इतिहास डिलीट होईल. हे पूर्ववत करता येणार नाही.",
+    "units": { "L": "लिटर", "hrs": "तास", "glasses": "ग्लास", "minutes": "मिनिटे", "steps": "पावले", "times": "वेळा", "other": "इतर" }
+  }
 }
 }

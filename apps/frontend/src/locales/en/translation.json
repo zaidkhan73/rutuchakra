@@ -200,5 +200,56 @@
     "removeConfirmTitle": "Remove this entry?",
     "removeConfirmBody": "This will delete the logged cycle starting {{date}}. This can't be undone."
   }
+},
+"habitTracker": {
+  "title": "Today's habits",
+  "subtitle": "Small wins, tracked daily.",
+  "addHabit": "+ Add habit",
+  "errors": {
+    "loadFailed": "Failed to load habits.",
+    "logFailed": "Failed to save.",
+    "saveHabitFailed": "Failed to save habit.",
+    "deleteHabitFailed": "Failed to delete habit."
+  },
+  "emptyToday": "Nothing logged yet today — whenever you're ready.",
+  "emptyWeekPrompt": "Check off a habit above to start building your weekly picture.",
+  "builtins": {
+    "water": { "label": "Water intake", "unit": "L" },
+    "exercise": { "label": "Exercise" },
+    "sleep": { "label": "Sleep", "unit": "hrs" },
+    "junkFood": { "label": "Avoided junk food" },
+    "stressRelief": { "label": "Stress relief" }
+  },
+  "card": {
+    "markDone": "Mark done",
+    "done": "Done ✓",
+    "goal": "Goal: {{target}} {{unit}}",
+    "streak": "{{count}} day streak",
+    "editAria": "Edit habit"
+  },
+  "weekly": {
+    "title": "This week",
+    "habitColumn": "Habit",
+    "newUserNote": "Building your history — patterns will show up more clearly after a week or two."
+  },
+  "modal": {
+    "addTitle": "Add a custom habit",
+    "editTitle": "Edit habit",
+    "nameLabel": "Habit name",
+    "namePlaceholder": "e.g. Meditation",
+    "typeLabel": "Type",
+    "typeBoolean": "Yes / No check-off",
+    "typeNumeric": "Quantity based",
+    "unitLabel": "Unit",
+    "unitOtherPlaceholder": "e.g. cups",
+    "targetLabel": "Daily target",
+    "targetPlaceholder": "e.g. 8",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "removeConfirmTitle": "Remove \"{{name}}\"?",
+    "removeConfirmBody": "This deletes the habit and all of its logged history. This can't be undone.",
+    "units": { "L": "L", "hrs": "hrs", "glasses": "glasses", "minutes": "minutes", "steps": "steps", "times": "times", "other": "Other" }
+  }
 }
 }

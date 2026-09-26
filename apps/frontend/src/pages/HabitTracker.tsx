@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from 'react'
 import { useAuth } from '@clerk/react'
+import { useTranslation } from 'react-i18next'
 import HabitCard from '../components/habits/HabitCard'
 import WeeklyGrid from '../components/habits/WeeklyGrid'
 import CustomHabitModal from '../components/habits/Customhabitmodal'
@@ -17,6 +18,7 @@ function EmptyMotif() {
 }
 
 export default function HabitTracker() {
+  const { t } = useTranslation()
   const { getToken } = useAuth()
   const [today, setToday] = useState<HabitsTodayData | null>(null)
   const [weekly, setWeekly] = useState<WeeklyData | null>(null)
@@ -29,7 +31,7 @@ export default function HabitTracker() {
   const load = useCallback(() => {
     Promise.all([fetchHabitsToday(getToken), fetchHabitsWeekly(getToken)])
       .then(([t, w]) => { setToday(t); setWeekly(w) })
-      .catch((err) => setError(err instanceof Error ? err.message : 'Failed to load habits.'))
+      .catch((err) => setError(err instanceof Error ? err.message : t('habitTracker.errors.loadFailed')))
   }, [])
 
   useEffect(() => { load() }, [load])
@@ -44,7 +46,7 @@ export default function HabitTracker() {
       await logHabit(habitName, value, isCustom, getToken)
       load()
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to save.')
+      setError(err instanceof Error ? err.message : t('habitTracker.errors.logFailed'))
       load()
     } finally {
       setSavingHabit(null)
@@ -63,7 +65,7 @@ export default function HabitTracker() {
       setEditingHabit(null)
       load()
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to save habit.')
+      setError(err instanceof Error ? err.message : t('habitTracker.errors.saveHabitFailed'))
     } finally {
       setSavingModal(false)
     }
@@ -77,7 +79,7 @@ export default function HabitTracker() {
       setEditingHabit(null)
       load()
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to delete habit.')
+      setError(err instanceof Error ? err.message : t('habitTracker.errors.deleteHabitFailed'))
     } finally {
       setSavingModal(false)
     }
@@ -90,11 +92,11 @@ export default function HabitTracker() {
       <div className="max-w-3xl mx-auto">
         <div className="flex items-center justify-between mb-2">
           <div>
-            <h1 className="text-2xl font-bold text-base-content">Today's habits</h1>
-            <p className="text-sm text-base-content/70 mt-1">Small wins, tracked daily.</p>
+            <h1 className="text-2xl font-bold text-base-content">{t('habitTracker.title')}</h1>
+            <p className="text-sm text-base-content/70 mt-1">{t('habitTracker.subtitle')}</p>
           </div>
           <button type="button" onClick={() => { setEditingHabit(null); setHabitModalOpen(true) }} className="btn btn-outline btn-sm">
-            + Add habit
+            {t('habitTracker.addHabit')}
           </button>
         </div>
 
@@ -112,7 +114,7 @@ export default function HabitTracker() {
           <>
             {noActivityToday && today.hasEverLogged && (
               <div className="alert bg-accent/10 border-accent/30 text-base-content/80 text-sm my-4">
-                <span>Nothing logged yet today — whenever you're ready.</span>
+                <span>{t('habitTracker.emptyToday')}</span>
               </div>
             )}
 
@@ -134,7 +136,7 @@ export default function HabitTracker() {
               <div className="text-center py-10">
                 <EmptyMotif />
                 <p className="text-base-content/70 mt-3">
-                  Check off a habit above to start building your weekly picture.
+                  {t('habitTracker.emptyWeekPrompt')}
                 </p>
               </div>
             )}

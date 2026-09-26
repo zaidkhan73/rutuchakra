@@ -11,6 +11,12 @@ export interface HabitToday {
   streak: number
 }
 
+// The 5 predefined habit names seeded by the backend (see apps/backend/src/utils/habits.js
+// PREDEFINED_HABITS). Their label/unit are hardcoded English on the server, so the frontend
+// re-labels them via translation keyed on `name`. Anything NOT in this set is a user-authored
+// custom habit — its label/unit is the user's own text and must never be run through t().
+export const BUILTIN_HABIT_NAMES = new Set(['water', 'exercise', 'sleep', 'junkFood', 'stressRelief'])
+
 export interface HabitsTodayData {
   habits: HabitToday[]
   hasEverLogged: boolean
