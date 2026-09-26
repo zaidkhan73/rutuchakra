@@ -13,6 +13,7 @@ def chat(payload: ChatRequest):
             message=payload.message,
             history=[h.model_dump() for h in payload.history],
             user_context=payload.userContext,
+            language=payload.language,
         )
         return result
     except Exception as e:

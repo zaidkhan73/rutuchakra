@@ -39,7 +39,7 @@ router.post("/", requireAuth, async (req, res) => {
       return res.status(429).json({ status: "error", message: "You're sending messages a bit fast — give it a moment." });
     }
 
-    const { message } = req.body;
+    const { message, language } = req.body;
     if (!message || !message.trim()) {
       return res.status(422).json({ status: "error", message: "message is required." });
     }
@@ -56,7 +56,7 @@ router.post("/", requireAuth, async (req, res) => {
     const mlResponse = await fetch(`${process.env.ML_SERVICE_URL}/chat`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message, history, userContext }),
+      body: JSON.stringify({ message, history, userContext, language: language || "en" }),
     });
 
     if (!mlResponse.ok) {

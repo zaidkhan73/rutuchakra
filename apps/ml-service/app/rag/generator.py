@@ -14,6 +14,7 @@ from google import genai
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from app.config import config
+from app.rag.lang_utils import build_lang_line
 
 _client = genai.Client(api_key=config.GEMINI_API_KEY)
 
@@ -33,12 +34,13 @@ def _format_history(history: list[dict]) -> str:
     return "\n".join(lines)
 
 
-def generate_small_talk_reply(message: str, history: list[dict]) -> str:
+def generate_small_talk_reply(message: str, history: list[dict], language: str = "en") -> str:
+    lang_line = build_lang_line(language)
     prompt = f"""You are RutuChakra's assistant, a warm and friendly companion for Indian women learning about PCOD/PCOS.
 
 {_TONE_RULES}
 
-Recent conversation:
+{lang_line}Recent conversation:
 {_format_history(history)}
 
 The user just said: "{message}"
@@ -49,12 +51,13 @@ Reply naturally and briefly -- this is just small talk, not an informational que
     return response.text.strip()
 
 
-def generate_out_of_scope_reply(message: str) -> str:
+def generate_out_of_scope_reply(message: str, language: str = "en") -> str:
+    lang_line = build_lang_line(language)
     prompt = f"""You are RutuChakra's assistant. You only help with PCOD/PCOS, menstrual health, and this app's own features.
 
 {_TONE_RULES}
 
-The user asked something outside that scope: "{message}"
+{lang_line}The user asked something outside that scope: "{message}"
 
 Gently let them know this isn't something you can help with, and redirect them toward what you can help with (PCOD/PCOS questions, understanding their result, cycle or habit tracking). Keep it short and kind, not robotic."""
 
@@ -62,7 +65,13 @@ Gently let them know this isn't something you can help with, and redirect them t
     return response.text.strip()
 
 
-def generate_grounded_reply(message: str, chunks: list[dict], history: list[dict], user_context: str | None) -> str:
+def generate_grounded_reply(
+    message: str,
+    chunks: list[dict],
+    history: list[dict],
+    user_context: str | None,
+    language: str = "en",
+) -> str:
     if not chunks:
         # Retrieval found nothing relevant enough -- be honest about the gap
         # rather than letting the model improvise an ungrounded answer.
@@ -71,6 +80,7 @@ def generate_grounded_reply(message: str, chunks: list[dict], history: list[dict
         context_block = "\n\n".join(f"[{c['title']}]\n{c['content']}" for c in chunks)
 
     user_context_block = f"\nWhat we know about this user from their own tracked data: {user_context}\n" if user_context else ""
+    lang_line = build_lang_line(language)
 
     prompt = f"""You are RutuChakra's assistant, a warm and friendly companion for Indian women learning about PCOD/PCOS.
 
@@ -81,7 +91,7 @@ Ground your answer in the reference information below. If the reference informat
 Reference information:
 {context_block}
 {user_context_block}
-Recent conversation:
+{lang_line}Recent conversation:
 {_format_history(history)}
 
 The user asked: "{message}"

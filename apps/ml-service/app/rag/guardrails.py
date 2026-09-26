@@ -28,6 +28,9 @@ MAX_MESSAGE_LENGTH = 1000
 # Common jailbreak / prompt-injection phrasings. Not exhaustive -- this is a
 # pattern filter, not a security boundary against a determined attacker, but
 # it catches the overwhelming majority of casual jailbreak attempts.
+# NOTE: English-only pattern list -- a Hindi/Marathi-phrased jailbreak attempt
+# would not be caught by this layer. Same "not a security boundary" caveat as
+# documented above; not addressed as part of this multilingual pass.
 _JAILBREAK_PATTERNS = [
     r"ignore (all |any |the )?(previous|prior|above) instructions",
     r"disregard (all |any |the )?(previous|prior|above) instructions",
@@ -48,10 +51,14 @@ _JAILBREAK_RE = re.compile("|".join(_JAILBREAK_PATTERNS), re.IGNORECASE)
 # the most blatant cases. Not a substitute for a proper moderation model.
 _TOXIC_WORDS = {"idiot", "stupid", "kill yourself", "hate you"}
 
-_DIAGNOSIS_DISCLAIMER = (
-    "\n\n(This is general information, not a diagnosis -- please check with a "
-    "gynaecologist for anything specific to you.)"
-)
+_DIAGNOSIS_DISCLAIMER = {
+    "en": ("\n\n(This is general information, not a diagnosis -- please check with a "
+           "gynaecologist for anything specific to you.)"),
+    "hi": ("\n\n(यह सामान्य जानकारी है, कोई निदान नहीं — अपने लिए विशेष किसी भी मामले के लिए "
+           "कृपया स्त्री रोग विशेषज्ञ से जांच कराएं।)"),
+    "mr": ("\n\n(ही सर्वसाधारण माहिती आहे, निदान नाही — तुमच्यासाठी विशिष्ट कोणत्याही गोष्टीसाठी "
+           "कृपया स्त्रीरोगतज्ज्ञांकडून तपासणी करून घ्या.)"),
+}
 
 
 def check_input(message: str) -> tuple[bool, str | None]:
@@ -74,10 +81,10 @@ def check_input(message: str) -> tuple[bool, str | None]:
     return True, None
 
 
-def inject_disclaimer(answer: str, category: str) -> str:
+def inject_disclaimer(answer: str, category: str, language: str = "en") -> str:
     """Appends a medical-safety disclaimer to any grounded PCOD-related answer."""
     if category == "pcod_related":
-        return answer + _DIAGNOSIS_DISCLAIMER
+        return answer + _DIAGNOSIS_DISCLAIMER.get(language, _DIAGNOSIS_DISCLAIMER["en"])
     return answer
 
 

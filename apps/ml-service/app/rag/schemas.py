@@ -10,6 +10,7 @@ class ChatRequest(BaseModel):
     message: str
     history: list[ChatHistoryItem] = []
     userContext: str | None = None
+    language: str = "en"
 
 
 class ChatResponse(BaseModel):

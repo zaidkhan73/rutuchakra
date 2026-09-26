@@ -33,7 +33,7 @@ export async function sendChatMessage(message: string, getToken: GetToken): Prom
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({ message }),
+    body: JSON.stringify({ message, language: i18n.language }),
   })
 
   if (res.status === 429) {
