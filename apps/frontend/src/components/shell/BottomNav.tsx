@@ -16,13 +16,23 @@ export default function BottomNav() {
             key={item.key}
             to={item.path}
             className={({ isActive }) =>
-              `flex flex-col items-center justify-center gap-0.5 px-4 py-2 min-w-[72px] text-[11px] font-medium ${
+              `flex flex-col items-center justify-center gap-0.5 px-4 py-2.5 min-w-[72px] text-[11px] font-medium transition-colors ${
                 isActive ? 'text-primary' : 'text-base-content/60'
               }`
             }
           >
-            {item.icon}
-            <span className="whitespace-nowrap">{t(item.labelKey)}</span>
+            {({ isActive }) => (
+              <>
+                <span
+                  className={`flex items-center justify-center w-9 h-9 rounded-full transition-colors ${
+                    isActive ? 'bg-primary/12' : ''
+                  }`}
+                >
+                  {item.icon}
+                </span>
+                <span className="whitespace-nowrap">{t(item.labelKey)}</span>
+              </>
+            )}
           </NavLink>
         ))}
       </div>

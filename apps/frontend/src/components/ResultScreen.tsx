@@ -1,16 +1,12 @@
 import { useTranslation } from "react-i18next";
 import type { PredictionResult } from "../utils/pcos";
 import { localeTag } from "../utils/date";
-
+import { ProbabilityRing } from "./ProbabilityRing";
 
 const RISK_STYLES = {
-  Low: { ring: "stroke-success", badge: "badge-success", text: "text-success" },
-  Moderate: {
-    ring: "stroke-warning",
-    badge: "badge-warning",
-    text: "text-warning",
-  },
-  High: { ring: "stroke-error", badge: "badge-error", text: "text-error" },
+  Low: { badge: "badge-success", text: "text-success" },
+  Moderate: { badge: "badge-warning", text: "text-warning" },
+  High: { badge: "badge-error", text: "text-error" },
 } as const;
 
 // One heading set per language Gemini might have answered in. A historical
@@ -45,55 +41,6 @@ function parseAdvice(text: string) {
   return null;
 }
 
-function ProbabilityRing({
-  probability,
-  risk,
-}: {
-  probability: number;
-  risk: keyof typeof RISK_STYLES;
-}) {
-  const { t } = useTranslation();
-  const pct = Math.round(probability * 100);
-  const radius = 70;
-  const circumference = 2 * Math.PI * radius;
-  const offset = circumference * (1 - probability);
-  const styles = RISK_STYLES[risk];
-
-  return (
-    <div className="relative w-44 h-44 mx-auto">
-      <svg viewBox="0 0 160 160" className="w-full h-full -rotate-90">
-        <circle
-          cx="80"
-          cy="80"
-          r={radius}
-          fill="none"
-          strokeWidth="12"
-          className="stroke-base-300"
-        />
-        <circle
-          cx="80"
-          cy="80"
-          r={radius}
-          fill="none"
-          strokeWidth="12"
-          strokeDasharray={circumference}
-          strokeDashoffset={offset}
-          strokeLinecap="round"
-          className={`${styles.ring} transition-all duration-700`}
-        />
-      </svg>
-      <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-3xl font-extrabold text-base-content tabular-nums">
-          {pct}%
-        </span>
-        <span className="text-xs text-base-content/60">
-          {t("result.probability")}
-        </span>
-      </div>
-    </div>
-  );
-}
-
 export default function ResultScreen({
   result,
   onRestart,
@@ -114,7 +61,7 @@ export default function ResultScreen({
   return (
     <div className="animate-fade-up">
       <div className="text-center mb-6">
-                {viewedAt && (
+        {viewedAt && (
           <p className="text-xs text-base-content/60 mb-4 text-center">
             {t("result.viewedOn", {
               date: new Date(viewedAt).toLocaleString(localeTag(), {
@@ -130,23 +77,18 @@ export default function ResultScreen({
         <span className={`badge ${styles.badge} badge-lg mb-4`}>
           {t(`riskLevels.${riskKey}`)} {t("result.riskSuffix")}
         </span>
-        <ProbabilityRing
-          probability={result.probability}
-          risk={result.risk_level}
-        />
+        <ProbabilityRing probability={result.probability} risk={result.risk_level} size="lg" />
       </div>
 
-      <div className="bg-base-200 rounded-xl p-4 mb-6">
-        <p className="text-sm text-base-content/80">
+      <div className="border-l-4 border-primary/40 pl-4 mb-6">
+        <p className="font-display italic text-lg text-base-content">
           {t(`resultAdvice.${riskKey}`)}
         </p>
       </div>
 
       {result.top_factors.length > 0 && (
         <div className="mb-6">
-          <h3 className="text-sm font-semibold text-base-content/70 mb-3">
-            {t("result.whatInfluenced")}
-          </h3>
+          <h3 className="kicker mb-3">{t("result.whatInfluenced")}</h3>
           <div className="space-y-3">
             {result.top_factors.map((f) => (
               <div key={f.factor}>
@@ -174,9 +116,7 @@ export default function ResultScreen({
       )}
 
       <div className="mb-6">
-        <h3 className="text-sm font-semibold text-base-content/70 mb-3">
-          {t("result.personalisedGuidance")}
-        </h3>
+        <h3 className="kicker mb-3">{t("result.personalisedGuidance")}</h3>
         {adviceSections ? (
           <div className="space-y-4">
             {adviceSections.map((s) => (
@@ -204,7 +144,7 @@ export default function ResultScreen({
       <button
         type="button"
         onClick={onRestart}
-        className="btn btn-outline w-full"
+        className="btn btn-outline w-full rounded-full"
       >
         {t("result.retakeButton")}
       </button>

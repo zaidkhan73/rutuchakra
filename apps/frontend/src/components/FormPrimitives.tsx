@@ -6,8 +6,8 @@ export function SectionHead({ step, title, desc }: { step: number; title: string
   const { t } = useTranslation()
   return (
     <div className="mb-6 animate-fade-down">
-      <span className="badge badge-primary badge-sm mb-3">{t('form.stepOf', { step, total: 4 })}</span>
-      <h2 className="text-xl sm:text-2xl font-bold text-base-content">{title}</h2>
+      <span className="kicker block mb-3">{t('form.stepOf', { step, total: 4 })}</span>
+      <h2 className="font-display text-xl sm:text-2xl font-semibold text-base-content">{title}</h2>
       <p className="text-sm text-base-content/70 mt-1.5">{desc}</p>
     </div>
   )
@@ -94,11 +94,11 @@ export function NavButtons({
   return (
     <div className="flex gap-3 mt-8">
       {onBack && (
-        <button type="button" onClick={onBack} className="btn btn-outline flex-1" disabled={loading}>
+        <button type="button" onClick={onBack} className="btn btn-outline rounded-full flex-1" disabled={loading}>
           {t('form.back')}
         </button>
       )}
-      <button type="button" onClick={onNext} className="btn btn-primary flex-1" disabled={loading}>
+      <button type="button" onClick={onNext} className="btn btn-primary rounded-full flex-1" disabled={loading}>
         {loading ? <span className="loading loading-spinner loading-sm" /> : (nextLabel ?? t('form.continue'))}
       </button>
     </div>
@@ -121,8 +121,8 @@ export function SymptomCard({
     <button
       type="button"
       onClick={onClick}
-      className={`flex flex-col items-center gap-2 p-4 rounded-xl border-2 text-center transition-all
-        ${selected ? 'border-primary bg-primary/10 text-primary' : 'border-base-300 bg-base-100 text-base-content/70 hover:border-base-content/20'}`}
+      className={`flex flex-col items-center gap-2 p-4 rounded-2xl border-2 text-center transition-all
+        ${selected ? 'border-primary bg-primary/10 text-primary shadow-warm' : 'border-base-300 bg-base-100 text-base-content/70 hover:border-base-content/20'}`}
     >
       <span className="text-2xl">{icon}</span>
       <span className="text-xs font-medium leading-snug">{label}</span>
@@ -136,7 +136,7 @@ export function CycleSlider({ value, onChange }: { value: number; onChange: (v: 
   return (
     <div>
       <div className="flex items-baseline justify-center gap-1.5 mb-3">
-        <span className="text-4xl font-extrabold text-primary tabular-nums">{value}</span>
+        <span className="font-display text-4xl font-semibold text-primary tabular-nums">{value}</span>
         <span className="text-sm text-base-content/60">{t('form.section2.days')}</span>
       </div>
       <input
@@ -165,21 +165,28 @@ export function BackgroundMesh() {
   )
 }
 
-/* ── Decorative floating dots (single restrained motion, not scattered) ── */
+/* ── Decorative floating petals (single restrained motion, not scattered) ── */
 export function FloatingPetals() {
-  const dots = [
-    { top: '15%', left: '8%', size: 10, delay: '0s' },
-    { top: '65%', left: '4%', size: 6, delay: '1.2s' },
-    { top: '25%', left: '92%', size: 8, delay: '0.6s' },
-    { top: '75%', left: '90%', size: 6, delay: '1.8s' },
+  const petals = [
+    { top: '15%', left: '8%', w: 14, h: 22, rotate: -20, delay: '0s', color: 'bg-accent/30' },
+    { top: '65%', left: '4%', w: 9, h: 15, rotate: 35, delay: '1.2s', color: 'bg-primary/20' },
+    { top: '25%', left: '92%', w: 12, h: 19, rotate: 60, delay: '0.6s', color: 'bg-secondary/25' },
+    { top: '75%', left: '90%', w: 9, h: 15, rotate: -45, delay: '1.8s', color: 'bg-accent/25' },
   ]
   return (
     <div className="fixed inset-0 -z-10 pointer-events-none" aria-hidden="true">
-      {dots.map((d, i) => (
+      {petals.map((p, i) => (
         <span
           key={i}
-          className="absolute rounded-full bg-accent/30 animate-float-slow"
-          style={{ top: d.top, left: d.left, width: d.size, height: d.size, animationDelay: d.delay }}
+          className={`absolute rounded-[60%_40%_60%_40%] animate-float-slow ${p.color}`}
+          style={{
+            top: p.top,
+            left: p.left,
+            width: p.w,
+            height: p.h,
+            transform: `rotate(${p.rotate}deg)`,
+            animationDelay: p.delay,
+          }}
         />
       ))}
     </div>
@@ -205,7 +212,7 @@ export function StepProgress({ current }: { current: number }) {
 export function FormCard({ children, animDir }: { children: ReactNode; animDir: 'r' | 'l' }) {
   return (
     <div
-      className={`card bg-base-100 shadow-xl w-full max-w-[560px] p-6 sm:p-8
+      className={`card bg-base-100 shadow-warm w-full max-w-[560px] p-6 sm:p-8
         ${animDir === 'r' ? 'animate-slide-in-right' : 'animate-slide-in-left'}`}
     >
       {children}

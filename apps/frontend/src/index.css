@@ -8,38 +8,42 @@
   prefersdark: false;
   color-scheme: "light";
 
-  --color-base-100: oklch(98% 0.006 320);
-  --color-base-200: oklch(95% 0.012 320);
-  --color-base-300: oklch(90% 0.02 320);
-  --color-base-content: oklch(28% 0.03 330);
+  /* Warm blush-cream base */
+  --color-base-100: oklch(97% 0.014 30);
+  --color-base-200: oklch(94% 0.024 22);
+  --color-base-300: oklch(88% 0.035 16);
+  --color-base-content: oklch(26% 0.035 15);
 
-  --color-primary: oklch(58% 0.19 344);
-  --color-primary-content: oklch(100% 0 0);
+  /* Deep raspberry — primary brand pink */
+  --color-primary: oklch(52% 0.19 12);
+  --color-primary-content: oklch(99% 0.004 12);
 
-  --color-secondary: oklch(56% 0.16 292);
-  --color-secondary-content: oklch(97% 0.01 292);
+  /* Plum/mauve secondary */
+  --color-secondary: oklch(46% 0.12 345);
+  --color-secondary-content: oklch(98% 0.008 345);
 
-  --color-accent: oklch(80% 0.09 210);
-  --color-accent-content: oklch(30% 0.06 220);
+  /* Soft coral-pink accent */
+  --color-accent: oklch(76% 0.11 28);
+  --color-accent-content: oklch(28% 0.05 28);
 
-  --color-neutral: oklch(32% 0.03 330);
-  --color-neutral-content: oklch(92% 0.015 330);
+  --color-neutral: oklch(30% 0.03 18);
+  --color-neutral-content: oklch(94% 0.015 18);
 
-  --color-info: oklch(82% 0.09 220);
-  --color-info-content: oklch(30% 0.05 220);
+  --color-info: oklch(80% 0.08 245);
+  --color-info-content: oklch(28% 0.05 245);
 
-  --color-success: oklch(78% 0.12 165);
-  --color-success-content: oklch(28% 0.06 165);
+  --color-success: oklch(76% 0.12 155);
+  --color-success-content: oklch(26% 0.06 155);
 
-  --color-warning: oklch(80% 0.13 80);
-  --color-warning-content: oklch(30% 0.06 80);
+  --color-warning: oklch(80% 0.13 75);
+  --color-warning-content: oklch(30% 0.06 75);
 
-  --color-error: oklch(62% 0.2 25);
-  --color-error-content: oklch(97% 0.01 25);
+  --color-error: oklch(56% 0.2 27);
+  --color-error-content: oklch(97% 0.01 27);
 
-  --radius-selector: 0.5rem;
-  --radius-field: 1rem;
-  --radius-box: 1rem;
+  --radius-selector: 0.6rem;
+  --radius-field: 0.9rem;
+  --radius-box: 1.25rem;
 
   --size-selector: 0.25rem;
   --size-field: 0.25rem;
@@ -49,24 +53,41 @@
   --noise: 0;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --font-display: 'Fraunces', 'Georgia', serif;
+  --font-body: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+  --shadow-warm: 0 12px 32px -12px oklch(52% 0.15 15 / 0.22);
+}
 
 body {
-  font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+  font-family: var(--font-body);
 }
 
 .tabular-nums {
   font-variant-numeric: tabular-nums;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-
-body {
-  font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+/* ── Editorial display type — used for hero headlines, page titles, result numbers ── */
+.font-display {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
 }
 
-.tabular-nums {
-  font-variant-numeric: tabular-nums;
+/* ── Eyebrow / kicker label — the "section label above a headline" pattern ── */
+.kicker {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+/* ── One warm, tinted shadow — used on a single "hero" element per page, not everywhere ── */
+.shadow-warm {
+  box-shadow: var(--shadow-warm);
 }
 
 @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
@@ -80,3 +101,13 @@ body {
 .animate-slide-in-right { animation: slideInRight 0.35s ease-out; }
 .animate-slide-in-left { animation: slideInLeft 0.35s ease-out; }
 .animate-float-slow { animation: floatSlow 6s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-up,
+  .animate-fade-down,
+  .animate-slide-in-right,
+  .animate-slide-in-left,
+  .animate-float-slow {
+    animation: none !important;
+  }
+}

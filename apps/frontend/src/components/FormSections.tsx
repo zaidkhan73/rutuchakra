@@ -76,7 +76,7 @@ export function Section1({ data, onChange, onNext }: StepProps) {
 
         <Field label={t('form.section1.bmiLabel')} hint={t('form.section1.bmiHint')}>
           <div className="flex items-center justify-between px-4 py-3.5 rounded-xl border-2 border-dashed border-base-300 bg-base-200 min-h-[54px]">
-            <span className="text-2xl font-bold text-primary leading-none tabular-nums">
+            <span className="font-display text-2xl font-semibold text-primary leading-none tabular-nums">
               {bmiResult ? bmiResult.value.toFixed(1) : '—'}
             </span>
             {bmiResult && (
@@ -234,9 +234,9 @@ export function Section4({ data, onChange, onNext, onBack, submitting, error }: 
   }
 
   function toggleClasses(active: boolean) {
-    return `flex-1 py-[13px] px-3 rounded-xl text-sm font-medium border-2 transition-all outline-none cursor-pointer
+    return `flex-1 py-[13px] px-3 rounded-full text-sm font-medium border-2 transition-all outline-none cursor-pointer
       ${active
-        ? 'border-primary bg-primary/10 text-primary scale-[1.03]'
+        ? 'border-primary bg-primary/10 text-primary shadow-warm scale-[1.03]'
         : 'border-base-300 bg-base-100 text-base-content/60 hover:border-base-content/20 hover:bg-base-200'}`
   }
 

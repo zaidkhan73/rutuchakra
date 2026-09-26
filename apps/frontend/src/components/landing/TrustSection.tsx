@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next'
+import { RevealGroup, RevealItem } from './Reveal'
 
 const TRUST_POINT_IDS = ['private', 'notDiagnosis', 'transparent'] as const
 
@@ -26,17 +27,17 @@ export default function TrustSection() {
 
   return (
     <section id="privacy" className="px-4 sm:px-8 py-16">
-      <div className="max-w-4xl mx-auto grid sm:grid-cols-3 gap-8">
+      <RevealGroup className="max-w-4xl mx-auto grid sm:grid-cols-3 gap-8" staggerDelay={0.12}>
         {TRUST_POINT_IDS.map((id) => (
-          <div key={id} className="text-center flex flex-col items-center">
+          <RevealItem key={id} className="text-center flex flex-col items-center">
             <div className="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center">
               {ICONS[id]}
             </div>
             <h3 className="font-semibold mt-4 text-base-content">{t(`trust.${id}.label`)}</h3>
             <p className="text-sm text-base-content/70 mt-2">{t(`trust.${id}.desc`)}</p>
-          </div>
+          </RevealItem>
         ))}
-      </div>
+      </RevealGroup>
     </section>
   )
 }

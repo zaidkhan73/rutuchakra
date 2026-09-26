@@ -9,6 +9,7 @@ import type { CycleInsights } from '../utils/cycles'
 import { fetchHabitsToday, logHabit, BUILTIN_HABIT_NAMES } from '../utils/habits'
 import type { HabitToday } from '../utils/habits'
 import { localeTag } from '../utils/date'
+import { ProbabilityRing } from '../components/ProbabilityRing'
 
 type LatestPrediction = HistoricalPrediction & { id: string }
 
@@ -22,9 +23,9 @@ function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString(localeTag(), { day: 'numeric', month: 'long', year: 'numeric' })
 }
 
-function CardSkeleton() {
+function CardSkeleton({ hero = false }: { hero?: boolean }) {
   return (
-    <div className="card bg-base-100 shadow-sm border border-base-300">
+    <div className={`card bg-base-100 border border-base-300 ${hero ? 'shadow-warm' : 'shadow-sm'}`}>
       <div className="card-body gap-3">
         <div className="skeleton h-4 w-24" />
         <div className="skeleton h-8 w-32" />
@@ -38,7 +39,7 @@ function ErrorCard({ title, message }: { title: string; message: string }) {
   return (
     <div className="card bg-base-100 shadow-sm border border-base-300">
       <div className="card-body gap-2">
-        <h2 className="text-sm font-semibold text-base-content/70">{title}</h2>
+        <h2 className="kicker">{title}</h2>
         <p className="text-sm text-error">{message}</p>
       </div>
     </div>
@@ -131,67 +132,73 @@ export default function Dashboard() {
     }
   }
 
-  const pct = latest ? Math.round(latest.probability * 100) : null
   const boolHabits = habits.filter((h) => h.type === 'boolean')
 
   return (
     <div className="px-4 sm:px-8 py-8 max-w-5xl mx-auto">
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-base-content">{t('dashboard.title')}</h1>
+      <div className="mb-8 animate-fade-down">
+        <h1 className="font-display text-3xl font-semibold text-base-content">{t('dashboard.title')}</h1>
         <p className="text-sm text-base-content/60 mt-1">{t('dashboard.subtitle')}</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {/* Latest prediction */}
+      {/* Hero: latest prediction */}
+      <div className="mb-6 animate-fade-up">
         {predictionLoading ? (
-          <CardSkeleton />
+          <CardSkeleton hero />
         ) : predictionError ? (
           <ErrorCard title={t('dashboard.latestPrediction.cardTitle')} message={t('dashboard.loadFailed')} />
         ) : (
-          <div className="card bg-base-100 shadow-sm border border-base-300">
-            <div className="card-body gap-2">
-              <h2 className="text-sm font-semibold text-base-content/70">{t('dashboard.latestPrediction.cardTitle')}</h2>
+          <div className="card bg-base-100 shadow-warm border border-base-300">
+            <div className="card-body">
               {latest ? (
-                <>
-                  <div className="flex items-center gap-2">
-                    <span className="text-3xl font-bold tabular-nums">{pct}%</span>
-                    <span className={`badge badge-sm ${RISK_BADGE[latest.risk_level]}`}>
-                      {t(`riskLevels.${latest.risk_level.toLowerCase()}`)}
-                    </span>
+                <div className="flex flex-col sm:flex-row items-center gap-6">
+                  <ProbabilityRing probability={latest.probability} risk={latest.risk_level} size="lg" />
+                  <div className="flex-1 text-center sm:text-left">
+                    <h2 className="kicker">{t('dashboard.latestPrediction.cardTitle')}</h2>
+                    <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 mt-2">
+                      <span className={`badge ${RISK_BADGE[latest.risk_level]}`}>
+                        {t(`riskLevels.${latest.risk_level.toLowerCase()}`)}
+                      </span>
+                      <span className="text-xs text-base-content/50">
+                        {t('dashboard.latestPrediction.checkedOn', { date: formatDate(latest.createdAt) })}
+                      </span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => navigate(`/history/${latest.id}`)}
+                      className="btn btn-outline btn-sm rounded-full mt-4"
+                    >
+                      {t('dashboard.latestPrediction.viewResult')}
+                    </button>
                   </div>
-                  <p className="text-xs text-base-content/50">
-                    {t('dashboard.latestPrediction.checkedOn', { date: formatDate(latest.createdAt) })}
+                </div>
+              ) : (
+                <div className="text-center sm:text-left py-4">
+                  <h2 className="kicker">{t('dashboard.latestPrediction.cardTitle')}</h2>
+                  <p className="text-base-content/60 mt-2 max-w-sm mx-auto sm:mx-0">
+                    {t('dashboard.latestPrediction.emptyBody')}
                   </p>
                   <button
                     type="button"
-                    onClick={() => navigate(`/history/${latest.id}`)}
-                    className="btn btn-outline btn-sm mt-2 self-start"
-                  >
-                    {t('dashboard.latestPrediction.viewResult')}
-                  </button>
-                </>
-              ) : (
-                <>
-                  <p className="text-sm text-base-content/60">{t('dashboard.latestPrediction.emptyBody')}</p>
-                  <button
-                    type="button"
                     onClick={() => navigate('/predict')}
-                    className="btn btn-primary btn-sm mt-2 self-start"
+                    className="btn btn-primary rounded-full mt-4"
                   >
                     {t('dashboard.latestPrediction.emptyCta')}
                   </button>
-                </>
+                </div>
               )}
             </div>
           </div>
         )}
+      </div>
 
-        {/* Top factors — only once the latest prediction is loaded */}
+      {/* Secondary, quiet grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {!predictionLoading && !predictionError && latest && latest.top_factors.length > 0 && (
           <div className="card bg-base-100 shadow-sm border border-base-300">
             <div className="card-body gap-2">
-              <h2 className="text-sm font-semibold text-base-content/70">{t('dashboard.topFactors.cardTitle')}</h2>
-              <ul className="flex flex-col gap-2">
+              <h2 className="kicker">{t('dashboard.topFactors.cardTitle')}</h2>
+              <ul className="flex flex-col gap-2 mt-1">
                 {latest.top_factors.slice(0, 3).map((f) => (
                   <li key={f.factor} className="flex items-center justify-between text-sm">
                     <span className="text-base-content/80">{t(`resultFactors.${f.factor}`, { defaultValue: f.factor })}</span>
@@ -204,7 +211,7 @@ export default function Dashboard() {
               <button
                 type="button"
                 onClick={() => navigate(`/history/${latest.id}`)}
-                className="link link-primary text-sm self-start"
+                className="link link-primary text-sm self-start mt-1"
               >
                 {t('dashboard.topFactors.seeAll')}
               </button>
@@ -212,7 +219,6 @@ export default function Dashboard() {
           </div>
         )}
 
-        {/* Cycle summary */}
         {cycleLoading ? (
           <CardSkeleton />
         ) : cycleError ? (
@@ -220,11 +226,11 @@ export default function Dashboard() {
         ) : (
           <div className="card bg-base-100 shadow-sm border border-base-300">
             <div className="card-body gap-2">
-              <h2 className="text-sm font-semibold text-base-content/70">{t('dashboard.cycleSummary.cardTitle')}</h2>
+              <h2 className="kicker">{t('dashboard.cycleSummary.cardTitle')}</h2>
               {cycleInsights?.mostRecentStart ? (
                 <>
-                  <p className="text-xs text-base-content/50">{t('dashboard.cycleSummary.lastLogged')}</p>
-                  <p className="text-lg font-semibold tabular-nums">
+                  <p className="text-xs text-base-content/50 mt-1">{t('dashboard.cycleSummary.lastLogged')}</p>
+                  <p className="font-display text-lg font-semibold tabular-nums">
                     {new Date(cycleInsights.mostRecentStart).toLocaleDateString(localeTag(), {
                       day: 'numeric',
                       month: 'short',
@@ -241,11 +247,11 @@ export default function Dashboard() {
                 </>
               ) : (
                 <>
-                  <p className="text-sm text-base-content/60">{t('dashboard.cycleSummary.emptyBody')}</p>
+                  <p className="text-sm text-base-content/60 mt-1">{t('dashboard.cycleSummary.emptyBody')}</p>
                   <button
                     type="button"
                     onClick={() => navigate('/cycle')}
-                    className="btn btn-outline btn-sm mt-2 self-start"
+                    className="btn btn-outline btn-sm rounded-full mt-2 self-start"
                   >
                     {t('dashboard.cycleSummary.emptyCta')}
                   </button>
@@ -255,7 +261,6 @@ export default function Dashboard() {
           </div>
         )}
 
-        {/* Today's habits */}
         {habitsLoading ? (
           <CardSkeleton />
         ) : habitsError ? (
@@ -263,20 +268,20 @@ export default function Dashboard() {
         ) : (
           <div className="card bg-base-100 shadow-sm border border-base-300 md:col-span-2 lg:col-span-1">
             <div className="card-body gap-2">
-              <h2 className="text-sm font-semibold text-base-content/70">{t('dashboard.todaysHabits.cardTitle')}</h2>
+              <h2 className="kicker">{t('dashboard.todaysHabits.cardTitle')}</h2>
               {boolHabits.length === 0 ? (
                 <>
-                  <p className="text-sm text-base-content/60">{t('dashboard.todaysHabits.emptyBody')}</p>
+                  <p className="text-sm text-base-content/60 mt-1">{t('dashboard.todaysHabits.emptyBody')}</p>
                   <button
                     type="button"
                     onClick={() => navigate('/habits')}
-                    className="btn btn-outline btn-sm mt-2 self-start"
+                    className="btn btn-outline btn-sm rounded-full mt-2 self-start"
                   >
                     {t('dashboard.todaysHabits.emptyCta')}
                   </button>
                 </>
               ) : (
-                <ul className="flex flex-col gap-1.5">
+                <ul className="flex flex-col gap-1.5 mt-1">
                   {boolHabits.slice(0, 5).map((h) => {
                     const isBuiltin = BUILTIN_HABIT_NAMES.has(h.name)
                     const label = isBuiltin ? t(`habitTracker.builtins.${h.name}.label`) : h.label
@@ -311,18 +316,18 @@ export default function Dashboard() {
       </div>
 
       <div className="mt-8">
-        <h2 className="text-sm font-semibold text-base-content/70 mb-3">{t('dashboard.quickActions.cardTitle')}</h2>
+        <h2 className="kicker mb-3">{t('dashboard.quickActions.cardTitle')}</h2>
         <div className="flex flex-wrap gap-3">
-          <button type="button" onClick={() => navigate('/predict')} className="btn btn-primary btn-sm">
+          <button type="button" onClick={() => navigate('/predict')} className="btn btn-primary btn-sm rounded-full">
             {t('dashboard.quickActions.newPrediction')}
           </button>
-          <button type="button" onClick={() => navigate('/cycle')} className="btn btn-outline btn-sm">
+          <button type="button" onClick={() => navigate('/cycle')} className="btn btn-outline btn-sm rounded-full">
             {t('dashboard.quickActions.logCycle')}
           </button>
-          <button type="button" onClick={() => navigate('/habits')} className="btn btn-outline btn-sm">
+          <button type="button" onClick={() => navigate('/habits')} className="btn btn-outline btn-sm rounded-full">
             {t('dashboard.quickActions.manageHabits')}
           </button>
-          <button type="button" onClick={() => navigate('/assistant')} className="btn btn-secondary btn-sm">
+          <button type="button" onClick={() => navigate('/assistant')} className="btn btn-secondary btn-sm rounded-full">
             {t('dashboard.quickActions.askAssistant')}
           </button>
         </div>

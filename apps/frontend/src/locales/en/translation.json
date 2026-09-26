@@ -9,7 +9,8 @@
     "title": "Know your PCOD risk before it becomes a question mark",
     "subtitle": "Answer a few questions about your cycle and symptoms. Get a clear, explained result in minutes — not a diagnosis, but a well-informed starting point for your next conversation with a doctor.",
     "checkRisk": "Check your risk",
-    "learnMore": "Learn how it works"
+    "learnMore": "Learn how it works",
+    "kicker": "A gentler way to understand PCOD"
   },
   "awareness": {
     "title": "What PCOD actually is",
@@ -304,7 +305,8 @@
     "habits": "Habit Tracker",
     "assistant": "AI Assistant"
   },
-  "languageAria": "Language"
+  "languageAria": "Language",
+  "tagline": "For every cycle"
 },
 "dashboard": {
   "title": "Overview",

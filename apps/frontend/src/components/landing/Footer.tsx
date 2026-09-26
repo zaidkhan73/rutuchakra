@@ -12,7 +12,7 @@ export default function Footer() {
         <a href="/disclaimer" className="link link-hover">{t('footer.disclaimer')}</a>
       </nav>
       <p className="text-xs mt-2">{t('footer.disclaimerText')}</p>
-      <p className="text-xs opacity-60">© {new Date().getFullYear()} {t('footer.copyright')}</p>
+      <p className="font-display italic text-xs opacity-60">© {new Date().getFullYear()} {t('footer.copyright')}</p>
     </footer>
   )
 }

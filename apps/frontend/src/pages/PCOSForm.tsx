@@ -81,10 +81,8 @@ export default function PCOSForm() {
       <div className="relative z-10 flex flex-col items-center px-4 pt-12 pb-24 min-h-screen">
         {showProgress && (
           <header className="text-center mb-10 animate-fade-down w-full max-w-[580px]">
-            <span className="badge badge-outline badge-sm mb-5 tracking-wide uppercase text-primary border-primary/40">
-              {t('form.badge')}
-            </span>
-            <h1 className="text-3xl sm:text-4xl font-extrabold text-base-content leading-tight mb-3">
+            <span className="kicker block mb-5">{t('form.badge')}</span>
+            <h1 className="font-display text-3xl sm:text-4xl font-semibold text-base-content leading-tight mb-3">
               {t('form.titlePrefix')} <em className="italic text-primary">{t('form.titleEmphasis')}</em>
             </h1>
             <p className="text-sm text-base-content/70 max-w-[440px] mx-auto leading-relaxed">
