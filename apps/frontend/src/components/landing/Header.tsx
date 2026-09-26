@@ -13,7 +13,7 @@ const NAV_HREFS: Record<(typeof NAV_LINK_IDS)[number], string> = {
 
 export default function Header() {
   const navigate = useNavigate()
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
 
   return (
     <header className="navbar bg-base-100/80 backdrop-blur-sm border-b border-base-300 px-4 sm:px-8 sticky top-0 z-40">
