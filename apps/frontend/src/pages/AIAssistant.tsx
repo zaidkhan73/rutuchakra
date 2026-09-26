@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import { useAuth } from '@clerk/react'
+import { useTranslation } from 'react-i18next'
 import ChatBubble from '../components/chat/ChatBubble'
 import TypingIndicator from '../components/chat/TypingIndicator'
 import SuggestedPrompts from '../components/chat/SuggestedPrompts'
@@ -10,19 +11,20 @@ import AIDisclaimerStrip from '../components/chat/AIDisclaimerStrip'
 import { sendChatMessage, isBlockedCategory, getRedirectPrompts, RateLimitError } from '../utils/chat'
 import type { ChatMessage, PredictionContext } from '../utils/chat'
 
-const COLD_START_PROMPTS = [
-  'What is PCOD?',
-  'What foods should I avoid?',
-  'Is my cycle length normal?',
-]
-
 let idCounter = 0
 function nextId() {
   idCounter += 1
   return `msg-${idCounter}`
 }
 
+// Devanagari has no case, so this is a no-op there — only actually lowercases
+// the first letter when the translated factor name is Latin script (English).
+function lowerFirst(s: string) {
+  return s.charAt(0).toLowerCase() + s.slice(1)
+}
+
 export default function AIAssistant() {
+  const { t, i18n } = useTranslation()
   const { getToken } = useAuth()
   const location = useLocation()
   const predictionContext = (location.state as { context?: PredictionContext } | null)?.context
@@ -33,11 +35,28 @@ export default function AIAssistant() {
   const [contextDrawerOpen, setContextDrawerOpen] = useState(false)
   const bottomRef = useRef<HTMLDivElement>(null)
 
-  const initialPrompts = predictionContext
-    ? predictionContext.topFactors.slice(0, 3).map((f) => `Why is ${f.factor.toLowerCase()} a factor for me?`)
-    : COLD_START_PROMPTS
+  function computeInitialPrompts() {
+    if (predictionContext) {
+      return predictionContext.topFactors.slice(0, 3).map((f) =>
+        t('aiAssistant.factorPrompt', {
+          factor: lowerFirst(t(`resultFactors.${f.factor}`, { defaultValue: f.factor })),
+        })
+      )
+    }
+    return t('aiAssistant.coldStartPrompts', { returnObjects: true }) as string[]
+  }
 
-  const [suggestedPrompts, setSuggestedPrompts] = useState(initialPrompts)
+  const [suggestedPrompts, setSuggestedPrompts] = useState(computeInitialPrompts)
+
+  // Re-translate the cold-start / factor-based suggestions if the user
+  // switches language before sending their first message. Once a message is
+  // sent, handleSend clears suggestedPrompts anyway, so this only matters
+  // for the pre-conversation state.
+  useEffect(() => {
+    if (messages.length === 0) {
+      setSuggestedPrompts(computeInitialPrompts())
+    }
+  }, [i18n.language])
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -81,7 +100,7 @@ export default function AIAssistant() {
         setMessages((prev) => [...prev, {
           id: nextId(),
           role: 'assistant',
-          content: err instanceof Error ? err.message : 'Something went wrong.',
+          content: err instanceof Error ? err.message : t('common.genericError'),
           groundedInKB: false,
           category: 'error',
           isBlocked: false,
@@ -110,7 +129,7 @@ export default function AIAssistant() {
               className="w-full text-left px-4 py-2.5 text-xs text-base-content/60 flex items-center justify-between"
             >
               <span className="flex items-center gap-1.5">
-                <span className="text-secondary">✦</span> Result context loaded
+                <span className="text-secondary">✦</span> {t('aiAssistant.contextLoaded')}
               </span>
               <span>{contextDrawerOpen ? '▲' : '▼'}</span>
             </button>
@@ -129,8 +148,8 @@ export default function AIAssistant() {
             ✦
           </div>
           <div>
-            <h1 className="font-semibold text-base-content text-sm leading-tight">AI Assistant</h1>
-            <p className="text-xs text-base-content/50 leading-tight">Grounded in verified PCOD/PCOS information</p>
+            <h1 className="font-semibold text-base-content text-sm leading-tight">{t('aiAssistant.title')}</h1>
+            <p className="text-xs text-base-content/50 leading-tight">{t('aiAssistant.subtitle')}</p>
           </div>
         </div>
 
@@ -141,7 +160,7 @@ export default function AIAssistant() {
                 ✦
               </div>
               <p className="text-sm text-base-content/50 max-w-[280px] mx-auto">
-                Ask me anything about PCOD/PCOS, your result, or your tracking.
+                {t('aiAssistant.emptyState')}
               </p>
             </div>
           )}
@@ -150,7 +169,7 @@ export default function AIAssistant() {
           {rateLimited && (
             <div className="chat chat-start">
               <div className="chat-bubble bg-warning/20 text-warning-content text-sm">
-                You're sending messages a bit fast — give it a moment before trying again.
+                {t('aiAssistant.rateLimitedMessage')}
               </div>
             </div>
           )}

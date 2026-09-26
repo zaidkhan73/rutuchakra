@@ -1,3 +1,5 @@
+import i18n from '../i18n'
+
 export interface ChatMessage {
   id: string
   role: 'user' | 'assistant'
@@ -35,26 +37,21 @@ export async function sendChatMessage(message: string, getToken: GetToken): Prom
   })
 
   if (res.status === 429) {
-    throw new RateLimitError("You're sending messages a bit fast — give it a moment.")
+    throw new RateLimitError(i18n.t('aiAssistant.rateLimitedMessage'))
   }
   if (!res.ok) {
     const body = await res.json().catch(() => null)
-    throw new Error(body?.message ?? 'Something went wrong. Please try again.')
+    throw new Error(body?.message ?? i18n.t('common.genericError'))
   }
 
   const body = await res.json()
   return body.data
 }
 
-const REDIRECT_PROMPTS = [
-  'What does my cycle regularity mean?',
-  'What foods can help with PCOD?',
-]
-
 export function isBlockedCategory(category: string): boolean {
   return category.startsWith('blocked:') || category === 'out_of_scope'
 }
 
 export function getRedirectPrompts(): string[] {
-  return REDIRECT_PROMPTS
+  return i18n.t('aiAssistant.redirectPrompts', { returnObjects: true }) as string[]
 }

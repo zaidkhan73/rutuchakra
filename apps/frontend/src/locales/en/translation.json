@@ -270,5 +270,29 @@
 "historicalResult": {
   "backToHistory": "← Back to history",
   "errors": { "loadFailed": "Failed to load this prediction." }
+},
+"common": {
+  "genericError": "Something went wrong. Please try again."
+},
+"aiAssistant": {
+  "title": "AI Assistant",
+  "subtitle": "Grounded in verified PCOD/PCOS information",
+  "emptyState": "Ask me anything about PCOD/PCOS, your result, or your tracking.",
+  "contextLoaded": "Result context loaded",
+  "loadedContext": "Loaded context",
+  "basedOnVerifiedSources": "based on verified sources",
+  "scopeRedirectFooter": "Let's keep to PCOD/PCOS topics",
+  "rateLimitedMessage": "You're sending messages a bit fast — give it a moment before trying again.",
+  "typingAria": "Assistant is typing",
+  "disclaimer": "AI-generated, not a medical diagnosis — please consult a doctor for anything specific to you.",
+  "composer": {
+    "placeholder": "Ask about PCOD, your result, or your tracking...",
+    "voiceInputAria": "Voice input (coming soon)",
+    "voiceInputTitle": "Voice input coming soon",
+    "sendAria": "Send message"
+  },
+  "coldStartPrompts": ["What is PCOD?", "What foods should I avoid?", "Is my cycle length normal?"],
+  "factorPrompt": "Why is {{factor}} a factor for me?",
+  "redirectPrompts": ["What does my cycle regularity mean?", "What foods can help with PCOD?"]
 }
 }

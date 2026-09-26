@@ -1,6 +1,8 @@
+import { useTranslation } from 'react-i18next'
 import type { ChatMessage } from '../../utils/chat'
 
 export default function ChatBubble({ message }: { message: ChatMessage }) {
+  const { t } = useTranslation()
   const isUser = message.role === 'user'
 
   return (
@@ -25,12 +27,12 @@ export default function ChatBubble({ message }: { message: ChatMessage }) {
       {!isUser && message.groundedInKB && (
         <div className="chat-footer opacity-70 text-xs mt-1">
           <span className="badge badge-outline badge-xs gap-1">
-            <span className="text-[10px]">✓</span> based on verified sources
+            <span className="text-[10px]">✓</span> {t('aiAssistant.basedOnVerifiedSources')}
           </span>
         </div>
       )}
       {!isUser && message.isBlocked && (
-        <div className="chat-footer opacity-50 text-xs mt-1">Let's keep to PCOD/PCOS topics</div>
+        <div className="chat-footer opacity-50 text-xs mt-1">{t('aiAssistant.scopeRedirectFooter')}</div>
       )}
     </div>
   )

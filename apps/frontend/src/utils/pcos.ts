@@ -98,7 +98,7 @@ export async function fetchPredictionHistory(
   const res = await fetch(`${import.meta.env.VITE_API_URL}/api/predictions`, {
     headers: { Authorization: `Bearer ${token}` },
   })
-  if (!res.ok) throw new Error('Failed to load prediction history.')
+  if (!res.ok) throw new Error(i18n.t('history.errors.loadFailed'))
   const body = await res.json()
   return body.data as HistoryEntry[]
 }
@@ -115,7 +115,7 @@ export async function fetchPredictionById(
   const res = await fetch(`${import.meta.env.VITE_API_URL}/api/predictions/${id}`, {
     headers: { Authorization: `Bearer ${token}` },
   })
-  if (!res.ok) throw new Error('Failed to load this prediction.')
+  if (!res.ok) throw new Error(i18n.t('historicalResult.errors.loadFailed'))
   const body = await res.json()
   return body.data as HistoricalPrediction
 }
@@ -157,7 +157,7 @@ export async function fetchPrediction(
 
   if (!res.ok) {
     const body = await res.json().catch(() => null)
-    throw new Error(body?.message ?? 'Something went wrong. Please try again.')
+    throw new Error(body?.message ?? i18n.t('common.genericError'))
   }
 
   const body = await res.json()

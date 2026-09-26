@@ -1,7 +1,10 @@
+import { useTranslation } from 'react-i18next'
+
 export default function AIDisclaimerStrip() {
+  const { t } = useTranslation()
   return (
     <p className="text-center text-xs text-base-content/40 py-1.5">
-      AI-generated, not a medical diagnosis — please consult a doctor for anything specific to you.
+      {t('aiAssistant.disclaimer')}
     </p>
   )
 }

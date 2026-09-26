@@ -1,3 +1,5 @@
+import i18n from '../i18n'
+
 export interface CycleLog {
   id: string
   startDate: string
@@ -31,7 +33,7 @@ async function authedFetch(path: string, getToken: GetToken, options: RequestIni
   })
   if (!res.ok) {
     const body = await res.json().catch(() => null)
-    throw new Error(body?.message ?? 'Something went wrong. Please try again.')
+    throw new Error(body?.message ?? i18n.t('common.genericError'))
   }
   return res.json()
 }
