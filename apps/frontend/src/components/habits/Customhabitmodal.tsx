@@ -67,17 +67,17 @@ export default function CustomHabitModal({
       <div className="modal-box">
         {confirmingDelete ? (
           <>
-            <h3 className="font-semibold text-base-content">{t('habitTracker.modal.removeConfirmTitle', { name })}</h3>
+            <h3 className="font-display font-semibold text-base-content">{t('habitTracker.modal.removeConfirmTitle', { name })}</h3>
             <p className="text-sm text-base-content/70 mt-2">
               {t('habitTracker.modal.removeConfirmBody')}
             </p>
             <div className="modal-action">
-              <button type="button" className="btn btn-outline" onClick={() => setConfirmingDelete(false)}>
+              <button type="button" className="btn btn-outline rounded-full" onClick={() => setConfirmingDelete(false)}>
                 {t('habitTracker.modal.cancel')}
               </button>
               <button
                 type="button"
-                className="btn btn-error"
+                className="btn btn-error rounded-full"
                 onClick={() => existingHabit?.id && onDelete(existingHabit.id)}
               >
                 {t('habitTracker.modal.delete')}
@@ -86,7 +86,7 @@ export default function CustomHabitModal({
           </>
         ) : (
           <>
-            <h3 className="font-semibold text-base-content">
+            <h3 className="font-display font-semibold text-base-content">
               {existingHabit ? t('habitTracker.modal.editTitle') : t('habitTracker.modal.addTitle')}
             </h3>
 
@@ -110,14 +110,14 @@ export default function CustomHabitModal({
                     <button
                       type="button"
                       onClick={() => setType('boolean')}
-                      className={`btn btn-sm flex-1 ${type === 'boolean' ? 'btn-primary' : 'btn-outline'}`}
+                      className={`btn btn-sm rounded-full flex-1 ${type === 'boolean' ? 'btn-primary' : 'btn-outline'}`}
                     >
                       {t('habitTracker.modal.typeBoolean')}
                     </button>
                     <button
                       type="button"
                       onClick={() => setType('numeric')}
-                      className={`btn btn-sm flex-1 ${type === 'numeric' ? 'btn-primary' : 'btn-outline'}`}
+                      className={`btn btn-sm rounded-full flex-1 ${type === 'numeric' ? 'btn-primary' : 'btn-outline'}`}
                     >
                       {t('habitTracker.modal.typeNumeric')}
                     </button>
@@ -164,16 +164,16 @@ export default function CustomHabitModal({
             <div className="modal-action justify-between">
               <div>
                 {existingHabit && (
-                  <button type="button" className="btn btn-ghost text-error" onClick={() => setConfirmingDelete(true)}>
+                  <button type="button" className="btn btn-ghost text-error rounded-full" onClick={() => setConfirmingDelete(true)}>
                     {t('habitTracker.modal.delete')}
                   </button>
                 )}
               </div>
               <div className="flex gap-2">
-                <button type="button" className="btn btn-outline" onClick={onClose}>{t('habitTracker.modal.cancel')}</button>
+                <button type="button" className="btn btn-outline rounded-full" onClick={onClose}>{t('habitTracker.modal.cancel')}</button>
                 <button
                   type="button"
-                  className="btn btn-primary"
+                  className="btn btn-primary rounded-full"
                   disabled={!canSave || saving}
                   onClick={() => onSave({
                     name: name.trim(),

@@ -1,12 +1,19 @@
+import { motion, useReducedMotion } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
 import type { ChatMessage } from '../../utils/chat'
 
 export default function ChatBubble({ message }: { message: ChatMessage }) {
   const { t } = useTranslation()
   const isUser = message.role === 'user'
+  const shouldReduceMotion = useReducedMotion()
 
   return (
-    <div className={`chat ${isUser ? 'chat-end' : 'chat-start'}`}>
+    <motion.div
+      className={`chat ${isUser ? 'chat-end' : 'chat-start'}`}
+      initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: shouldReduceMotion ? 0.01 : 0.35, ease: [0.22, 1, 0.36, 1] }}
+    >
       {!isUser && (
         <div className="chat-image avatar">
           <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-secondary text-primary-content flex items-center justify-center text-sm">
@@ -34,6 +41,6 @@ export default function ChatBubble({ message }: { message: ChatMessage }) {
       {!isUser && message.isBlocked && (
         <div className="chat-footer opacity-50 text-xs mt-1">{t('aiAssistant.scopeRedirectFooter')}</div>
       )}
-    </div>
+    </motion.div>
   )
 }

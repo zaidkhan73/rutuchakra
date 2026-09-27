@@ -10,6 +10,7 @@ import { fetchHabitsToday, logHabit, BUILTIN_HABIT_NAMES } from '../utils/habits
 import type { HabitToday } from '../utils/habits'
 import { localeTag } from '../utils/date'
 import { ProbabilityRing } from '../components/ProbabilityRing'
+import { ArrowRightIcon } from '../components/icons'
 
 type LatestPrediction = HistoricalPrediction & { id: string }
 
@@ -18,6 +19,9 @@ const RISK_BADGE = {
   Moderate: 'badge-warning',
   High: 'badge-error',
 } as const
+
+const SOFT_PILL =
+  'inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-medium bg-primary/10 text-primary hover:bg-primary/20 transition-all'
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString(localeTag(), { day: 'numeric', month: 'long', year: 'numeric' })
@@ -166,9 +170,10 @@ export default function Dashboard() {
                     <button
                       type="button"
                       onClick={() => navigate(`/history/${latest.id}`)}
-                      className="btn btn-outline btn-sm rounded-full mt-4"
+                      className={`${SOFT_PILL} mt-4`}
                     >
                       {t('dashboard.latestPrediction.viewResult')}
+                      <ArrowRightIcon />
                     </button>
                   </div>
                 </div>
@@ -181,7 +186,7 @@ export default function Dashboard() {
                   <button
                     type="button"
                     onClick={() => navigate('/predict')}
-                    className="btn btn-primary rounded-full mt-4"
+                    className="btn btn-primary rounded-full shadow-warm mt-4"
                   >
                     {t('dashboard.latestPrediction.emptyCta')}
                   </button>
@@ -251,7 +256,7 @@ export default function Dashboard() {
                   <button
                     type="button"
                     onClick={() => navigate('/cycle')}
-                    className="btn btn-outline btn-sm rounded-full mt-2 self-start"
+                    className={`${SOFT_PILL} mt-2 self-start`}
                   >
                     {t('dashboard.cycleSummary.emptyCta')}
                   </button>
@@ -275,7 +280,7 @@ export default function Dashboard() {
                   <button
                     type="button"
                     onClick={() => navigate('/habits')}
-                    className="btn btn-outline btn-sm rounded-full mt-2 self-start"
+                    className={`${SOFT_PILL} mt-2 self-start`}
                   >
                     {t('dashboard.todaysHabits.emptyCta')}
                   </button>
@@ -318,16 +323,16 @@ export default function Dashboard() {
       <div className="mt-8">
         <h2 className="kicker mb-3">{t('dashboard.quickActions.cardTitle')}</h2>
         <div className="flex flex-wrap gap-3">
-          <button type="button" onClick={() => navigate('/predict')} className="btn btn-primary btn-sm rounded-full">
+          <button type="button" onClick={() => navigate('/predict')} className="btn btn-primary btn-sm rounded-full shadow-warm">
             {t('dashboard.quickActions.newPrediction')}
           </button>
-          <button type="button" onClick={() => navigate('/cycle')} className="btn btn-outline btn-sm rounded-full">
+          <button type="button" onClick={() => navigate('/cycle')} className={SOFT_PILL}>
             {t('dashboard.quickActions.logCycle')}
           </button>
-          <button type="button" onClick={() => navigate('/habits')} className="btn btn-outline btn-sm rounded-full">
+          <button type="button" onClick={() => navigate('/habits')} className={SOFT_PILL}>
             {t('dashboard.quickActions.manageHabits')}
           </button>
-          <button type="button" onClick={() => navigate('/assistant')} className="btn btn-secondary btn-sm rounded-full">
+          <button type="button" onClick={() => navigate('/assistant')} className="btn btn-secondary btn-sm rounded-full shadow-sm">
             {t('dashboard.quickActions.askAssistant')}
           </button>
         </div>

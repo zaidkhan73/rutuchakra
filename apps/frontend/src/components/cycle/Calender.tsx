@@ -43,11 +43,11 @@ export default function Calendar({
   }
 
   return (
-    <div className="card bg-base-100 shadow-md">
+    <div className="card bg-base-100 shadow-sm border border-base-300">
       <div className="card-body">
         <div className="flex items-center justify-between mb-4">
           <button type="button" onClick={prevMonth} className="btn btn-ghost btn-sm">‹</button>
-          <h2 className="font-semibold text-base-content">{monthLabel(year, month)}</h2>
+          <h2 className="font-display font-semibold text-base-content">{monthLabel(year, month)}</h2>
           <button
             type="button"
             onClick={nextMonth}

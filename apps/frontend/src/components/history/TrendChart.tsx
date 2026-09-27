@@ -19,7 +19,7 @@ function CustomTooltip({
   const riskKey = entry.risk_level.toLowerCase() as 'low' | 'moderate' | 'high'
   return (
     <div className="bg-base-100 border border-base-300 rounded-lg shadow-md px-3 py-2 text-sm">
-      <p className="font-semibold text-base-content">{Math.round(entry.probability * 100)}%</p>
+      <p className="font-display font-semibold text-base-content">{Math.round(entry.probability * 100)}%</p>
       <p className="text-xs text-base-content/60">
         {t('history.trend.tooltip', {
           date: formatDate(entry.createdAt),
@@ -37,7 +37,7 @@ export default function TrendChart({ entries }: { entries: HistoryEntry[] }) {
   return (
     <div className="card bg-base-100 shadow-md">
       <div className="card-body">
-        <h2 className="text-sm font-semibold text-base-content/70">{t('history.trend.title')}</h2>
+        <h2 className="kicker">{t('history.trend.title')}</h2>
         <div className="h-64 mt-2 -ml-4">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={chartData} margin={{ top: 10, right: 16, bottom: 0, left: 0 }}>

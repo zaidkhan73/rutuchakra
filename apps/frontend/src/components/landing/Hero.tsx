@@ -146,11 +146,11 @@ export default function Hero() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="mt-8 flex flex-col sm:flex-row gap-3 justify-center md:justify-start"
           >
-            <div className="aura bg-pink-400 p-0.5">
+            
               <button onClick={() => navigate('/login')} className="btn btn-primary btn-lg rounded-full shadow-warm">
                 {t('hero.checkRisk')}
               </button>
-            </div>
+            
 
             <a href="#how-it-works" className="btn btn-outline btn-lg rounded-full">
               {t('hero.learnMore')}

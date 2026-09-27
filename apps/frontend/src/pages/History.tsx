@@ -45,7 +45,7 @@ export default function History() {
   return (
     <div className="min-h-screen bg-base-100 px-4 py-10 flex flex-col items-center">
       <div className="w-full max-w-3xl mb-8">
-        <h1 className="text-2xl font-bold text-base-content">{t('history.title')}</h1>
+        <h1 className="font-display text-2xl font-semibold text-base-content">{t('history.title')}</h1>
         <p className="text-sm text-base-content/70 mt-1">
           {t('history.subtitle')}
         </p>
@@ -63,7 +63,7 @@ export default function History() {
         <div className="text-center max-w-sm mt-8">
           <EmptyMotif />
           <p className="text-base-content/70 mt-4">{t('history.empty.message')}</p>
-          <button type="button" onClick={() => navigate('/predict')} className="btn btn-primary mt-5">
+          <button type="button" onClick={() => navigate('/predict')} className="btn btn-primary rounded-full mt-5">
             {t('history.empty.cta')}
           </button>
         </div>

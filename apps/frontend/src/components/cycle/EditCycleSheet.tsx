@@ -45,17 +45,17 @@ export default function EditCycleSheet({
       <div className="modal-box">
         {confirmingDelete ? (
           <>
-            <h3 className="font-semibold text-base-content">{t('cycleTracker.editSheet.removeConfirmTitle')}</h3>
+            <h3 className="font-display font-semibold text-base-content">{t('cycleTracker.editSheet.removeConfirmTitle')}</h3>
             <p className="text-sm text-base-content/70 mt-2">
               {t('cycleTracker.editSheet.removeConfirmBody', { date: startDate })}
             </p>
             <div className="modal-action">
-              <button type="button" className="btn btn-outline" onClick={() => setConfirmingDelete(false)}>
+              <button type="button" className="btn btn-outline rounded-full" onClick={() => setConfirmingDelete(false)}>
                 {t('cycleTracker.editSheet.cancel')}
               </button>
               <button
                 type="button"
-                className="btn btn-error"
+                className="btn btn-error rounded-full"
                 onClick={() => existingLog && onDelete(existingLog.id)}
               >
                 {t('cycleTracker.editSheet.delete')}
@@ -64,7 +64,7 @@ export default function EditCycleSheet({
           </>
         ) : (
           <>
-            <h3 className="font-semibold text-base-content">
+            <h3 className="font-display font-semibold text-base-content">
               {existingLog ? t('cycleTracker.editSheet.editEntry') : t('cycleTracker.editSheet.logNew')}
             </h3>
             <div className="flex flex-col gap-3 mt-4">
@@ -92,18 +92,18 @@ export default function EditCycleSheet({
             <div className="modal-action justify-between">
               <div>
                 {existingLog && (
-                  <button type="button" className="btn btn-ghost text-error" onClick={() => setConfirmingDelete(true)}>
+                  <button type="button" className="btn btn-ghost text-error rounded-full" onClick={() => setConfirmingDelete(true)}>
                     {t('cycleTracker.editSheet.delete')}
                   </button>
                 )}
               </div>
               <div className="flex gap-2">
-                <button type="button" className="btn btn-outline" onClick={onClose}>
+                <button type="button" className="btn btn-outline rounded-full" onClick={onClose}>
                   {t('cycleTracker.editSheet.cancel')}
                 </button>
                 <button
                   type="button"
-                  className="btn btn-primary"
+                  className="btn btn-primary rounded-full"
                   disabled={!startDate || saving}
                   onClick={() => onSave(startDate, endDate || null)}
                 >

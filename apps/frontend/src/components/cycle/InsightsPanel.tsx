@@ -24,9 +24,9 @@ function formatDate(iso: string | null) {
 export default function InsightsPanel({ insights }: { insights: CycleInsights }) {
   const { t } = useTranslation()
   return (
-    <div className="card bg-base-100 shadow-md">
+    <div className="card bg-base-100 shadow-sm border border-base-300">
       <div className="card-body">
-        <h2 className="text-sm font-semibold text-base-content/70 mb-2">{t('cycleTracker.insights.summaryTitle')}</h2>
+        <h2 className="kicker mb-2">{t('cycleTracker.insights.summaryTitle')}</h2>
 
         {insights.regularityTrend === 'not_enough_data' ? (
           <p className="text-sm text-base-content/60">
@@ -36,19 +36,19 @@ export default function InsightsPanel({ insights }: { insights: CycleInsights })
           <div className="stats stats-vertical bg-transparent shadow-none">
             <div className="stat px-0 py-3">
               <div className="stat-title text-xs">{t('cycleTracker.insights.avgCycleLength')}</div>
-              <div className="stat-value text-2xl text-base-content">
+              <div className="stat-value font-display text-2xl text-base-content">
                 {insights.avgCycleLength ?? '—'} <span className="text-sm font-normal">{t('cycleTracker.insights.days')}</span>
               </div>
             </div>
             <div className="stat px-0 py-3">
               <div className="stat-title text-xs">{t('cycleTracker.insights.regularityTrend')}</div>
-              <div className={`stat-value text-2xl ${TREND_CLASS[insights.regularityTrend]}`}>
+              <div className={`stat-value font-display text-2xl ${TREND_CLASS[insights.regularityTrend]}`}>
                 {t(TREND_KEY[insights.regularityTrend])}
               </div>
             </div>
             <div className="stat px-0 py-3">
               <div className="stat-title text-xs">{t('cycleTracker.insights.mostRecentCycle')}</div>
-              <div className="stat-value text-lg text-base-content">
+              <div className="stat-value font-display text-lg text-base-content">
                 {formatDate(insights.mostRecentStart)}
               </div>
             </div>

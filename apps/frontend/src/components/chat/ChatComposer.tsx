@@ -18,7 +18,7 @@ export default function ChatComposer({
   }
 
   return (
-    <div className="flex items-center gap-2 bg-base-100 shadow-md border border-base-300 rounded-full px-3 py-1.5 focus-within:border-primary/50 transition-colors">
+    <div className="flex items-center gap-2 bg-base-100 shadow-sm border border-base-300 rounded-full px-3 py-1.5 focus-within:border-primary/50 focus-within:shadow-warm transition-all">
       <span className="badge badge-ghost badge-xs shrink-0">{i18n.language.toUpperCase()}</span>
       <input
         type="text"

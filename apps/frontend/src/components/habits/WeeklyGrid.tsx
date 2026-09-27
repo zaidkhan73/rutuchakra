@@ -10,9 +10,9 @@ function shortDay(iso: string) {
 export default function WeeklyGrid({ data, isNewUser }: { data: WeeklyData; isNewUser: boolean }) {
   const { t } = useTranslation()
   return (
-    <div className="card bg-base-100 shadow-md">
+    <div className="card bg-base-100 shadow-sm border border-base-300">
       <div className="card-body">
-        <h2 className="text-sm font-semibold text-base-content/70">{t('habitTracker.weekly.title')}</h2>
+        <h2 className="kicker">{t('habitTracker.weekly.title')}</h2>
         {isNewUser && (
           <p className="text-xs text-base-content/50 mb-2">
             {t('habitTracker.weekly.newUserNote')}

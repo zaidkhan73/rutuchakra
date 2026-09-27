@@ -41,9 +41,9 @@ export default function CycleHistoryTabs({
   if (monthKeys.length === 0) return null
 
   return (
-    <div className="card bg-base-100 shadow-md">
+    <div className="card bg-base-100 shadow-sm border border-base-300">
       <div className="card-body">
-        <h2 className="text-sm font-semibold text-base-content/70 mb-3">{t('cycleTracker.history.title')}</h2>
+        <h2 className="kicker mb-3">{t('cycleTracker.history.title')}</h2>
 
         <div role="tablist" className="tabs tabs-boxed mb-4 flex-wrap">
           {monthKeys.map((key) => (
@@ -65,7 +65,7 @@ export default function CycleHistoryTabs({
               key={log.id}
               type="button"
               onClick={() => onEdit(log)}
-              className="flex items-center justify-between px-4 py-3 rounded-lg bg-base-200 hover:bg-base-300 transition-colors text-left"
+              className="flex items-center justify-between px-4 py-3 rounded-xl bg-base-200 hover:bg-base-300 transition-colors text-left"
             >
               <span className="text-sm text-base-content">{formatRange(log, t)}</span>
               <span className="text-xs text-base-content/50">{t('cycleTracker.history.edit')}</span>

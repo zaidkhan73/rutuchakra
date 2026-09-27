@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { localeTag } from '../../utils/date'
+import { ArrowRightIcon } from '../icons'
 import type { HistoryEntry } from '../../utils/pcos'
 
 const BADGE_CLASS = {
@@ -25,16 +26,17 @@ export default function HistoryListItem({ entry }: { entry: HistoryEntry }) {
         <div>
           <p className="text-sm text-base-content/60">{formatDate(entry.createdAt)}</p>
           <div className="flex items-center gap-2 mt-1">
-            <span className="text-lg font-bold text-base-content tabular-nums">{pct}%</span>
+            <span className="font-display text-lg font-semibold text-base-content tabular-nums">{pct}%</span>
             <span className={`badge badge-sm ${BADGE_CLASS[entry.risk_level]}`}>{t(`riskLevels.${riskKey}`)}</span>
           </div>
         </div>
         <button
           type="button"
           onClick={() => navigate(`/history/${entry.id}`)}
-          className="btn btn-outline btn-sm"
+          className="inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-medium bg-primary/10 text-primary hover:bg-primary/20 transition-all shrink-0"
         >
           {t('history.listItem.view')}
+          <ArrowRightIcon className="w-3 h-3" />
         </button>
       </div>
     </div>

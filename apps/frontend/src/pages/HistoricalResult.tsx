@@ -4,6 +4,7 @@ import { useAuth } from "@clerk/react";
 import { useTranslation } from "react-i18next";
 import ResultScreen from "../components/ResultScreen";
 import { fetchPredictionById } from "../utils/pcos";
+import { ArrowLeftIcon } from "../components/icons";
 import type { HistoricalPrediction } from "../utils/pcos";
 
 export default function HistoricalResult() {
@@ -35,8 +36,9 @@ export default function HistoricalResult() {
         <button
           type="button"
           onClick={() => navigate("/history")}
-          className="btn btn-ghost btn-sm mb-6"
+          className="inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm font-medium bg-primary/10 text-primary hover:bg-primary/20 transition-all mb-6"
         >
+          <ArrowLeftIcon className="w-3.5 h-3.5" />
           {t("historicalResult.backToHistory")}
         </button>
 
@@ -55,7 +57,7 @@ export default function HistoricalResult() {
         )}
 
         {prediction && (
-          <div className="card bg-base-100 shadow-xl p-6 sm:p-8">
+          <div className="card bg-base-100 shadow-warm p-6 sm:p-8">
             <ResultScreen
               result={prediction}
               viewedAt={prediction.createdAt}

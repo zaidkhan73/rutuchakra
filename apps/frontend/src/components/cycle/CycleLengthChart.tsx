@@ -40,7 +40,7 @@ function CustomTooltip({
   const p = payload[0].payload
   return (
     <div className="bg-base-100 border border-base-300 rounded-lg shadow-md px-3 py-2 text-sm">
-      <p className="font-semibold text-base-content">{t('cycleTracker.chart.tooltipDays', { count: p.days })}</p>
+      <p className="font-display font-semibold text-base-content">{t('cycleTracker.chart.tooltipDays', { count: p.days })}</p>
       <p className="text-xs text-base-content/60">
         {t('cycleTracker.chart.tooltipCycleEnding', {
           label: p.label,
@@ -57,9 +57,9 @@ export default function CycleLengthChart({ logs }: { logs: CycleLog[] }) {
 
   if (logs.length < 2) {
     return (
-      <div className="card bg-base-100 shadow-md">
+      <div className="card bg-base-100 shadow-sm border border-base-300">
         <div className="card-body">
-          <h2 className="text-sm font-semibold text-base-content/70">{t('cycleTracker.chart.title')}</h2>
+          <h2 className="kicker">{t('cycleTracker.chart.title')}</h2>
           <p className="text-sm text-base-content/60 mt-2">
             {t('cycleTracker.chart.needTwoCycles')}
           </p>
@@ -71,9 +71,9 @@ export default function CycleLengthChart({ logs }: { logs: CycleLog[] }) {
   const maxDays = Math.max(40, ...data.map((d) => d.days))
 
   return (
-    <div className="card bg-base-100 shadow-md">
+    <div className="card bg-base-100 shadow-sm border border-base-300">
       <div className="card-body">
-        <h2 className="text-sm font-semibold text-base-content/70">{t('cycleTracker.chart.title')}</h2>
+        <h2 className="kicker">{t('cycleTracker.chart.title')}</h2>
         <p className="text-xs text-base-content/50 mb-2">{t('cycleTracker.chart.bandLegend')}</p>
         <div className="h-56 mt-1 -ml-4">
           <ResponsiveContainer width="100%" height="100%">

@@ -269,7 +269,7 @@
   "listItem": { "view": "View" }
 },
 "historicalResult": {
-  "backToHistory": "← Back to history",
+  "backToHistory": "Back to history",
   "errors": { "loadFailed": "Failed to load this prediction." }
 },
 "common": {

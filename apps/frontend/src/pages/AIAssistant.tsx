@@ -144,22 +144,22 @@ export default function AIAssistant() {
 
       <div className="flex-1 flex flex-col max-w-[720px] mx-auto w-full">
         <div className="sticky top-0 z-10 bg-base-100/90 backdrop-blur-sm border-b border-base-300 px-4 py-3 flex items-center gap-3">
-          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-primary-content shrink-0">
+          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-primary-content shrink-0 shadow-warm">
             ✦
           </div>
           <div>
-            <h1 className="font-semibold text-base-content text-sm leading-tight">{t('aiAssistant.title')}</h1>
+            <h1 className="font-display font-semibold text-base-content text-sm leading-tight">{t('aiAssistant.title')}</h1>
             <p className="text-xs text-base-content/50 leading-tight">{t('aiAssistant.subtitle')}</p>
           </div>
         </div>
 
         <div className="flex-1 overflow-y-auto px-4 py-6 space-y-3">
           {messages.length === 0 && (
-            <div className="text-center mt-14">
+            <div className="text-center mt-14 animate-fade-up">
               <div className="w-14 h-14 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center text-2xl mx-auto mb-3">
                 ✦
               </div>
-              <p className="text-sm text-base-content/50 max-w-[280px] mx-auto">
+              <p className="font-display italic text-base text-base-content/70 max-w-[280px] mx-auto">
                 {t('aiAssistant.emptyState')}
               </p>
             </div>

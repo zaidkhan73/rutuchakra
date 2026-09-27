@@ -92,10 +92,14 @@ export default function HabitTracker() {
       <div className="max-w-3xl mx-auto">
         <div className="flex items-center justify-between mb-2">
           <div>
-            <h1 className="text-2xl font-bold text-base-content">{t('habitTracker.title')}</h1>
+            <h1 className="font-display text-2xl font-semibold text-base-content">{t('habitTracker.title')}</h1>
             <p className="text-sm text-base-content/70 mt-1">{t('habitTracker.subtitle')}</p>
           </div>
-          <button type="button" onClick={() => { setEditingHabit(null); setHabitModalOpen(true) }} className="btn btn-outline btn-sm">
+          <button
+            type="button"
+            onClick={() => { setEditingHabit(null); setHabitModalOpen(true) }}
+            className="btn btn-primary btn-sm rounded-full shadow-warm"
+          >
             {t('habitTracker.addHabit')}
           </button>
         </div>
@@ -118,7 +122,7 @@ export default function HabitTracker() {
               </div>
             )}
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-6 mb-8">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-6 mb-8 items-stretch">
               {today.habits.map((habit) => (
                 <HabitCard
                   key={habit.name}

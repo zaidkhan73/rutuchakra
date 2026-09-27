@@ -23,7 +23,7 @@ export default function ContextChip({ context }: { context: PredictionContext })
           <span className={`badge ${RISK_BADGE[context.riskLevel]} badge-sm`}>
             {t(`riskLevels.${riskKey}`)} {t('result.riskSuffix')}
           </span>
-          <span className="text-lg font-bold text-base-content tabular-nums">
+          <span className="font-display text-lg font-semibold text-base-content tabular-nums">
             {Math.round(context.probability * 100)}%
           </span>
         </div>
@@ -32,7 +32,7 @@ export default function ContextChip({ context }: { context: PredictionContext })
           {context.topFactors.map((f) => (
             <span
               key={f.factor}
-              className={`text-xs px-2.5 py-1.5 rounded-lg border
+              className={`text-xs px-2.5 py-1.5 rounded-full border
                 ${f.impact === 'increases'
                   ? 'border-error/30 bg-error/10 text-error'
                   : 'border-success/30 bg-success/10 text-success'}`}
