@@ -40,12 +40,12 @@ def generate_small_talk_reply(message: str, history: list[dict], language: str =
 
 {_TONE_RULES}
 
-{lang_line}Recent conversation:
+Recent conversation:
 {_format_history(history)}
 
 The user just said: "{message}"
 
-Reply naturally and briefly -- this is just small talk, not an informational question."""
+Reply naturally and briefly -- this is just small talk, not an informational question.{lang_line}"""
 
     response = _client.models.generate_content(model=config.GENERATION_MODEL, contents=prompt)
     return response.text.strip()
@@ -57,10 +57,10 @@ def generate_out_of_scope_reply(message: str, language: str = "en") -> str:
 
 {_TONE_RULES}
 
-{lang_line}The user asked something outside that scope: "{message}"
+The user asked something outside that scope: "{message}"
 
-Gently let them know this isn't something you can help with, and redirect them toward what you can help with (PCOD/PCOS questions, understanding their result, cycle or habit tracking). Keep it short and kind, not robotic."""
-
+Gently let them know this isn't something you can help with, and redirect them toward what you can help with (PCOD/PCOS questions, understanding their result, cycle or habit tracking). Keep it short and kind, not robotic.{lang_line}"""
+    
     response = _client.models.generate_content(model=config.GENERATION_MODEL, contents=prompt)
     return response.text.strip()
 
@@ -91,12 +91,12 @@ Ground your answer in the reference information below. If the reference informat
 Reference information:
 {context_block}
 {user_context_block}
-{lang_line}Recent conversation:
+Recent conversation:
 {_format_history(history)}
 
 The user asked: "{message}"
 
-Answer their question now, grounded in the reference information above."""
+Answer their question now, grounded in the reference information above.{lang_line}"""
 
     response = _client.models.generate_content(model=config.GENERATION_MODEL, contents=prompt)
     return response.text.strip()

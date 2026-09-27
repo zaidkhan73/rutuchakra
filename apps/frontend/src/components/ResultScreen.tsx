@@ -44,10 +44,12 @@ function parseAdvice(text: string) {
 export default function ResultScreen({
   result,
   onRestart,
+  onAskAssistant,
   viewedAt,
 }: {
   result: PredictionResult;
   onRestart: () => void;
+  onAskAssistant?: () => void;
   viewedAt?: string;
 }) {
   const { t } = useTranslation();
@@ -140,6 +142,16 @@ export default function ResultScreen({
       <div className="alert bg-base-200 border-base-300 text-xs text-base-content/60 mb-6">
         <span>{t("result.disclaimer")}</span>
       </div>
+
+      {onAskAssistant && (
+        <button
+          type="button"
+          onClick={onAskAssistant}
+          className="btn btn-secondary w-full rounded-full mb-3"
+        >
+          {t("result.askAssistantButton")}
+        </button>
+      )}
 
       <button
         type="button"

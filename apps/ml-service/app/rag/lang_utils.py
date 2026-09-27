@@ -17,13 +17,16 @@ LANGUAGE_NAMES = {
 
 
 def build_lang_line(language: str) -> str:
-    """Prompt instruction telling Gemini which language to answer in, or an
-    empty string for English (the model's natural default)."""
+    """Final, forceful language instruction -- placed at the very end of the
+    prompt (right before the model answers) because Gemini follows the last
+    instruction it reads far more reliably than one buried mid-prompt."""
     if language == "en" or language not in LANGUAGE_NAMES:
         return ""
     lang_name = LANGUAGE_NAMES[language]
     return (
-        f"Write your ENTIRE response in {lang_name}. Keep \"PCOD\"/\"PCOS\" and any "
-        f"clinical term with no simple equivalent in English; everything else must be "
-        f"in {lang_name}.\n\n"
+        f"\n\nIMPORTANT -- language: Write your entire reply in {lang_name}, in {lang_name} script only. "
+        f"Do not switch to English and do not write Hinglish (Romanized {lang_name}, or English words mixed "
+        f"into {lang_name} sentences). The only exceptions are the terms \"PCOD\" and \"PCOS\" themselves, "
+        f"which may stay in English. Every other word -- including common everyday words -- must be in "
+        f"{lang_name}, not English."
     )

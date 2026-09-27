@@ -6,6 +6,7 @@ import ResultScreen from "../components/ResultScreen";
 import { fetchPredictionById } from "../utils/pcos";
 import { ArrowLeftIcon } from "../components/icons";
 import type { HistoricalPrediction } from "../utils/pcos";
+import { buildPredictionContext } from "../utils/chat";
 
 export default function HistoricalResult() {
   const { t } = useTranslation();
@@ -62,6 +63,10 @@ export default function HistoricalResult() {
               result={prediction}
               viewedAt={prediction.createdAt}
               onRestart={() => navigate("/predict")}
+              onAskAssistant={() => {
+                const context = buildPredictionContext(prediction)
+                navigate("/assistant", context ? { state: { context } } : undefined)
+              }}
             />
           </div>
         )}

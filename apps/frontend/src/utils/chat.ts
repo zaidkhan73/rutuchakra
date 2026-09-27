@@ -21,7 +21,7 @@ type GetToken = () => Promise<string | null>
 
 export class RateLimitError extends Error {}
 
-export async function sendChatMessage(message: string, getToken: GetToken): Promise<{
+export async function sendChatMessage(message: string, getToken: GetToken, predictionId?: string): Promise<{
   answer: string
   groundedInKB: boolean
   category: string
@@ -33,7 +33,7 @@ export async function sendChatMessage(message: string, getToken: GetToken): Prom
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({ message, language: i18n.language }),
+    body: JSON.stringify({ message, language: i18n.language, predictionId }),
   })
 
   if (res.status === 429) {
@@ -54,4 +54,19 @@ export function isBlockedCategory(category: string): boolean {
 
 export function getRedirectPrompts(): string[] {
   return i18n.t('aiAssistant.redirectPrompts', { returnObjects: true }) as string[]
+}
+
+export function buildPredictionContext(p: {
+  predictionId?: string
+  probability: number
+  risk_level: 'Low' | 'Moderate' | 'High'
+  top_factors: { factor: string; impact: 'increases' | 'decreases' }[]
+}): PredictionContext | null {
+  if (!p.predictionId) return null
+  return {
+    predictionId: p.predictionId,
+    probability: p.probability,
+    riskLevel: p.risk_level,
+    topFactors: p.top_factors.map((f) => ({ factor: f.factor, impact: f.impact })),
+  }
 }

@@ -134,7 +134,8 @@
     "personalisedGuidance": "Personalised guidance",
     "disclaimer": "This is not a medical diagnosis. Please discuss this result with a qualified gynaecologist or endocrinologist.",
     "retakeButton": "Take the assessment again",
-    "viewedOn": "Viewed on: {{date}}"
+    "viewedOn": "Viewed on: {{date}}",
+    "askAssistantButton": "Ask AI Assistant About My Result"
   },
   "riskLevels": { "low": "Low", "moderate": "Moderate", "high": "High" },
   "resultAdvice": {

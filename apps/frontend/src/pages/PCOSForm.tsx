@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import { useAuth } from '@clerk/react'
+import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { BackgroundMesh, FloatingPetals, StepProgress, FormCard } from '../components/FormPrimitives'
 import { Section1, Section2, Section3, Section4 } from '../components/FormSections'
 import ResultScreen from '../components/ResultScreen'
 import { fetchPrediction } from '../utils/pcos'
 import type { PCOSFormData, PredictionResult } from '../utils/pcos'
+import { buildPredictionContext } from '../utils/chat'
 
 const INITIAL: PCOSFormData = {
   age: '',
@@ -28,6 +30,7 @@ const INITIAL: PCOSFormData = {
 
 export default function PCOSForm() {
   const { getToken } = useAuth()
+  const navigate = useNavigate()
   const { t } = useTranslation()
   const [step, setStep] = useState(1)
   const [animDir, setAnimDir] = useState<'r' | 'l'>('r')
@@ -111,7 +114,16 @@ export default function PCOSForm() {
               error={submitError}
             />
           )}
-          {step === 5 && result && <ResultScreen result={result} onRestart={restart} />}
+          {step === 5 && result && (
+            <ResultScreen
+              result={result}
+              onRestart={restart}
+              onAskAssistant={() => {
+                const context = buildPredictionContext(result)
+                navigate('/assistant', context ? { state: { context } } : undefined)
+              }}
+            />
+          )}
         </FormCard>
       </div>
     </div>

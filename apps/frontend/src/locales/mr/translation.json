@@ -134,7 +134,8 @@
   "personalisedGuidance": "वैयक्तिक मार्गदर्शन",
   "disclaimer": "हे वैद्यकीय निदान नाही. कृपया हा निकाल एखाद्या योग्य स्त्रीरोगतज्ज्ञ किंवा एंडोक्राइनोलॉजिस्टशी चर्चा करा.",
   "retakeButton": "पुन्हा मूल्यांकन करा",
-  "viewedOn": "पाहिले: {{date}}"
+  "viewedOn": "पाहिले: {{date}}",
+  "askAssistantButton": "तुमच्या निकालाबद्दल AI असिस्टंटला विचारा"
 },
 "riskLevels": { "low": "कमी", "moderate": "मध्यम", "high": "जास्त" },
 "resultAdvice": {

@@ -99,6 +99,7 @@ router.get("/:id", requireAuth, async (req, res) => {
     res.json({
       status: "success",
       data: {
+        predictionId: prediction.id,
         probability: prediction.probability,
         risk_level,
         advice,
