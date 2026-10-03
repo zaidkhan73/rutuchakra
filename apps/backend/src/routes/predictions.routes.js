@@ -3,6 +3,7 @@ import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "@prisma/client";
 import { requireAuth } from "../middleware/auth.js";
 import { classifyRisk } from "../utils/risk.js";
+import { callML } from "../utils/mlClient.js";
 
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({ adapter });
@@ -18,11 +19,7 @@ router.post("/", requireAuth, async (req, res) => {
       return res.status(404).json({ status: "error", message: "User not found. Try signing in again." });
     }
 
-    const mlResponse = await fetch(`${process.env.ML_SERVICE_URL}/predict`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(req.body),
-    });
+    const mlResponse = await callML("/predict", req.body);
 
         if (!mlResponse.ok) {
       const raw = await mlResponse.text();

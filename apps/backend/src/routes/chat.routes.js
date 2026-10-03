@@ -3,6 +3,7 @@ import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "@prisma/client";
 import { requireAuth } from "../middleware/auth.js";
 import { checkRateLimit, redactPII } from "../utils/chatGuardrails.js";
+import { callML } from "../utils/mlClient.js";
 
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({ adapter });
@@ -56,11 +57,7 @@ router.post("/", requireAuth, async (req, res) => {
 
     const userContext = await buildUserContext(user.id, predictionId);
 
-    const mlResponse = await fetch(`${process.env.ML_SERVICE_URL}/chat`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message, history, userContext, language: language || "en" }),
-    });
+    const mlResponse = await callML("/chat", { message, history, userContext, language: language || "en" });
 
         if (!mlResponse.ok) {
       const raw = await mlResponse.text();
