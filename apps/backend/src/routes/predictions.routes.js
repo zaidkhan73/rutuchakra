@@ -24,8 +24,19 @@ router.post("/", requireAuth, async (req, res) => {
       body: JSON.stringify(req.body),
     });
 
-    if (!mlResponse.ok) {
-      const errBody = await mlResponse.json().catch(() => ({}));
+        if (!mlResponse.ok) {
+      const raw = await mlResponse.text();
+      console.error(
+        "ML upstream error (predict):",
+        mlResponse.status,
+        "| url:", process.env.ML_SERVICE_URL,
+        "| server:", mlResponse.headers.get("server"),
+        "| cf-ray:", mlResponse.headers.get("cf-ray"),
+        "| retry-after:", mlResponse.headers.get("retry-after"),
+        "| body:", raw.slice(0, 500)
+      );
+      let errBody = {};
+      try { errBody = JSON.parse(raw); } catch {}
       return res.status(mlResponse.status).json({
         status: "error",
         message: errBody.detail ?? "The prediction service couldn't process this request.",
