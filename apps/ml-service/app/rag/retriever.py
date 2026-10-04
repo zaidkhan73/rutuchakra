@@ -11,7 +11,7 @@ import sys
 
 import psycopg2
 from pgvector.psycopg2 import register_vector
-from pgvector import Vector
+from pgvector.utils import Vector
 from google import genai
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
