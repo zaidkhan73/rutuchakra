@@ -60,6 +60,14 @@ class Settings(BaseSettings):
     embedding_model: str = "gemini-embedding-001"
     embedding_dim: int = 768
 
+    # --- knowledge base ingestion (R2) ---
+    kb_pdf_dir: str = "data/kb_pdfs"      # relative to apps/ml-service
+    kb_schema: str = "rag"                # separate Postgres schema -> Prisma never sees these tables
+    kb_table: str = "kb_chunks"
+    kb_chunk_size: int = 1000             # characters
+    kb_chunk_overlap: int = 150
+    kb_min_chunk_chars: int = 200
+
     # --- LLM call behaviour ---
     llm_timeout_s: float = 30.0
     llm_max_retries: int = 1  # keep low: we prefer failing over to the next provider
