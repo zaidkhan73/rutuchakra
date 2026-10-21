@@ -2,15 +2,22 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const RETRY_STATUS = new Set([429, 502, 503, 504]);
 
 export async function callML(path, payload, { retries = 3, timeoutMs = 65000 } = {}) {
+  const headers = {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+    "User-Agent": "RutuChakra-Backend/1.0",
+  };
+
+  // ml-service ki internal auth: key set hai to hi header bhejo.
+  if (process.env.INTERNAL_API_KEY) {
+    headers["X-Internal-Key"] = process.env.INTERNAL_API_KEY;
+  }
+
   let res;
   for (let attempt = 0; attempt <= retries; attempt++) {
     res = await fetch(`${process.env.ML_SERVICE_URL}${path}`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        "User-Agent": "RutuChakra-Backend/1.0",
-      },
+      headers,
       body: JSON.stringify(payload),
       signal: AbortSignal.timeout(timeoutMs),
     });
