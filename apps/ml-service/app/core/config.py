@@ -68,6 +68,13 @@ class Settings(BaseSettings):
     kb_chunk_overlap: int = 150
     kb_min_chunk_chars: int = 200
 
+        # --- retrieval (R3) ---
+    rag_top_k: int = 5                # chunks handed to the LLM
+    rag_candidate_pool: int = 30      # per-leg (vector / keyword) candidates before fusion
+    rag_rrf_k: int = 60               # RRF damping constant (60 is the standard value)
+    rag_max_per_source: int = 3       # stops the 481-chunk guideline from crowding out other PDFs
+    rag_min_similarity: float = 0.65  # cosine floor; CALIBRATE with scripts/kb_smoke.py
+
     # --- LLM call behaviour ---
     llm_timeout_s: float = 30.0
     llm_max_retries: int = 1  # keep low: we prefer failing over to the next provider
