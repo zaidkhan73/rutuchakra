@@ -41,7 +41,8 @@ def _make_model(provider: str, model: str, temperature: float, s: Settings) -> B
 
     if provider == "gemini" and s.gemini_api_key:
         from langchain_google_genai import ChatGoogleGenerativeAI
-        return ChatGoogleGenerativeAI(model=model, google_api_key=s.gemini_api_key.get_secret_value(), **common)
+        return ChatGoogleGenerativeAI(model=model, google_api_key=s.gemini_api_key.get_secret_value(),
+                                    thinking_budget=s.gemini_thinking_budget, **common)
 
     if provider == "groq" and s.groq_api_key:
         from langchain_groq import ChatGroq

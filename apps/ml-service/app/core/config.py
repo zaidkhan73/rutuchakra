@@ -49,6 +49,7 @@ class Settings(BaseSettings):
 
     # --- model ids (change via env, no code change needed when a provider renames) ---
     gemini_model: str = "gemini-2.5-flash"
+    gemini_thinking_budget: int = 0  # 0 = no hidden "thinking" tokens: ~3x faster replies; raise only for hard reasoning
     groq_model_main: str = "openai/gpt-oss-120b"
     groq_model_alt: str = "qwen/qwen3.6-27b"
     groq_model_fast: str = "openai/gpt-oss-20b"
@@ -68,12 +69,17 @@ class Settings(BaseSettings):
     kb_chunk_overlap: int = 150
     kb_min_chunk_chars: int = 200
 
-        # --- retrieval (R3) ---
+    # --- retrieval (R3) ---
     rag_top_k: int = 5                # chunks handed to the LLM
     rag_candidate_pool: int = 30      # per-leg (vector / keyword) candidates before fusion
     rag_rrf_k: int = 60               # RRF damping constant (60 is the standard value)
     rag_max_per_source: int = 3       # stops the 481-chunk guideline from crowding out other PDFs
     rag_min_similarity: float = 0.65  # cosine floor; CALIBRATE with scripts/kb_smoke.py
+
+    # --- chat graph (R4) ---
+    chat_engine: Literal["graph", "legacy"] = "graph"  # "legacy" = old pipeline.py, instant rollback via env
+    rag_answer_gate: float = 0.68   # best chunk must reach this to answer as "grounded" (relevant tops were 0.71+, off-topic max 0.64)
+    chat_history_turns: int = 6     # last N messages shown to planner/generator
 
     # --- LLM call behaviour ---
     llm_timeout_s: float = 30.0
