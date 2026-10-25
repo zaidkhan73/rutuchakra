@@ -104,7 +104,7 @@ class HybridRetriever:
             if not _IDENT.match(ident):
                 raise ValueError(f"Unsafe SQL identifier in config: {ident!r}")
         self.table = f'"{self.s.kb_schema}"."{self.s.kb_table}"'
-        self.embeddings = get_embeddings(self.s)
+        self.embeddings = get_embeddings(self.s, interactive=True)
         self.engine = build_engine(self.s)
 
     # ---- SQL ---------------------------------------------------------------

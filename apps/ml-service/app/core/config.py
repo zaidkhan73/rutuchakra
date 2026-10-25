@@ -77,12 +77,14 @@ class Settings(BaseSettings):
     rag_min_similarity: float = 0.65  # cosine floor; CALIBRATE with scripts/kb_smoke.py
 
     # --- chat graph (R4) ---
-    chat_engine: Literal["graph", "legacy"] = "graph"  # "legacy" = old pipeline.py, instant rollback via env
     rag_answer_gate: float = 0.68   # best chunk must reach this to answer as "grounded" (relevant tops were 0.71+, off-topic max 0.64)
     chat_history_turns: int = 6     # last N messages shown to planner/generator
     chat_history_max_chars: int = 3000   # hard budget for history text inside one prompt
     chat_history_msg_chars: int = 500    # one long past answer can't eat the whole budget
     cache_embed_ttl_s: int = 7 * 24 * 3600  # query-embedding cache lifetime (REDIS_URL set -> Redis, else in-process)
+    # --- deadlines: Node gives the ML service 65 s and retries on 502/503/504, so we answer well before that ---
+    chat_timeout_s: float = 50.0     # whole chat request; on expiry the user gets a graceful fallback message
+    advice_timeout_s: float = 35.0   # AI advice on /predict; on expiry the fixed localized template is used
 
     # --- guardrails (R5) ---
     rails_regenerate: bool = True        # on an output-rail violation, retry the answer once before falling back

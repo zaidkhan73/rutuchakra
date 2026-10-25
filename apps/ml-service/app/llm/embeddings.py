@@ -56,7 +56,7 @@ class ResilientEmbeddings(Embeddings):
         return self._call(self.inner.embed_query, text)
 
 
-def get_embeddings(settings: Settings | None = None) -> Embeddings:
+def get_embeddings(settings: Settings | None = None, *, interactive: bool = False) -> Embeddings:
     s = settings or get_settings()
     if not s.gemini_api_key:
         raise RuntimeError("GEMINI_API_KEY is required for embeddings.")
@@ -66,4 +66,8 @@ def get_embeddings(settings: Settings | None = None) -> Embeddings:
         google_api_key=s.gemini_api_key.get_secret_value(),
         output_dimensionality=s.embedding_dim,
     )
+    if interactive:
+        # A user is waiting: 2 quick attempts (~0.5 s pause), then let the caller degrade. The patient
+        # 5-attempt / up-to-30 s schedule is for ingestion only.
+        return ResilientEmbeddings(inner, attempts=2, base_wait_s=0.5)
     return ResilientEmbeddings(inner)

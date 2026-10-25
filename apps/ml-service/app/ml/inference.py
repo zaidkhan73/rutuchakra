@@ -7,17 +7,14 @@ exactly, or the model sees a different distribution than it was trained on
 (this was the root cause of the bugs found during review).
 """
 
+import logging
 import os
 import joblib
 
-from dotenv import load_dotenv
-load_dotenv()
 
-try:
-    from google import genai as _genai
-    _GEMINI_AVAILABLE = True
-except ImportError:
-    _GEMINI_AVAILABLE = False
+from app.ml.advice import generate_advice
+
+log = logging.getLogger("inference")
 
 _BASE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 _MODEL_DIR = os.path.join(_BASE, "models")
@@ -30,13 +27,7 @@ _norm_params = joblib.load(os.path.join(_MODEL_DIR, "norm_params.pkl"))
 import shap
 _shap_explainer = shap.TreeExplainer(_explainer_model)
 
-_GEMINI_KEY = os.getenv("GEMINI_API_KEY")
-_gemini_client = None
-if _GEMINI_AVAILABLE and _GEMINI_KEY:
-    try:
-        _gemini_client = _genai.Client(api_key=_GEMINI_KEY)
-    except Exception:
-        _gemini_client = None
+
 
 # Standard clinical definition: a menstrual cycle of 21-35 days is regular.
 _REGULAR_CYCLE_RANGE = (21, 35)
@@ -155,105 +146,12 @@ def _top_factors(feature_row: dict, n: int = 4) -> list:
     ]
 
 
-_LANGUAGE_NAMES = {
-    "en": "English",
-    "hi": "Hindi (Devanagari script)",
-    "mr": "Marathi (Devanagari script)",
-}
-
-# Must stay in sync with the ADVICE_HEADING_SETS map in
-# apps/frontend/src/components/ResultScreen.tsx — the frontend parses the
-# response by searching for these exact strings.
-_ADVICE_HEADINGS_BY_LANG = {
-    "en": ("Your Summary", "What You Can Do", "When to See a Doctor"),
-    "hi": ("आपका सारांश", "आप क्या कर सकती हैं", "डॉक्टर से कब मिलें"),
-    "mr": ("तुमचा सारांश", "तुम्ही काय करू शकता", "डॉक्टरांना कधी भेटावे"),
-}
 
 
-def _build_prompt(data: dict, prob: float, risk_level: str, language: str = "en") -> str:
-    age = int(float(data["age"]))
-    weight, height = float(data["weight"]), float(data["height"])
-    bmi = weight / ((height / 100) ** 2)
-    cycle = int(data["cycleLen"])
-    sym = data["symptoms"]
-
-    bmi_label = ("weight is lower than normal" if bmi < 18.5 else
-                 "weight is normal" if bmi < 25 else
-                 "weight is slightly high" if bmi < 30 else
-                 "weight is on the higher side")
-    cycle_cat = ("periods have stopped or are very rare" if cycle <= 15 else
-                 "periods come too frequently or are short" if cycle < 21 else
-                 "periods are regular" if cycle <= 35 else
-                 "periods are delayed or irregular")
-
-    sym_labels = {
-        "weightGain": "sudden or unexplained weight gain",
-        "facialHair": "unwanted hair on face, chin, or body",
-        "skinDark": "dark patches on neck, underarms, or skin folds",
-        "hairLoss": "hair fall or thinning of hair",
-        "acne": "pimples or acne that keep coming back",
-    }
-    sym_text = ", ".join(sym_labels[k] for k, v in sym.items() if v and k in sym_labels) or "no major symptoms"
-
-    lang_name = _LANGUAGE_NAMES.get(language, "English")
-    h1, h2, h3 = _ADVICE_HEADINGS_BY_LANG.get(language, _ADVICE_HEADINGS_BY_LANG["en"])
-    lang_line = (
-        f"Write your ENTIRE response in {lang_name}. Keep \"PCOD\"/\"PCOS\" and any "
-        f"clinical term with no simple equivalent in English; everything else must be "
-        f"in {lang_name}.\n\n"
-        if language != "en" else ""
-    )
-
-    return f"""[INTERNAL CONTEXT — for your understanding only, do not include this in your response]
-You are analysing a PCOS self-assessment from an Indian woman.
-Clinical details:
-- Age: {age} years
-- BMI: {bmi:.1f} kg/m² ({bmi_label})
-- Menstrual cycle: {cycle} days ({cycle_cat})
-- Reported symptoms: {sym_text}
-- Fast food consumption 3+ times/week: {"Yes" if data.get("fastFood") else "No"}
-- Regular exercise 3+ times/week: {"Yes" if data.get("exercise") else "No"}
-- ML model PCOS probability score: {prob * 100:.0f}% — classified as {risk_level} risk
-[END INTERNAL CONTEXT]
-
-OUTPUT INSTRUCTIONS:
-You are like a caring elder sister or a friendly lady doctor talking to an Indian woman
-who may not know medical terms. Keep language simple enough for both small-town and
-big-city readers.
-
-Tone rules:
-- Talk directly and warmly, not like a report.
-- Use simple everyday words. No medical jargon or Latin terms.
-- "PCOD" is fine — many Indian women know that term better than "PCOS".
-- Use Indian food examples (roti, dal, sabzi, ghee, maida, namkeen, cold drinks) and
-  lifestyle references (morning walks, yoga, home-cooked food).
-- Low risk: reassuring, not dismissive. Moderate: honest but calm. High: clear and firm
-  about seeing a doctor, but not alarming.
-
-{lang_line}Format — use EXACTLY these three headings, verbatim character-for-character, nothing else:
-
-{h1}
-(2-3 sentences, plain language, no percentages.)
-
-{h2}
-(3-4 specific, actionable tips tied to her actual symptoms/lifestyle.)
-
-{h3}
-(1-2 sentences. Mention "gynaecologist" or "ladies doctor". Never say "don't worry" if risk is High.)
-
-Keep the total response under 280 words. No bullet symbols, no asterisks, no markdown."""
 
 
-def _get_gemini_advice(prompt: str) -> str:
-    if not _gemini_client:
-        return ("AI advice is currently unavailable — GEMINI_API_KEY is not configured. "
-                "Please consult a healthcare professional for personalised guidance.")
-    try:
-        response = _gemini_client.models.generate_content(model="gemini-2.5-flash", contents=prompt)
-        return response.text.strip()
-    except Exception as exc:
-        return f"Unable to generate AI advice at this time: {exc}"
+
+
 
 
 def predict_pcos(raw_data: dict) -> dict:
@@ -264,12 +162,13 @@ def predict_pcos(raw_data: dict) -> dict:
     risk_level, advice = _classify_risk(pcos_prob)
     top_factors = _top_factors(feature_row)
     language = raw_data.get("language", "en")
-    ai_advice = _get_gemini_advice(_build_prompt(raw_data, pcos_prob, risk_level, language))
+    advice_result = generate_advice(raw_data, pcos_prob, risk_level, language)
+    log.info("advice source=%s flags=%s", advice_result.source, ",".join(advice_result.flags) or "-")
 
     return {
         "probability": round(pcos_prob, 4),
         "risk_level": risk_level,
         "advice": advice,
         "top_factors": top_factors,
-        "ai_advice": ai_advice,
+        "ai_advice": advice_result.text,
     }
