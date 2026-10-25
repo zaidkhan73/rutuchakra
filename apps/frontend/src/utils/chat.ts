@@ -8,6 +8,7 @@ export interface ChatMessage {
   category: string
   isBlocked: boolean
   createdAt: string
+  animate?: boolean
 }
 
 export interface PredictionContext {

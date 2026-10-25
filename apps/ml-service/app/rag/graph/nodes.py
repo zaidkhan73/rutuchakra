@@ -18,6 +18,7 @@ from pydantic import BaseModel, Field, field_validator
 from app.core.config import Settings
 from app.rag.graph import messages
 from app.rag.graph import prompts as P
+from app.rag.graph.history import trim_history
 from app.rag.graph.state import ChatState
 from app.rag.guardrails import inject_disclaimer, log_guardrail_event, validate_output
 from app.rag.rails.input_rails import check_input
@@ -88,6 +89,12 @@ class ChatNodes:
         self.retriever = retriever    # needs: async retrieve(query, keywords=...) -> RetrievalResult
         self.s = settings
 
+    def _history(self, state: ChatState, turns: int) -> list[dict]:
+        return trim_history(state.get("history", []), max_turns=turns,
+                            max_chars=self.s.chat_history_max_chars,
+                            per_message_chars=self.s.chat_history_msg_chars)
+
+    
     # ---- 1. input rails (regex backstop: runs before any LLM) ----------------
     async def guard_input(self, state: ChatState) -> dict:
         verdict = check_input(state["message"])
@@ -111,7 +118,7 @@ class ChatNodes:
 
     # ---- 2. plan: safety read + route + translate + rewrite follow-ups ---------
     async def plan(self, state: ChatState) -> dict:
-        history = P.format_history(state.get("history", []), 4)
+        history = P.format_history(self._history(state, 4), 4)
         prompt = P.PLAN_PROMPT.format(history=history, message=state["message"],
                                       has_user_data="yes" if state.get("user_context") else "no")
         try:
@@ -138,7 +145,7 @@ class ChatNodes:
 
     # ---- 3a/3b. no-retrieval branches -----------------------------------------
     async def small_talk(self, state: ChatState) -> dict:
-        history = P.format_history(state.get("history", []), self.s.chat_history_turns)
+        history = P.format_history(self._history(state, self.s.chat_history_turns), self.s.chat_history_turns)
         prompt = P.small_talk_prompt(state["message"], history, state.get("language", "en"))
         return {"answer": await self._generate(prompt), "grounded": False, "prompt": prompt}
 
@@ -165,7 +172,7 @@ class ChatNodes:
             context = P.OWN_DATA_BLOCK
         else:
             context = P.format_context(chunks) if chunks else P.NO_EVIDENCE_BLOCK
-        history = P.format_history(state.get("history", []), self.s.chat_history_turns)
+        history = P.format_history(self._history(state, self.s.chat_history_turns), self.s.chat_history_turns)
         prompt = P.grounded_prompt(state["message"], context, state.get("user_context"),
                                    history, state.get("language", "en"))
         return {"answer": await self._generate(prompt), "prompt": prompt}
@@ -181,7 +188,7 @@ class ChatNodes:
     def _evidence(self, state: ChatState) -> str:
         """Everything the answer may legitimately quote numbers from."""
         parts = [state.get("message", ""), state.get("user_context") or ""]
-        parts += [h.get("content", "") for h in state.get("history", [])[-self.s.chat_history_turns:]]
+        parts += [h["content"] for h in self._history(state, self.s.chat_history_turns)]
         res = state.get("retrieval")
         if res and state.get("grounded"):
             parts += [c.text for c in res.chunks]

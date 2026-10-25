@@ -87,6 +87,7 @@ export default function AIAssistant() {
         category: result.category,
         isBlocked: isBlockedCategory(result.category),
         createdAt: new Date().toISOString(),
+        animate: !result.category.startsWith('safety:'),
       }
       setMessages((prev) => [...prev, assistantMessage])
 
@@ -164,7 +165,13 @@ export default function AIAssistant() {
               </p>
             </div>
           )}
-          {messages.map((m) => <ChatBubble key={m.id} message={m} />)}
+          {messages.map((m) => (
+            <ChatBubble
+              key={m.id}
+              message={m}
+              onTick={() => bottomRef.current?.scrollIntoView({ block: 'end' })}
+            />
+          ))}
           {sending && <TypingIndicator />}
           {rateLimited && (
             <div className="chat chat-start">

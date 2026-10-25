@@ -17,7 +17,7 @@ Why our own SQL instead of PGVectorStore.similarity_search(hybrid=...)?
     queries can silently reuse the first query's keywords
 Ingestion still uses PGVectorStore; only the read path is custom.
 """
-
+import hashlib
 import json
 import logging
 import re
@@ -25,6 +25,7 @@ from functools import lru_cache
 
 from sqlalchemy import bindparam, text
 
+from app.core.cache import Cache, get_cache
 from app.core.config import Settings, get_settings
 from app.llm.embeddings import get_embeddings
 from app.rag.retrieval.schemas import RetrievalResult, RetrievedChunk
@@ -96,8 +97,9 @@ def _extra(raw) -> dict:
 
 
 class HybridRetriever:
-    def __init__(self, settings: Settings | None = None):
+    def __init__(self, settings: Settings | None = None, cache: Cache | None = None):
         self.s = settings or get_settings()
+        self.cache = cache or get_cache()
         for ident in (self.s.kb_schema, self.s.kb_table):
             if not _IDENT.match(ident):
                 raise ValueError(f"Unsafe SQL identifier in config: {ident!r}")
@@ -157,6 +159,18 @@ class HybridRetriever:
                 return [dict(r) for r in (await conn.execute(stmt, params)).mappings().all()]
         return await self.engine._run_as_async(_go())
 
+    async def _embed(self, query: str) -> list[float]:
+        """Query embedding with a cache. Key includes model+dim: vectors from different models must never mix."""
+        norm = " ".join(query.split())
+        digest = hashlib.sha256(f"{self.s.embedding_model}|{self.s.embedding_dim}|{norm}".encode()).hexdigest()
+        key = f"emb:{digest}"
+        hit = await self.cache.get(key)
+        if hit:
+            return hit
+        vec = await self.embeddings.aembed_query(norm)
+        await self.cache.set(key, vec, self.s.cache_embed_ttl_s)
+        return vec
+
     # ---- public API --------------------------------------------------------
     async def retrieve(
         self,
@@ -179,7 +193,7 @@ class HybridRetriever:
         floor = s.rag_min_similarity if min_similarity is None else min_similarity
         tsq = build_tsquery(query, keywords)
 
-        qvec = _vec_literal(await self.embeddings.aembed_query(query))
+        qvec = _vec_literal(await self._embed(query))
         params: dict = {
             "qvec": qvec, "tsq": tsq, "pool": s.rag_candidate_pool,
             "rrf_k": s.rag_rrf_k, "cand": top_k * 4,

@@ -80,6 +80,9 @@ class Settings(BaseSettings):
     chat_engine: Literal["graph", "legacy"] = "graph"  # "legacy" = old pipeline.py, instant rollback via env
     rag_answer_gate: float = 0.68   # best chunk must reach this to answer as "grounded" (relevant tops were 0.71+, off-topic max 0.64)
     chat_history_turns: int = 6     # last N messages shown to planner/generator
+    chat_history_max_chars: int = 3000   # hard budget for history text inside one prompt
+    chat_history_msg_chars: int = 500    # one long past answer can't eat the whole budget
+    cache_embed_ttl_s: int = 7 * 24 * 3600  # query-embedding cache lifetime (REDIS_URL set -> Redis, else in-process)
 
     # --- guardrails (R5) ---
     rails_regenerate: bool = True        # on an output-rail violation, retry the answer once before falling back
