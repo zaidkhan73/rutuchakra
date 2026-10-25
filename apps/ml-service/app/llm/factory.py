@@ -21,7 +21,7 @@ wired:
 
 import logging
 from typing import Callable, Literal
-
+from langchain_core.callbacks import BaseCallbackHandler
 from langchain_core.language_models.chat_models import BaseChatModel
 from langchain_core.runnables import Runnable
 
@@ -31,13 +31,23 @@ log = logging.getLogger("llm")
 
 Role = Literal["generate", "fast"]
 
+class _ErrorLogger(BaseCallbackHandler):
+    """Fallback chains swallow the first provider's error. Log it so quota/auth problems are visible."""
+
+    def __init__(self, label: str):
+        self.label = label
+
+    def on_llm_error(self, error: BaseException, **kwargs) -> None:
+        log.warning("llm call failed provider=%s -> %s: %s", self.label, type(error).__name__,
+                    str(error).replace("\n", " ")[:200])
 
 class LLMUnavailableError(RuntimeError):
     """No provider has an API key configured."""
 
 
 def _make_model(provider: str, model: str, temperature: float, s: Settings) -> BaseChatModel | None:
-    common = {"temperature": temperature, "max_retries": s.llm_max_retries, "timeout": s.llm_timeout_s}
+    common = {"temperature": temperature, "max_retries": s.llm_max_retries, "timeout": s.llm_timeout_s,
+              "callbacks": [_ErrorLogger(f"{provider}:{model}")]}
 
     if provider == "gemini" and s.gemini_api_key:
         from langchain_google_genai import ChatGoogleGenerativeAI

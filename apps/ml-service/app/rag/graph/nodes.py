@@ -4,8 +4,10 @@ app/rag/graph/nodes.py
 Every step of the chat graph. Dependencies (LLMs, retriever, settings) are injected,
 so tests can run the whole graph with fakes and no network.
 
-  guard_input -> plan -> [small_talk | out_of_scope | retrieve -> generate] -> finalize
+  guard_input -> plan -> [safety_reply | small_talk | out_of_scope | retrieve -> generate]
+              -> output_rails -> finalize
 """
+
 import json
 import logging
 import re
@@ -17,16 +19,25 @@ from app.core.config import Settings
 from app.rag.graph import messages
 from app.rag.graph import prompts as P
 from app.rag.graph.state import ChatState
-from app.rag.guardrails import check_input, inject_disclaimer, log_guardrail_event, validate_output
+from app.rag.guardrails import inject_disclaimer, log_guardrail_event, validate_output
+from app.rag.rails.input_rails import check_input
+from app.rag.rails.output_rails import check_output
 from app.rag.retrieval.schemas import RetrievedChunk
 
 log = logging.getLogger("chat_graph")
 
 
 class Plan(BaseModel):
+    risk: Literal["none", "prompt_injection", "abusive", "self_harm", "medical_emergency"] = "none"
     category: Literal["small_talk", "pcod_related", "out_of_scope"]
     english_query: str = Field(default="", description="standalone English search query (pcod_related only)")
     keywords: list[str] = Field(default_factory=list, description="up to 5 English search terms")
+
+    @field_validator("risk", mode="before")
+    @classmethod
+    def _norm_risk(cls, v):
+        v = str(v or "none").strip().lower()
+        return v if v in ("prompt_injection", "abusive", "self_harm", "medical_emergency") else "none"
 
     @field_validator("category", mode="before")
     @classmethod
@@ -55,6 +66,7 @@ def _text(msg) -> str:
 
 _JSON_RE = re.compile(r"\{.*\}", re.DOTALL)
 
+
 def parse_plan(msg) -> Plan:
     """
     LLM reply -> Plan. Plain JSON in text instead of tool-calling: Groq's gpt-oss models
@@ -76,19 +88,28 @@ class ChatNodes:
         self.retriever = retriever    # needs: async retrieve(query, keywords=...) -> RetrievalResult
         self.s = settings
 
-    # ---- 1. guardrails (regex layer; replaced by the R5 rails) ----------------
+    # ---- 1. input rails (regex backstop: runs before any LLM) ----------------
     async def guard_input(self, state: ChatState) -> dict:
-        allowed, reason = check_input(state["message"])
-        if allowed:
+        verdict = check_input(state["message"])
+        if verdict.allowed:
             return {}
-        lang = state.get("language", "en")
-        return {
-            "category": f"blocked:{reason}",
-            "answer": messages.pick(messages.BLOCKED_REPLIES, lang, reason),
-            "grounded": False,
-        }
+        log_guardrail_event(f"input_{verdict.reason}")
+        category = "safety:self_harm" if verdict.reason == "self_harm" else f"blocked:{verdict.reason}"
+        return {"category": category, "grounded": False}
 
-    # ---- 2. plan: route + translate + rewrite follow-ups ----------------------
+    async def safety_reply(self, state: ChatState) -> dict:
+        """Canned, localized replies. No LLM: these must work (and never improvise) when providers are down."""
+        lang = state.get("language", "en")
+        category = state["category"]
+        if category == "safety:self_harm":
+            answer = messages.pick(messages.SELF_HARM_REPLY, lang)
+        elif category == "safety:medical_emergency":
+            answer = messages.pick(messages.EMERGENCY_REPLY, lang)
+        else:
+            answer = messages.pick(messages.BLOCKED_REPLIES, lang, category.split(":", 1)[-1])
+        return {"answer": answer, "grounded": False}
+
+    # ---- 2. plan: safety read + route + translate + rewrite follow-ups ---------
     async def plan(self, state: ChatState) -> dict:
         history = P.format_history(state.get("history", []), 4)
         prompt = P.PLAN_PROMPT.format(history=history, message=state["message"],
@@ -100,6 +121,11 @@ class ChatNodes:
             # Fail safe toward retrieval: grounding an unclear question beats answering it blind.
             log.warning("planner failed (%s); defaulting to pcod_related", type(e).__name__)
             plan = Plan(category="pcod_related")
+        if plan.risk != "none":
+            log_guardrail_event(f"planner_risk_{plan.risk}")
+            category = {"prompt_injection": "blocked:jailbreak_pattern", "abusive": "blocked:toxic_content",
+                        "self_harm": "safety:self_harm", "medical_emergency": "safety:medical_emergency"}[plan.risk]
+            return {"category": category, "grounded": False}
         english_query = plan.english_query.strip()
         kb_skipped = False
         if not english_query:
@@ -114,11 +140,11 @@ class ChatNodes:
     async def small_talk(self, state: ChatState) -> dict:
         history = P.format_history(state.get("history", []), self.s.chat_history_turns)
         prompt = P.small_talk_prompt(state["message"], history, state.get("language", "en"))
-        return {"answer": await self._generate(prompt), "grounded": False}
+        return {"answer": await self._generate(prompt), "grounded": False, "prompt": prompt}
 
     async def out_of_scope(self, state: ChatState) -> dict:
         prompt = P.out_of_scope_prompt(state["message"], state.get("language", "en"))
-        return {"answer": await self._generate(prompt), "grounded": False}
+        return {"answer": await self._generate(prompt), "grounded": False, "prompt": prompt}
 
     # ---- 3c. retrieval + grounded generation ----------------------------------
     async def retrieve(self, state: ChatState) -> dict:
@@ -142,7 +168,7 @@ class ChatNodes:
         history = P.format_history(state.get("history", []), self.s.chat_history_turns)
         prompt = P.grounded_prompt(state["message"], context, state.get("user_context"),
                                    history, state.get("language", "en"))
-        return {"answer": await self._generate(prompt)}
+        return {"answer": await self._generate(prompt), "prompt": prompt}
 
     async def _generate(self, prompt: str) -> str:
         try:
@@ -150,6 +176,45 @@ class ChatNodes:
         except Exception as e:  # noqa: BLE001 - every provider in the chain failed
             log.error("generation failed on all providers (%s)", type(e).__name__)
             return ""  # finalize() swaps in a localized fallback
+
+    # ---- 3d. output rails: check the draft, retry once, else fall back ---------
+    def _evidence(self, state: ChatState) -> str:
+        """Everything the answer may legitimately quote numbers from."""
+        parts = [state.get("message", ""), state.get("user_context") or ""]
+        parts += [h.get("content", "") for h in state.get("history", [])[-self.s.chat_history_turns:]]
+        res = state.get("retrieval")
+        if res and state.get("grounded"):
+            parts += [c.text for c in res.chunks]
+        return "\n".join(parts)
+
+    async def output_rails(self, state: ChatState) -> dict:
+        answer = state.get("answer", "")
+        if not answer:
+            return {}  # generation failed outright; finalize() substitutes a localized fallback
+        lang = state.get("language", "en")
+        evidence = self._evidence(state)
+
+        def check(text: str):
+            return check_output(text, evidence=evidence, category=state["category"],
+                                strict_numbers=self.s.rails_strict_numbers)
+
+        violations = check(answer)
+        for v in violations:
+            log_guardrail_event(f"output_{v.code}" + ("" if v.hard else "_soft"))
+        hard = [v for v in violations if v.hard]
+        if not hard:
+            return {}
+
+        if self.s.rails_regenerate and state.get("prompt"):
+            retry = await self._generate(state["prompt"] + P.regen_suffix([v.code for v in hard], lang))
+            if retry and not [v for v in check(retry) if v.hard]:
+                log_guardrail_event("output_regenerated_ok")
+                return {"answer": retry}
+
+        log_guardrail_event("output_blocked")
+        if any(v.code != "prompt_leak" for v in hard):
+            return {"answer": messages.pick(messages.RAILS_FALLBACK, lang), "grounded": False}
+        return {"answer": ""}  # prompt leak: finalize() swaps in the category fallback
 
     # ---- 4. finalize: validate, disclaimer, build the API response ------------
     async def finalize(self, state: ChatState) -> dict:
@@ -159,7 +224,7 @@ class ChatNodes:
         grounded = bool(state.get("grounded"))
         res = state.get("retrieval")
 
-        if not category.startswith("blocked"):
+        if not category.startswith(("blocked", "safety")):
             if not validate_output(answer):
                 log_guardrail_event("output_validation_failed")
                 table = {"small_talk": messages.SMALL_TALK_FALLBACK,

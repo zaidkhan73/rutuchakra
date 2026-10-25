@@ -12,12 +12,13 @@ class ChatState(TypedDict, total=False):
     user_context: str | None
     language: str
     # ---- filled by nodes ----
-    category: str                      # small_talk | pcod_related | out_of_scope | blocked:<reason>
+    category: str                      # small_talk | pcod_related | out_of_scope | blocked:<reason> | safety:<kind>
     english_query: str
     kb_skipped: bool                   # True = question is about the user's own data; no KB lookup
     keywords: list[str]
     retrieval: RetrievalResult | None
     grounded: bool
     answer: str
+    prompt: str                        # the prompt that produced `answer` (reused if an output rail forces a retry)
     # ---- output ----
     result: dict

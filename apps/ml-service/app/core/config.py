@@ -81,6 +81,10 @@ class Settings(BaseSettings):
     rag_answer_gate: float = 0.68   # best chunk must reach this to answer as "grounded" (relevant tops were 0.71+, off-topic max 0.64)
     chat_history_turns: int = 6     # last N messages shown to planner/generator
 
+    # --- guardrails (R5) ---
+    rails_regenerate: bool = True        # on an output-rail violation, retry the answer once before falling back
+    rails_strict_numbers: bool = False   # True = ANY number+unit (minutes, %, days...) must appear in the sources; False = only drug doses (others are logged)
+
     # --- LLM call behaviour ---
     llm_timeout_s: float = 30.0
     llm_max_retries: int = 1  # keep low: we prefer failing over to the next provider

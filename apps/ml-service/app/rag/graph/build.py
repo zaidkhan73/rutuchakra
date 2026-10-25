@@ -3,14 +3,16 @@ app/rag/graph/build.py
 ----------------------
 Wires the nodes into a LangGraph StateGraph.
 
-    START -> guard_input --blocked--> finalize -> END
-                  |
-                  +--ok--> plan --small_talk--> small_talk -------------------+
-                             |--out_of_scope--> out_of_scope -----------------+--> finalize -> END
-                             +--pcod_related--> retrieve -> generate ---------+
+    START -> guard_input --blocked/self-harm--> safety_reply ---------------------------+
+                  |                                                                  |
+                  +--ok--> plan --risk != none--> safety_reply ----------------------+
+                             |--small_talk--> small_talk --------+                    |
+                             |--out_of_scope--> out_of_scope ----+--> output_rails ---+--> finalize -> END
+                             +--pcod_related--> retrieve -> generate (or generate directly if own-data)
 """
 
 from functools import lru_cache
+
 from langchain_core.runnables import RunnableLambda
 from langgraph.graph import END, START, StateGraph
 
@@ -20,12 +22,17 @@ from app.rag.graph.nodes import ChatNodes, parse_plan
 from app.rag.graph.state import ChatState
 
 
+def _stopped(state: ChatState) -> bool:
+    return state.get("category", "").startswith(("blocked", "safety"))
+
 
 def _after_guard(state: ChatState) -> str:
-    return "finalize" if state.get("category", "").startswith("blocked") else "plan"
+    return "safety_reply" if _stopped(state) else "plan"
 
 
 def _after_plan(state: ChatState) -> str:
+    if _stopped(state):
+        return "safety_reply"
     if state["category"] == "pcod_related" and state.get("kb_skipped"):
         return "generate"  # own-data question: skip retrieval
     return state["category"]  # small_talk | out_of_scope | pcod_related
@@ -51,16 +58,20 @@ def build_chat_graph(*, planner=None, generator=None, retriever=None, settings: 
     g.add_node("out_of_scope", nodes.out_of_scope)
     g.add_node("retrieve", nodes.retrieve)
     g.add_node("generate", nodes.generate)
+    g.add_node("safety_reply", nodes.safety_reply)
+    g.add_node("output_rails", nodes.output_rails)
     g.add_node("finalize", nodes.finalize)
 
     g.add_edge(START, "guard_input")
-    g.add_conditional_edges("guard_input", _after_guard, {"plan": "plan", "finalize": "finalize"})
+    g.add_conditional_edges("guard_input", _after_guard, {"plan": "plan", "safety_reply": "safety_reply"})
     g.add_conditional_edges("plan", _after_plan, {
         "small_talk": "small_talk", "out_of_scope": "out_of_scope", "pcod_related": "retrieve",
-        "generate": "generate"})
+        "generate": "generate", "safety_reply": "safety_reply"})
     g.add_edge("retrieve", "generate")
     for n in ("small_talk", "out_of_scope", "generate"):
-        g.add_edge(n, "finalize")
+        g.add_edge(n, "output_rails")
+    g.add_edge("output_rails", "finalize")
+    g.add_edge("safety_reply", "finalize")
     g.add_edge("finalize", END)
     return g.compile()
 

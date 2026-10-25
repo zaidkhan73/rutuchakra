@@ -48,8 +48,43 @@ GROUNDED_FAILED_FALLBACK = {
 }
 
 
+# ---- safety replies (R5). Helpline numbers: verify they are still current before each release. ----
+SELF_HARM_REPLY = {
+    "en": ("I'm really sorry you're going through this -- you matter, and you don't have to carry it alone. "
+           "Please talk to someone right now: call Tele-MANAS at 14416 (free, 24x7, in many languages), or if you "
+           "are in immediate danger call 112. If someone you trust is nearby, please tell them how you feel. "
+           "I'm happy to keep chatting, but a real person can support you best right now."),
+    "hi": ("मुझे बहुत दुख है कि आप इस दौर से गुज़र रही हैं — आप मायने रखती हैं, और आपको यह अकेले नहीं सहना है। "
+           "कृपया अभी किसी से बात करें: Tele-MANAS (14416) पर कॉल करें — यह मुफ़्त है, 24 घंटे चालू रहता है और कई भाषाओं में मदद मिलती है। "
+           "अगर आप तुरंत खतरे में हैं तो 112 पर कॉल करें। किसी भरोसेमंद व्यक्ति को अपने मन की बात ज़रूर बताएं।"),
+    "mr": ("तुम्ही ज्या त्रासातून जात आहात त्याबद्दल मला खूप वाईट वाटतंय — तुम्ही महत्त्वाच्या आहात, आणि हे तुम्हाला एकटीने सहन करायचं नाही. "
+           "कृपया आत्ता कोणाशी तरी बोला: Tele-MANAS (14416) वर कॉल करा — हे मोफत आहे, २४ तास चालू असतं आणि अनेक भाषांमध्ये मदत मिळते. "
+           "तुम्ही तात्काळ धोक्यात असाल तर 112 वर कॉल करा. तुमच्या विश्वासातील एखाद्या व्यक्तीला तुमच्या मनातलं नक्की सांगा."),
+}
+
+EMERGENCY_REPLY = {
+    "en": ("What you're describing could be serious and shouldn't wait. Please get urgent medical care right now: "
+           "go to the nearest hospital emergency department or call 112. If you can, ask someone to go with you. "
+           "I can't assess this over chat, and I don't want you to lose any time."),
+    "hi": ("आप जो बता रही हैं वह गंभीर हो सकता है और इसे टालना ठीक नहीं है। कृपया अभी तुरंत नज़दीकी अस्पताल के इमरजेंसी विभाग में जाएं "
+           "या 112 पर कॉल करें। हो सके तो किसी को अपने साथ ले जाएं। मैं चैट पर इसकी जाँच नहीं कर सकता, और मैं नहीं चाहता कि आपका ज़रा भी समय बर्बाद हो।"),
+    "mr": ("तुम्ही जे सांगत आहात ते गंभीर असू शकतं आणि त्याला उशीर करू नये. कृपया आत्ताच जवळच्या रुग्णालयाच्या इमर्जन्सी विभागात जा "
+           "किंवा 112 वर कॉल करा. शक्य असल्यास कोणालातरी सोबत घ्या. मी चॅटवर याची तपासणी करू शकत नाही, आणि तुमचा थोडाही वेळ वाया जावा असं मला वाटत नाही."),
+}
+
+RAILS_FALLBACK = {
+    "en": ("I don't want to give you specific doses, numbers or conclusions that I can't back up from my sources -- "
+           "please check this with your doctor or pharmacist. I'm happy to share the general information I do have."),
+    "hi": ("मैं ऐसी खुराक, संख्याएँ या निष्कर्ष नहीं बताना चाहता जिन्हें मैं अपने स्रोतों से पक्का न कर सकूँ — कृपया यह अपने डॉक्टर या फार्मासिस्ट से पूछ लें। "
+           "सामान्य जानकारी में मैं ज़रूर मदद कर सकता हूँ।"),
+    "mr": ("मला माझ्या स्रोतांवरून खात्री करता येणार नाही अशा मात्रा, आकडे किंवा निष्कर्ष मी सांगू इच्छित नाही — कृपया हे तुमच्या डॉक्टरांना किंवा फार्मासिस्टला विचारा. "
+           "सर्वसाधारण माहितीमध्ये मी नक्की मदत करू शकतो."),
+}
+
+
 def pick(table: dict, language: str, key: str | None = None) -> str:
     lang_table = table.get(language, table["en"])
     if key is not None:
         return lang_table.get(key, table["en"].get(key, table["en"]["default"]))
     return lang_table
+
